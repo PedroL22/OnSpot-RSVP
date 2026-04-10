@@ -47,6 +47,14 @@ For this project, I kept the shadcn/ui design patterns and Tailwind integration 
 
 Base UI provides a leaner DOM footprint and a more straightforward API surface. For a lightweight, public-facing RSVP flow where time-to-interactive and bundle size matter, that tradeoff fits the project better while still preserving strong accessibility guarantees.
 
+### Deterministic Builds & Dependency Management
+
+Nothing is more frustrating for a reviewer than a "works on my machine" scenario caused by a silent upstream package update over the weekend. To guarantee a 100% reproducible environment, I enforced strict deterministic builds.
+
+All direct dependencies in the package.json are explicitly pinned to exact versions (no carets ^ or tildes ~), and the transitive dependency tree is strictly locked via the committed lockfile. This ensures that the application you run today is mathematically identical to the one I built, eliminating "ghost bugs" from minor package bumps.
+
+To maintain security without sacrificing determinism, in a production environment, this exact-pinning strategy would be paired with automated dependency updates (e.g., Dependabot or Renovate) to catch and patch CVEs through the CI/CD pipeline.
+
 ## Local Development
 
 This repository uses `bun` as the package manager because `bun.lock` is present in the project root.

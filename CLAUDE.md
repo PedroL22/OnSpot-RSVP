@@ -16,6 +16,7 @@ Before generating any terminal commands (install, run, build), you **must** dete
 4.  `package-lock.json` → Use **npm** (e.g., `npm install`, `npm run dev`)
 
 *Default to `pnpm` if no lockfile is found.*
+**Dependency Rule:** Never use carets (^) or tildes (~) in package.json. Always pin direct dependencies to an exact version (e.g., pnpm add -E <package>). The lockfile must be strictly maintained to guarantee deterministic builds.
 
 ---
 
