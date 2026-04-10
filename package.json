@@ -17,6 +17,8 @@
 		"postinstall": "prisma generate",
 		"preview": "next build && next start",
 		"start": "next start",
+		"test": "vitest run",
+		"test:watch": "vitest",
 		"typecheck": "tsc --noEmit",
 		"verify": "bun run typecheck && bun run check && bun run test",
 		"react-doctor": "bunx -y react-doctor@latest .",
@@ -53,7 +55,8 @@
 		"postcss": "8.5.9",
 		"prisma": "7.7.0",
 		"tailwindcss": "4.2.2",
-		"typescript": "5.9.3"
+		"typescript": "5.9.3",
+		"vitest": "4.1.4"
 	},
 	"ct3aMetadata": {
 		"initVersion": "7.40.0"

@@ -110,6 +110,8 @@ bun run preview
 bun run check
 bun run check:write
 bun run check:unsafe
+bun run test
+bun run test:watch
 bun run typecheck
 bun run db:generate
 bun run db:migrate
