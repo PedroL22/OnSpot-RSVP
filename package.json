@@ -1,0 +1,50 @@
+{
+	"name": "onspot-rsvp",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "next build",
+		"check": "biome check .",
+		"check:unsafe": "biome check --write --unsafe .",
+		"check:write": "biome check --write .",
+		"db:generate": "prisma migrate dev",
+		"db:migrate": "prisma migrate deploy",
+		"db:push": "prisma db push",
+		"db:studio": "prisma studio",
+		"dev": "next dev --turbo",
+		"postinstall": "prisma generate",
+		"preview": "next build && next start",
+		"start": "next start",
+		"typecheck": "tsc --noEmit",
+		"verify": "bun run typecheck && bun run check && bun run test",
+		"react-doctor": "bunx -y react-doctor@latest .",
+		"prepare": "husky"
+	},
+	"dependencies": {
+		"@auth/prisma-adapter": "^2.11.1",
+		"@prisma/client": "^6.19.3",
+		"@t3-oss/env-nextjs": "^0.12.0",
+		"better-auth": "^1.6.2",
+		"next": "^15.5.15",
+		"react": "^19.2.5",
+		"react-dom": "^19.2.5",
+		"server-only": "^0.0.1",
+		"zod": "^3.25.76"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.11",
+		"@tailwindcss/postcss": "^4.2.2",
+		"@types/node": "^20.19.39",
+		"@types/react": "^19.2.14",
+		"@types/react-dom": "^19.2.3",
+		"husky": "^9.1.7",
+		"postcss": "^8.5.9",
+		"prisma": "^6.19.3",
+		"tailwindcss": "^4.2.2",
+		"typescript": "^5.9.3"
+	},
+	"ct3aMetadata": {
+		"initVersion": "7.40.0"
+	}
+}
