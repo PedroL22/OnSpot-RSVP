@@ -1,174 +1,167 @@
 {
-	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-	"root": true,
-	"vcs": {
-		"enabled": true,
-		"useIgnoreFile": true,
-		"clientKind": "git"
-	},
-	"assist": {
-		"enabled": true,
-		"actions": {
-			"recommended": true,
-			"source": {
-				"recommended": true,
-				"organizeImports": "off",
-				"useSortedAttributes": "on"
-			}
-		}
-	},
-	"css": {
-		"parser": {
-			"allowWrongLineComments": true,
-			"cssModules": true,
-			"tailwindDirectives": true
-		}
-	},
-	"files": {
-		"ignoreUnknown": true,
-		"includes": [
-			"**",
-			"!**/node_modules",
-			"!**/dist",
-			"!**/coverage",
-			"!**/out",
-			"!**/.output",
-			"!**/public/**/*.js",
-			"!**/.next",
-			"!**/_generated",
-			"!**/generated",
-			"!**/*.gen.ts",
-			"!**/.turbo",
-			"!**/.env",
-			"!**/dev-dist",
-			"!**/playwright-report",
-			"!**/test-results",
-			"!**/blob-report",
-			"!**/*.json",
-			"!**/*.md"
-		]
-	},
-	"formatter": {
-		"enabled": true,
-		"attributePosition": "auto",
-		"indentStyle": "space",
-		"indentWidth": 2,
-		"lineEnding": "lf",
-		"lineWidth": 120
-	},
-	"html": {
-		"formatter": {
-			"enabled": true
-		}
-	},
-	"javascript": {
-		"formatter": {
-			"arrowParentheses": "always",
-			"attributePosition": "auto",
-			"bracketSameLine": false,
-			"bracketSpacing": true,
-			"indentStyle": "space",
-			"indentWidth": 2,
-			"jsxQuoteStyle": "single",
-			"lineEnding": "lf",
-			"lineWidth": 120,
-			"quoteProperties": "asNeeded",
-			"quoteStyle": "single",
-			"semicolons": "asNeeded",
-			"trailingCommas": "es5"
-		}
-	},
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"recommended": true,
-			"a11y": {
-				"recommended": true,
-				"noNoninteractiveTabindex": {
-					"level": "off"
-				},
-				"noStaticElementInteractions": {
-					"level": "warn"
-				},
-				"useAriaPropsForRole": {
-					"level": "warn"
-				},
-				"useKeyWithClickEvents": {
-					"level": "warn"
-				},
-				"useKeyWithMouseEvents": {
-					"level": "warn"
-				}
-			},
-			"complexity": {
-				"recommended": true
-			},
-			"correctness": {
-				"recommended": true,
-				"useExhaustiveDependencies": {
-					"level": "off",
-					"options": {
-						"hooks": [
-							{
-								"name": "null",
-								"stableResult": true
-							}
-						]
-					}
-				}
-			},
-			"nursery": {
-				"useSortedClasses": {
-					"fix": "safe",
-					"level": "warn",
-					"options": {
-						"attributes": [
-							"classList"
-						],
-						"functions": [
-							"clsx",
-							"cva",
-							"tw",
-							"cn"
-						]
-					}
-				}
-			},
-			"performance": {
-				"recommended": true
-			},
-			"security": {
-				"recommended": true,
-				"noDangerouslySetInnerHtml": {
-					"level": "off"
-				}
-			},
-			"style": {
-				"recommended": true,
-				"noNonNullAssertion": {
-					"level": "off"
-				},
-				"noRestrictedImports": {
-					"level": "error",
-					"options": {
-						"paths": {
-							"@phosphor-icons/react": "use \"@phosphor-icons/react/dist/ssr\" instead"
-						}
-					}
-				}
-			},
-			"suspicious": {
-				"recommended": true,
-				"noExplicitAny": {
-					"level": "off"
-				},
-				"noNonNullAssertedOptionalChain": {
-					"level": "warn"
-				},
-				"noUnknownAtRules": {
-					"level": "off"
-				}
-			}
-		}
-	}
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "root": true,
+  "vcs": {
+    "enabled": true,
+    "useIgnoreFile": true,
+    "clientKind": "git"
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "recommended": true,
+      "source": {
+        "recommended": true,
+        "organizeImports": "off",
+        "useSortedAttributes": "on"
+      }
+    }
+  },
+  "css": {
+    "parser": {
+      "allowWrongLineComments": true,
+      "cssModules": true,
+      "tailwindDirectives": true
+    }
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/coverage",
+      "!**/out",
+      "!**/.output",
+      "!**/public/**/*.js",
+      "!**/.next",
+      "!**/_generated",
+      "!**/generated",
+      "!**/*.gen.ts",
+      "!**/.turbo",
+      "!**/.env",
+      "!**/dev-dist",
+      "!**/playwright-report",
+      "!**/test-results",
+      "!**/blob-report",
+      "!**/*.json",
+      "!**/*.md"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "attributePosition": "auto",
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 120
+  },
+  "html": {
+    "formatter": {
+      "enabled": true
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "always",
+      "attributePosition": "auto",
+      "bracketSameLine": false,
+      "bracketSpacing": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "jsxQuoteStyle": "single",
+      "lineEnding": "lf",
+      "lineWidth": 120,
+      "quoteProperties": "asNeeded",
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "trailingCommas": "es5"
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        "recommended": true,
+        "noNoninteractiveTabindex": {
+          "level": "off"
+        },
+        "noStaticElementInteractions": {
+          "level": "warn"
+        },
+        "useAriaPropsForRole": {
+          "level": "warn"
+        },
+        "useKeyWithClickEvents": {
+          "level": "warn"
+        },
+        "useKeyWithMouseEvents": {
+          "level": "warn"
+        }
+      },
+      "complexity": {
+        "recommended": true
+      },
+      "correctness": {
+        "recommended": true,
+        "useExhaustiveDependencies": {
+          "level": "off",
+          "options": {
+            "hooks": [
+              {
+                "name": "null",
+                "stableResult": true
+              }
+            ]
+          }
+        }
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "fix": "safe",
+          "level": "warn",
+          "options": {
+            "attributes": ["classList"],
+            "functions": ["clsx", "cva", "tw", "cn"]
+          }
+        }
+      },
+      "performance": {
+        "recommended": true
+      },
+      "security": {
+        "recommended": true,
+        "noDangerouslySetInnerHtml": {
+          "level": "off"
+        }
+      },
+      "style": {
+        "recommended": true,
+        "noNonNullAssertion": {
+          "level": "off"
+        },
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "@phosphor-icons/react": "use \"@phosphor-icons/react/dist/ssr\" instead"
+            }
+          }
+        }
+      },
+      "suspicious": {
+        "recommended": true,
+        "noExplicitAny": {
+          "level": "off"
+        },
+        "noNonNullAssertedOptionalChain": {
+          "level": "warn"
+        },
+        "noUnknownAtRules": {
+          "level": "off"
+        }
+      }
+    }
+  }
 }

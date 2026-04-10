@@ -1,7 +1,11 @@
 import '~/styles/globals.css'
 
 import type { Metadata } from 'next'
-import { Geist } from 'next/font/google'
+import { DM_Sans, Geist } from 'next/font/google'
+
+import { cn } from '~/lib/utils'
+
+const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
   title: 'Create T3 App',
@@ -16,7 +20,7 @@ const geist = Geist({
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html className={`${geist.variable}`} lang='en'>
+    <html className={cn(geist.variable, 'font-sans', dmSans.variable)} lang='en'>
       <body>{children}</body>
     </html>
   )
