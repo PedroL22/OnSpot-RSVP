@@ -55,6 +55,11 @@ All direct dependencies in the package.json are explicitly pinned to exact versi
 
 To maintain security without sacrificing determinism, in a production environment, this exact-pinning strategy would be paired with automated dependency updates (e.g., Dependabot or Renovate) to catch and patch CVEs through the CI/CD pipeline.
 
+### What I Cut and Why: Google OAuth Integration
+While Google OAuth is an industry standard for B2C applications, I deliberately cut it from this 8-hour scope. The Google Cloud Console requires significant configuration overhead (consent screens, test user whitelisting, scope approvals) just to get a development environment running.
+
+Instead, I implemented GitHub OAuth alongside traditional Email/Password credentials. This combination successfully demonstrates my ability to implement both native session management and external OAuth2 identity providers, while strictly respecting the time budget and remaining pragmatic.
+
 ## Local Development
 
 This repository uses `bun` as the package manager because `bun.lock` is present in the project root.

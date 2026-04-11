@@ -4,7 +4,7 @@ import { useActionState, useEffect, useRef } from 'react'
 
 import { type CreatePostState, createPost } from '~/app/actions/post'
 
-import type { Post } from 'generated/prisma'
+import type { Post } from '../../generated/prisma'
 
 const initialState: CreatePostState = { success: false }
 

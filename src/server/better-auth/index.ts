@@ -1,1 +1,1 @@
-export { auth } from './config'
+export { auth, isGitHubAuthEnabled } from './config'
