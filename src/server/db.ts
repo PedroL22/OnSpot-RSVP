@@ -1,5 +1,6 @@
 import { PrismaPg } from '@prisma/adapter-pg'
-import { PrismaClient } from '../../generated/prisma'
+import { PrismaClient } from '@prisma/client'
+
 import { env } from '~/env'
 
 const createPrismaClient = () => {
