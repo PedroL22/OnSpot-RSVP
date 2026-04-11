@@ -1,4 +1,5 @@
 import { headers } from 'next/headers'
+import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
@@ -29,8 +30,9 @@ export default async function Home() {
             <div className='absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.22),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.16),transparent_32%)]' />
             <div className='absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.04),transparent_38%,transparent_62%,rgba(255,255,255,0.06))]' />
             <div className='relative flex flex-col gap-8'>
-              <div className='inline-flex w-fit items-center rounded-full border border-white/15 bg-white/8 px-4 py-1 text-[#fbbf24] text-xs uppercase tracking-[0.28em]'>
-                OnSpot RSVP
+              <div className='inline-flex w-fit items-center gap-3 rounded-full border border-white/15 bg-white/8 px-4 py-3 text-xs uppercase tracking-[0.28em]'>
+                <Image alt='OnSpot RSVP logo' className='h-auto w-9' height={39} priority src='/logo.svg' width={50} />
+                <span className='text-[#fbbf24]'>OnSpot RSVP</span>
               </div>
               <div className='max-w-2xl space-y-5'>
                 <h1 className='max-w-xl font-black text-5xl tracking-[-0.04em] sm:text-6xl'>

@@ -1,10 +1,9 @@
 'use client'
 
 import type { Post } from '@prisma/client'
+import { useActionState, useEffect, useRef } from 'react'
 
 import { type CreatePostState, createPost } from '~/app/actions/post'
-
-import { useActionState, useEffect, useRef } from 'react'
 
 const initialState: CreatePostState = { success: false }
 
