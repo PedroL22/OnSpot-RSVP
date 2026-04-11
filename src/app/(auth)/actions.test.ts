@@ -4,7 +4,10 @@ const redirectMock = vi.fn((url: string) => {
   throw new Error(`REDIRECT:${url}`)
 })
 
+const getSessionMock = vi.fn()
+const headersMock = vi.fn(() => new Headers())
 const signInEmailMock = vi.fn()
+const signOutMock = vi.fn()
 const signUpEmailMock = vi.fn()
 const signInSocialMock = vi.fn()
 
@@ -15,15 +18,38 @@ const loadActions = async ({ githubEnabled = true }: { githubEnabled?: boolean }
     redirect: redirectMock,
   }))
 
+  vi.doMock('next/headers', () => ({
+    headers: headersMock,
+  }))
+
   vi.doMock('~/server/better-auth', () => ({
     auth: {
       api: {
         signInEmail: signInEmailMock,
         signInSocial: signInSocialMock,
+        signOut: signOutMock,
         signUpEmail: signUpEmailMock,
       },
     },
     isGitHubAuthEnabled: githubEnabled,
+  }))
+
+  vi.doMock('~/server/better-auth/server', () => ({
+    getSession: getSessionMock,
+  }))
+
+  vi.doMock('~/server/observability/server-action', () => ({
+    withServerAction:
+      (_actionName: string, handler: (...args: unknown[]) => Promise<unknown>) =>
+      (...args: unknown[]) =>
+        handler(
+          {
+            observe: {
+              setAttributes: vi.fn(),
+            },
+          },
+          ...args
+        ),
   }))
 
   return import('./actions')
@@ -152,5 +178,17 @@ describe('auth actions', () => {
       error: 'GitHub sign-in is not configured yet.',
     })
     expect(signInSocialMock).not.toHaveBeenCalled()
+  })
+
+  it('signs the current user out and redirects home', async () => {
+    getSessionMock.mockResolvedValue({ user: { id: 'user_123' } })
+    signOutMock.mockResolvedValue({})
+
+    const { signOut } = await loadActions()
+
+    await expect(signOut()).rejects.toThrow('REDIRECT:/')
+    expect(signOutMock).toHaveBeenCalledWith({
+      headers: expect.any(Headers),
+    })
   })
 })

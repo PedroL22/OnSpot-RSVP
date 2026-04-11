@@ -10,7 +10,7 @@ export const initialAuthActionState: AuthActionState = {
 }
 
 const callbackURLSchema = z.object({
-  callbackURL: z.string().startsWith('/').default('/'),
+  callbackURL: z.string().startsWith('/').default('/dashboard'),
 })
 
 export const signInWithEmailSchema = callbackURLSchema.extend({

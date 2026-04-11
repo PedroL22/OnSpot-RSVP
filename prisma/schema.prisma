@@ -13,29 +13,36 @@ datasource db {
   provider = "postgresql"
 }
 
-model Post {
-  id        String   @id @default(cuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum RsvpStatus {
+  CONFIRMED
+  WAITLISTED
+}
 
-  createdBy   User   @relation(fields: [createdById], references: [id])
-  createdById String
+enum EventActivityType {
+  RSVP_CREATED
+  RSVP_WAITLISTED
+  RSVP_PROMOTED
+  RSVP_CHECKED_IN
+}
 
-  @@index([name])
+enum EventActivityActorType {
+  ORGANIZER
+  GUEST
+  SYSTEM
 }
 
 model User {
-  id            String    @id
-  name          String //@db.Text
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String? //@db.Text
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
-  sessions      Session[]
-  accounts      Account[]
-  posts         Post[]
+  id              String          @id
+  name            String //@db.Text
+  email           String
+  emailVerified   Boolean         @default(false)
+  image           String? //@db.Text
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @default(now()) @updatedAt
+  sessions        Session[]
+  accounts        Account[]
+  events          Event[]
+  eventActivities EventActivity[]
 
   @@unique([email])
   @@map("user")
@@ -84,4 +91,60 @@ model Verification {
   updatedAt  DateTime @default(now()) @updatedAt
 
   @@map("verification")
+}
+
+model Event {
+  id                   String          @id @default(cuid())
+  publicId             String          @unique @default(cuid()) @map("public_id")
+  organizerId          String          @map("organizer_id")
+  title                String
+  description          String          @db.Text
+  startsAt             DateTime        @map("starts_at")
+  startsAtOffsetMinutes Int            @default(180) @map("starts_at_offset_minutes")
+  location             String
+  capacity             Int?
+  createdAt            DateTime        @default(now()) @map("created_at")
+  updatedAt            DateTime        @updatedAt @map("updated_at")
+  organizer            User            @relation(fields: [organizerId], references: [id], onDelete: Cascade)
+  rsvps                Rsvp[]
+  activities           EventActivity[]
+
+  @@index([organizerId, startsAt])
+  @@map("events")
+}
+
+model Rsvp {
+  id          String          @id @default(cuid())
+  eventId     String          @map("event_id")
+  name        String
+  email       String
+  status      RsvpStatus      @default(CONFIRMED)
+  checkedInAt DateTime?       @map("checked_in_at")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  event       Event           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  activities  EventActivity[]
+
+  @@unique([eventId, email])
+  @@index([eventId, status])
+  @@index([eventId, checkedInAt])
+  @@map("rsvps")
+}
+
+model EventActivity {
+  id          String                 @id @default(cuid())
+  eventId     String                 @map("event_id")
+  rsvpId      String?                @map("rsvp_id")
+  type        EventActivityType
+  actorType   EventActivityActorType @map("actor_type")
+  actorUserId String?                @map("actor_user_id")
+  message     String
+  metadata    Json?
+  createdAt   DateTime               @default(now()) @map("created_at")
+  event       Event                  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  rsvp        Rsvp?                  @relation(fields: [rsvpId], references: [id], onDelete: Cascade)
+  actorUser   User?                  @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([eventId, createdAt])
+  @@map("event_activities")
 }

@@ -2,6 +2,10 @@
     "cSpell.words": [
         "CLIENTVAR",
         "onspot",
+        "rsvps",
+        "waitlist",
+        "Waitlist",
+        "waitlisted",
         "WAITLISTED"
     ],
     "js/ts.tsdk.path": "node_modules\\typescript\\lib"

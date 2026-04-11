@@ -37,10 +37,9 @@ type Result<T, E = Error> = Success<T> | Failure<E>
  * // Usage example
  * const { data, error } = await tryCatch(fetchData());
  * if (error) {
- *  console.error('Error fetching data: ', error);
  *  return
  * }
- * console.log('Data: ', data);
+ * useData(data);
  */
 export const tryCatch = async <T, E = Error>(promise: Promise<T>): Promise<Result<T, E>> => {
   try {
