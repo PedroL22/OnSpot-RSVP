@@ -10,15 +10,7 @@ import { hasAvailableCapacity } from '~/server/queries/rsvps'
 import { checkInSchema, createRsvpSchema, promoteWaitlistSchema } from '~/server/validation/rsvps'
 import { tryCatch } from '~/utils/try-catch'
 
-import type { ActionState } from './types'
-
-export type CreateRsvpState = ActionState & {
-  rsvpStatus?: RsvpStatus
-}
-
-export const initialCreateRsvpState: CreateRsvpState = {
-  success: false,
-}
+import type { ActionState, CreateRsvpState } from './types'
 
 const createValidationErrorState = (fieldErrors: ActionState['fieldErrors']): ActionState => ({
   fieldErrors,

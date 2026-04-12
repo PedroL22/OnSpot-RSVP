@@ -1,3 +1,5 @@
+import type { RsvpStatus } from '@prisma/client'
+
 export type ActionFieldErrors = Record<string, string[]>
 
 export type ActionState = {
@@ -7,5 +9,13 @@ export type ActionState = {
 }
 
 export const initialActionState: ActionState = {
+  success: false,
+}
+
+export type CreateRsvpState = ActionState & {
+  rsvpStatus?: RsvpStatus
+}
+
+export const initialCreateRsvpState: CreateRsvpState = {
   success: false,
 }

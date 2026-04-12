@@ -4,7 +4,8 @@ import { useActionState, useEffect, useRef } from 'react'
 
 import { FormSubmitButton } from '~/components/form-submit-button'
 
-import { createRsvp, initialCreateRsvpState } from '~/app/actions/rsvps'
+import { createRsvp } from '~/app/actions/rsvps'
+import { initialCreateRsvpState } from '~/app/actions/types'
 import { cn } from '~/lib/utils'
 
 type PublicRsvpFormProps = {
