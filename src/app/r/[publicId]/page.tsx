@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 
 import { BrandMark } from '~/components/brand/brand-mark'
 import { PatternBackground } from '~/components/layout/pattern-background'
+import { RoutePrefetch } from '~/components/navigation/route-prefetch'
 import { ThemeToggle } from '~/components/theme-toggle'
 import { PublicEventHeroCard } from './_components/public-event-hero-card'
 import { PublicRsvpSidebar } from './_components/public-rsvp-sidebar'
@@ -36,6 +37,7 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
 
   return (
     <main className='relative min-h-screen'>
+      <RoutePrefetch hrefs={['/']} />
       <PatternBackground className='opacity-70' />
       <div className='fixed top-0 right-0 left-0 z-50 h-1 bg-primary/80' />
       <div className='pointer-events-none fixed top-0 right-0 size-144 bg-[radial-gradient(circle_at_80%_10%,rgba(0,166,244,0.10),transparent_60%)]' />

@@ -1,6 +1,5 @@
-import Link from 'next/link'
-
 import { ListIcon } from '@phosphor-icons/react/dist/ssr'
+import { AppLink } from '~/components/navigation/app-link'
 import { Button, buttonVariants } from '~/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '~/components/ui/sheet'
 
@@ -16,7 +15,7 @@ export const DashboardNav = () => {
     <>
       <nav className='hidden items-center gap-1 md:flex'>
         {navItems.map((item) => (
-          <Link
+          <AppLink
             className={cn(
               buttonVariants({ size: 'sm', variant: 'ghost' }),
               'font-mono text-[11px] text-muted-foreground uppercase tracking-[0.16em]'
@@ -25,7 +24,7 @@ export const DashboardNav = () => {
             key={item.href}
           >
             {item.label}
-          </Link>
+          </AppLink>
         ))}
       </nav>
 
@@ -45,13 +44,13 @@ export const DashboardNav = () => {
 
             <div className='flex flex-col gap-2 px-4 pb-4'>
               {navItems.map((item) => (
-                <Link
+                <AppLink
                   className={cn(buttonVariants({ variant: 'outline' }), 'justify-start')}
                   href={item.href}
                   key={item.href}
                 >
                   {item.label}
-                </Link>
+                </AppLink>
               ))}
             </div>
           </SheetContent>

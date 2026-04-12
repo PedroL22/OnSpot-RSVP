@@ -1,5 +1,3 @@
-import Link from 'next/link'
-
 import { ExportIcon } from '@phosphor-icons/react/dist/ssr'
 import { ShareLinkButton } from '~/components/events/share-link-button'
 import { DisplayTitle } from '~/components/layout/display-title'
@@ -50,7 +48,7 @@ export const EventDetailHero = ({
               <div className='flex h-fit w-fit flex-wrap items-center justify-end gap-2'>
                 <ShareLinkButton shareUrl={shareUrl} />
 
-                <Link
+                <a
                   className={cn(
                     buttonVariants({ variant: 'outline' }),
                     'gap-2 font-mono text-[11px] uppercase tracking-[0.16em]'
@@ -59,7 +57,7 @@ export const EventDetailHero = ({
                 >
                   <ExportIcon data-icon='inline-start' />
                   Export CSV
-                </Link>
+                </a>
               </div>
             </div>
 

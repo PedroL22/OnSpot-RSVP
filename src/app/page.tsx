@@ -1,6 +1,6 @@
-import Link from 'next/link'
-
 import { PatternBackground } from '~/components/layout/pattern-background'
+import { AppLink } from '~/components/navigation/app-link'
+import { RoutePrefetch } from '~/components/navigation/route-prefetch'
 import { buttonVariants } from '~/components/ui/button'
 import { AuthCalloutCard } from './_components/auth-callout-card'
 import { LandingHeader } from './_components/landing-header'
@@ -13,9 +13,11 @@ import { getSession } from '~/server/better-auth/server'
 
 export default async function Home() {
   const session = await getSession()
+  const prefetchHrefs = session?.user ? ['/dashboard'] : ['/sign-in', '/sign-up']
 
   return (
     <main className='relative min-h-screen overflow-hidden'>
+      <RoutePrefetch hrefs={prefetchHrefs} />
       <PatternBackground className='opacity-70' />
       <div className='pointer-events-none fixed top-0 right-0 size-128 bg-[radial-gradient(circle_at_80%_20%,rgba(0,166,244,0.10),transparent_60%)]' />
 
@@ -40,7 +42,7 @@ export default async function Home() {
               </div>
             ) : (
               <nav className='flex items-center gap-2'>
-                <Link
+                <AppLink
                   className={cn(
                     buttonVariants({ size: 'sm', variant: 'ghost' }),
                     'font-mono text-[11px] uppercase tracking-[0.16em]'
@@ -48,14 +50,14 @@ export default async function Home() {
                   href='/sign-in'
                 >
                   Sign in
-                </Link>
+                </AppLink>
 
-                <Link
+                <AppLink
                   className={cn(buttonVariants({ size: 'sm' }), 'font-mono text-[11px] uppercase tracking-[0.16em]')}
                   href='/sign-up'
                 >
                   Get started
-                </Link>
+                </AppLink>
               </nav>
             )
           }
@@ -71,7 +73,7 @@ export default async function Home() {
                       Your event dashboard is ready. Manage RSVPs, handle waitlists, and run check-in from one place.
                     </p>
 
-                    <Link
+                    <AppLink
                       className={cn(
                         buttonVariants({ size: 'lg' }),
                         'w-full font-mono text-[11px] uppercase tracking-[0.16em]'
@@ -79,7 +81,7 @@ export default async function Home() {
                       href='/dashboard'
                     >
                       Open dashboard
-                    </Link>
+                    </AppLink>
 
                     <form action={signOut}>
                       <button
@@ -99,7 +101,7 @@ export default async function Home() {
                       Sign up with email or connect via GitHub. Your first event is one form away.
                     </p>
 
-                    <Link
+                    <AppLink
                       className={cn(
                         buttonVariants({ size: 'lg' }),
                         'w-full font-mono text-[11px] uppercase tracking-[0.16em]'
@@ -107,9 +109,9 @@ export default async function Home() {
                       href='/sign-up'
                     >
                       Create an account
-                    </Link>
+                    </AppLink>
 
-                    <Link
+                    <AppLink
                       className={cn(
                         buttonVariants({ size: 'lg', variant: 'outline' }),
                         'w-full font-mono text-[11px] uppercase tracking-[0.16em]'
@@ -117,7 +119,7 @@ export default async function Home() {
                       href='/sign-in'
                     >
                       Sign in to continue
-                    </Link>
+                    </AppLink>
 
                     <p className='border-border border-t pt-5 text-center font-mono text-[10px] text-dim-foreground uppercase tracking-[0.18em]'>
                       No credit card required. Free for personal events.

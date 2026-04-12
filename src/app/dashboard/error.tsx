@@ -1,8 +1,7 @@
 'use client'
 
-import Link from 'next/link'
-
 import { ErrorState } from '~/components/feedback/error-state'
+import { AppLink } from '~/components/navigation/app-link'
 import { buttonVariants } from '~/components/ui/button'
 
 import { cn } from '~/lib/utils'
@@ -27,7 +26,7 @@ export default function DashboardError({ reset }: DashboardErrorProps) {
             Try again
           </button>
 
-          <Link
+          <AppLink
             className={cn(
               buttonVariants({ size: 'lg', variant: 'outline' }),
               'font-mono text-[11px] uppercase tracking-[0.16em]'
@@ -35,7 +34,7 @@ export default function DashboardError({ reset }: DashboardErrorProps) {
             href='/'
           >
             Return home
-          </Link>
+          </AppLink>
         </>
       }
       description='Please try again. If the problem persists, return to the home page and reopen the dashboard.'

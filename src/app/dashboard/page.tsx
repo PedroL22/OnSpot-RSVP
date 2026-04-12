@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 
+import { RoutePrefetch } from '~/components/navigation/route-prefetch'
 import { DashboardPageHeader } from './_components/dashboard-page-header'
 import { EventList } from './_components/event-list'
 import { EventsEmptyState } from './_components/events-empty-state'
@@ -27,9 +28,11 @@ export default async function DashboardPage() {
   }
 
   const events = await getOrganizerEvents(session.user.id)
+  const prefetchHrefs = ['/dashboard/events/new', ...events.slice(0, 3).map((event) => `/dashboard/events/${event.id}`)]
 
   return (
     <div className='space-y-8'>
+      <RoutePrefetch hrefs={prefetchHrefs} />
       <DashboardPageHeader />
 
       {events.length === 0 ? (
