@@ -1,8 +1,8 @@
+import { StatusBadge } from '~/components/data/status-badge'
 import { CheckInButton } from '~/components/events/check-in-button'
 import { PromoteWaitlistButton } from '~/components/events/promote-waitlist-button'
-import { StatusBadge } from '~/components/data/status-badge'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table'
 
 type GuestListTableProps = {
   eventId: string
@@ -19,7 +19,7 @@ type GuestListTableProps = {
 
 export const GuestListTable = ({ eventId, formatDate, guests }: GuestListTableProps) => {
   return (
-    <Card className='border-border/80 bg-card/95 py-0 shadow-[var(--shadow-sm)]'>
+    <Card className='border-border/80 bg-card/95 py-0 shadow-(--shadow-sm)'>
       <CardHeader className='border-border border-b px-6 py-4'>
         <CardTitle className='font-display text-3xl uppercase tracking-[0.03em]'>Guest list</CardTitle>
         <p className='font-mono text-[11px] text-muted-foreground'>

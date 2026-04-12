@@ -27,7 +27,7 @@ const getActorLabel = (activity: ActivityFeedProps['activities'][number]) => {
 
 export const ActivityFeed = ({ activities, formatDate }: ActivityFeedProps) => {
   return (
-    <Card className='border-border/80 bg-card/95 py-0 shadow-[var(--shadow-sm)]'>
+    <Card className='border-border/80 bg-card/95 py-0 shadow-(--shadow-sm)'>
       <CardHeader className='border-border border-b px-6 py-4'>
         <CardTitle className='font-display text-3xl uppercase tracking-[0.03em]'>Activity log</CardTitle>
         <p className='font-mono text-[11px] text-muted-foreground'>Recent guest activity</p>

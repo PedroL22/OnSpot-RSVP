@@ -25,6 +25,7 @@ export default function DashboardError({ reset }: DashboardErrorProps) {
           >
             Try again
           </button>
+
           <Link
             className={cn(
               buttonVariants({ size: 'lg', variant: 'outline' }),

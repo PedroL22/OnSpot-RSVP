@@ -1,6 +1,6 @@
 'use client'
 
-import { Check, CopySimple } from '@phosphor-icons/react/dist/ssr'
+import { CheckIcon, CopySimpleIcon } from '@phosphor-icons/react/dist/ssr'
 import { useState } from 'react'
 
 import { Button } from '~/components/ui/button'
@@ -30,19 +30,19 @@ export const ShareLinkButton = ({ shareUrl }: ShareLinkButtonProps) => {
 
   return (
     <Button
-      className='text-[0.72rem] uppercase tracking-[0.16em]'
+      className='w-32 text-[0.72rem] uppercase tracking-[0.16em]'
       onClick={handleCopy}
       type='button'
       variant={copied ? 'secondary' : 'outline'}
     >
       {copied ? (
         <>
-          <Check data-icon='inline-start' weight='bold' />
+          <CheckIcon data-icon='inline-start' weight='bold' />
           Copied
         </>
       ) : (
         <>
-          <CopySimple data-icon='inline-start' />
+          <CopySimpleIcon data-icon='inline-start' />
           Share link
         </>
       )}

@@ -39,6 +39,7 @@ export default async function DashboardPage() {
           <p className='font-mono text-[10px] text-muted-foreground uppercase tracking-[0.2em]'>
             {events.length} {events.length === 1 ? 'event' : 'events'}
           </p>
+
           <EventList
             baseUrl={env.BETTER_AUTH_URL}
             events={events}

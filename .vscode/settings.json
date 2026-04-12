@@ -6,7 +6,8 @@
         "waitlist",
         "Waitlist",
         "waitlisted",
-        "WAITLISTED"
+        "WAITLISTED",
+        "waitlists"
     ],
     "js/ts.tsdk.path": "node_modules\\typescript\\lib"
 }

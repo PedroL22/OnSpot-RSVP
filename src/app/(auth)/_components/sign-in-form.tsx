@@ -21,7 +21,7 @@ export const SignInForm = ({ callbackURL, showGitHub }: SignInFormProps) => {
   const [state, formAction] = useActionState(signInWithEmail, initialAuthActionState)
 
   return (
-    <div className='space-y-6'>
+    <div className='space-y-4'>
       <form action={formAction} className='space-y-5'>
         <input name='callbackURL' type='hidden' value={callbackURL} />
 
@@ -39,21 +39,22 @@ export const SignInForm = ({ callbackURL, showGitHub }: SignInFormProps) => {
           />
         </FormField>
 
-        {state.error ? <FormMessage tone='destructive'>{state.error}</FormMessage> : null}
+        {!!state.error && <FormMessage tone='destructive'>{state.error}</FormMessage>}
 
         <AuthSubmitButton idleLabel='Sign in' pendingLabel='Signing in...' />
       </form>
 
-      {showGitHub ? (
+      {!!showGitHub && (
         <>
           <div className='flex items-center gap-4'>
             <Separator className='flex-1' />
             <span className='font-mono text-[10px] text-muted-foreground uppercase tracking-[0.18em]'>or</span>
             <Separator className='flex-1' />
           </div>
+
           <GitHubAuthButton callbackURL={callbackURL} />
         </>
-      ) : null}
+      )}
     </div>
   )
 }

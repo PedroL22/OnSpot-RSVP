@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 
 export const EventCreateFormCard = () => {
   return (
-    <Card className='overflow-hidden border-border/80 bg-card/95 py-0 shadow-[var(--shadow-md)]'>
+    <Card className='overflow-hidden border-border/80 bg-card/95 py-0 shadow-(--shadow-md)'>
       <div className='h-1 w-full bg-primary' />
       <CardHeader className='px-8 pt-8'>
         <Eyebrow>Event details</Eyebrow>

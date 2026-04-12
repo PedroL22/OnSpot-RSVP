@@ -1,10 +1,10 @@
 import Link from 'next/link'
 
-import { getSession } from '~/server/better-auth/server'
 import { signOut } from '~/app/(auth)/actions'
 import { PatternBackground } from '~/components/layout/pattern-background'
 import { buttonVariants } from '~/components/ui/button'
 import { cn } from '~/lib/utils'
+import { getSession } from '~/server/better-auth/server'
 
 import { AuthCalloutCard } from './_components/auth-callout-card'
 import { LandingHeader } from './_components/landing-header'
@@ -17,7 +17,7 @@ export default async function Home() {
   return (
     <main className='relative min-h-screen overflow-hidden'>
       <PatternBackground className='opacity-70' />
-      <div className='pointer-events-none fixed top-0 right-0 size-[32rem] bg-[radial-gradient(circle_at_80%_20%,rgba(0,166,244,0.10),transparent_60%)]' />
+      <div className='pointer-events-none fixed top-0 right-0 size-128 bg-[radial-gradient(circle_at_80%_20%,rgba(0,166,244,0.10),transparent_60%)]' />
 
       <div className='relative mx-auto max-w-7xl px-6 py-8 lg:px-10 lg:py-10'>
         <LandingHeader
@@ -25,6 +25,7 @@ export default async function Home() {
             session?.user ? (
               <div className='flex items-center gap-3'>
                 <span className='hidden font-mono text-muted-foreground text-xs sm:inline'>{session.user.email}</span>
+
                 <form action={signOut}>
                   <button
                     className={cn(
@@ -48,6 +49,7 @@ export default async function Home() {
                 >
                   Sign in
                 </Link>
+
                 <Link
                   className={cn(buttonVariants({ size: 'sm' }), 'font-mono text-[11px] uppercase tracking-[0.16em]')}
                   href='/sign-up'
@@ -68,6 +70,7 @@ export default async function Home() {
                     <p className='text-muted-foreground text-sm leading-relaxed'>
                       Your event dashboard is ready. Manage RSVPs, handle waitlists, and run check-in from one place.
                     </p>
+
                     <Link
                       className={cn(
                         buttonVariants({ size: 'lg' }),
@@ -77,6 +80,7 @@ export default async function Home() {
                     >
                       Open dashboard
                     </Link>
+
                     <form action={signOut}>
                       <button
                         className={cn(
@@ -94,6 +98,7 @@ export default async function Home() {
                     <p className='text-muted-foreground text-sm leading-relaxed'>
                       Sign up with email or connect via GitHub. Your first event is one form away.
                     </p>
+
                     <Link
                       className={cn(
                         buttonVariants({ size: 'lg' }),
@@ -103,6 +108,7 @@ export default async function Home() {
                     >
                       Create an account
                     </Link>
+
                     <Link
                       className={cn(
                         buttonVariants({ size: 'lg', variant: 'outline' }),
@@ -112,6 +118,7 @@ export default async function Home() {
                     >
                       Sign in to continue
                     </Link>
+
                     <p className='border-border border-t pt-5 text-center font-mono text-[10px] text-dim-foreground uppercase tracking-[0.18em]'>
                       No credit card required. Free for personal events.
                     </p>
