@@ -1,11 +1,11 @@
 import type { RsvpStatus } from '@prisma/client'
 
-export type RsvpSummarySource = {
+type RsvpSummarySource = {
   checkedInAt: Date | null
   status: RsvpStatus
 }
 
-export type RsvpSummary = {
+type RsvpSummary = {
   checkedInCount: number
   confirmedCount: number
   remainingCapacity: number | null
