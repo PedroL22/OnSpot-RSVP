@@ -5,6 +5,7 @@ import { useActionState } from 'react'
 import { FormField } from '~/components/forms/form-field'
 import { FormMessage } from '~/components/forms/form-message'
 import { Input } from '~/components/ui/input'
+import { PasswordInput } from '~/components/ui/password-input'
 import { Separator } from '~/components/ui/separator'
 import { AuthSubmitButton } from './auth-submit-button'
 import { GitHubAuthButton } from './github-auth-button'
@@ -30,12 +31,11 @@ export const SignInForm = ({ callbackURL, showGitHub }: SignInFormProps) => {
         </FormField>
 
         <FormField htmlFor='password' label='Password'>
-          <Input
+          <PasswordInput
             autoComplete='current-password'
             id='password'
             name='password'
             placeholder='At least 8 characters'
-            type='password'
           />
         </FormField>
 
