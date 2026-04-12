@@ -22,7 +22,7 @@ export default function CreateEventPage() {
         Back to dashboard
       </Link>
 
-      <section className='grid items-start gap-6 lg:grid-cols-[340px_1fr]'>
+      <section className='grid items-start gap-6 lg:grid-cols-[400px_1fr]'>
         <EventCreateIntro />
         <EventCreateFormCard />
       </section>

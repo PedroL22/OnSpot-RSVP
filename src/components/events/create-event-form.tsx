@@ -2,10 +2,10 @@
 
 import { useActionState, useState } from 'react'
 
+import { FormSubmitButton } from '~/components/form-submit-button'
 import { FormField } from '~/components/forms/form-field'
 import { FormMessage } from '~/components/forms/form-message'
 import { FormSection } from '~/components/forms/form-section'
-import { FormSubmitButton } from '~/components/form-submit-button'
 import { Input } from '~/components/ui/input'
 import { Textarea } from '~/components/ui/textarea'
 
@@ -81,7 +81,7 @@ export const CreateEventForm = () => {
             aria-invalid={Boolean(locationError)}
             id='location'
             name='location'
-            placeholder='Rua dos Mercadores, 88'
+            placeholder='123 Main Street, Anytown, USA'
             type='text'
           />
         </FormField>
