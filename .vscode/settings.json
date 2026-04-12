@@ -1,13 +1,18 @@
 {
     "cSpell.words": [
+        "Afterparty",
         "CLIENTVAR",
+        "hotspots",
         "hrefs",
         "onspot",
+        "Partiful",
         "rsvps",
+        "timebox",
         "waitlist",
         "Waitlist",
         "waitlisted",
         "WAITLISTED",
+        "waitlisting",
         "waitlists"
     ],
     "js/ts.tsdk.path": "node_modules\\typescript\\lib"

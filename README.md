@@ -111,18 +111,20 @@ To maintain security without sacrificing determinism, in a production environmen
 
 ## AI Usage
 
+- T3 Code for agents orchestration and code generation.
 - OpenAI Codex (GPT-5.4) for implementation support, refactors, validation passes, and deployment remediation.
 - Claude Code (Sonnet 4.6) for some UI design iteration.
 
 ## Time Spent
 
-`~8.5 hours`, focused on core architecture, server/client boundaries, Prisma modeling, and the two chosen stretch goals. `CSV export` was added as a small bonus once the core RSVP flow was stable.
+Git history suggests approximately `~8h 30m` of tracked work on this project, based on `~35 commits` grouped into `5` work sessions using a `60-minute` session-gap heuristic.
 
 ## If This Were Going to Production at 10x Scale, the First Three Things I Would Change
 
 - Replace per-page RSVP aggregation with dedicated summary queries or read models so dashboard and event counts stay cheap as data grows.
 - Add rate limiting, abuse controls, and stronger transactional retry strategy around public RSVP capacity hotspots.
 - Add end-to-end coverage plus production-grade observability: tracing, structured sinks, alerting, and deployment health checks.
+- Add i18n, I would use a robust i18n library like `next-intl` to support multiple languages.
 
 ## Seeded Review Data
 
