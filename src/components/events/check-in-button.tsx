@@ -1,9 +1,12 @@
 'use client'
 
+import { Check, CircleNotch } from '@phosphor-icons/react/dist/ssr'
 import { useOptimistic, useState, useTransition } from 'react'
 
+import { FormMessage } from '~/components/forms/form-message'
+import { Button } from '~/components/ui/button'
+
 import { markRsvpCheckedIn } from '~/app/actions/rsvps'
-import { cn } from '~/lib/utils'
 
 type CheckInButtonProps = {
   checkedIn: boolean
@@ -34,41 +37,30 @@ export const CheckInButton = ({ checkedIn, eventId, rsvpId }: CheckInButtonProps
   }
 
   return (
-    <div className='flex flex-col gap-1.5'>
-      <button
-        className={cn(
-          'inline-flex min-w-[7rem] items-center justify-center gap-1.5 rounded border px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-all duration-150',
-          optimisticCheckedIn
-            ? 'cursor-not-allowed border-success/30 bg-success/10 text-success'
-            : 'border-border bg-void-surface text-smoke-muted hover:border-acid hover:text-acid active:scale-[0.98]'
-        )}
+    <div className='flex min-w-[9rem] flex-col gap-2'>
+      <Button
+        className='justify-center text-[0.7rem] uppercase tracking-[0.16em]'
         disabled={optimisticCheckedIn || isPending}
         onClick={handleCheckIn}
         type='button'
+        variant={optimisticCheckedIn ? 'secondary' : 'outline'}
       >
         {optimisticCheckedIn ? (
           <>
-            <svg aria-hidden='true' className='h-3 w-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-              <path d='M5 13l4 4L19 7' strokeLinecap='round' strokeLinejoin='round' strokeWidth={2.5} />
-            </svg>
+            <Check data-icon='inline-start' weight='bold' />
             Checked in
           </>
         ) : isPending ? (
           <>
-            <svg aria-hidden='true' className='h-3 w-3 animate-spin' fill='none' viewBox='0 0 24 24'>
-              <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4' />
-              <path className='opacity-75' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z' fill='currentColor' />
-            </svg>
+            <CircleNotch className='animate-spin' data-icon='inline-start' />
             Checking...
           </>
         ) : (
           'Check in'
         )}
-      </button>
+      </Button>
 
-      {message ? (
-        <p className='max-w-[10rem] font-mono text-[10px] text-danger'>{message}</p>
-      ) : null}
+      {message ? <FormMessage tone='destructive'>{message}</FormMessage> : null}
     </div>
   )
 }

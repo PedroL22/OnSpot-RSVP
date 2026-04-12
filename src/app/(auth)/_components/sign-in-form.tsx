@@ -2,6 +2,11 @@
 
 import { useActionState } from 'react'
 
+import { FormField } from '~/components/forms/form-field'
+import { FormMessage } from '~/components/forms/form-message'
+import { Input } from '~/components/ui/input'
+import { Separator } from '~/components/ui/separator'
+
 import { signInWithEmail } from '../actions'
 import { initialAuthActionState } from '../auth-schemas'
 import { AuthSubmitButton } from './auth-submit-button'
@@ -20,39 +25,21 @@ export const SignInForm = ({ callbackURL, showGitHub }: SignInFormProps) => {
       <form action={formAction} className='space-y-5'>
         <input name='callbackURL' type='hidden' value={callbackURL} />
 
-        <div className='space-y-2'>
-          <label className='text-label' htmlFor='email'>
-            Email
-          </label>
-          <input
-            autoComplete='email'
-            className='input-editorial'
-            id='email'
-            name='email'
-            placeholder='alex@onspot.app'
-            type='email'
-          />
-        </div>
+        <FormField htmlFor='email' label='Email'>
+          <Input autoComplete='email' id='email' name='email' placeholder='alex@onspot.app' type='email' />
+        </FormField>
 
-        <div className='space-y-2'>
-          <label className='text-label' htmlFor='password'>
-            Password
-          </label>
-          <input
+        <FormField htmlFor='password' label='Password'>
+          <Input
             autoComplete='current-password'
-            className='input-editorial'
             id='password'
             name='password'
             placeholder='At least 8 characters'
             type='password'
           />
-        </div>
+        </FormField>
 
-        {state.error ? (
-          <div className='rounded-lg border border-vermillion/20 bg-vermillion/5 p-3'>
-            <p className='text-sm text-vermillion'>{state.error}</p>
-          </div>
-        ) : null}
+        {state.error ? <FormMessage tone='destructive'>{state.error}</FormMessage> : null}
 
         <AuthSubmitButton idleLabel='Sign in' pendingLabel='Signing in...' />
       </form>
@@ -60,9 +47,9 @@ export const SignInForm = ({ callbackURL, showGitHub }: SignInFormProps) => {
       {showGitHub ? (
         <>
           <div className='flex items-center gap-4'>
-            <div className='h-px flex-1 bg-border' />
-            <span className='text-ink-subtle text-xs uppercase tracking-wider'>or</span>
-            <div className='h-px flex-1 bg-border' />
+            <Separator className='flex-1' />
+            <span className='font-mono text-[10px] text-muted-foreground uppercase tracking-[0.18em]'>or</span>
+            <Separator className='flex-1' />
           </div>
           <GitHubAuthButton callbackURL={callbackURL} />
         </>

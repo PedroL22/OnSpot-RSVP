@@ -2,6 +2,7 @@ import '~/styles/globals.css'
 
 import type { Metadata } from 'next'
 import { Bebas_Neue, DM_Sans, JetBrains_Mono } from 'next/font/google'
+import { ThemeProvider } from 'next-themes'
 import type { ReactNode } from 'react'
 
 import { cn } from '~/lib/utils'
@@ -32,8 +33,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html className={cn(dmSans.variable, bebasNeue.variable, jetbrainsMono.variable)} lang='en'>
-      <body className='antialiased'>{children}</body>
+    <html
+      className={cn(dmSans.variable, bebasNeue.variable, jetbrainsMono.variable)}
+      lang='en'
+      suppressHydrationWarning
+    >
+      <body className='antialiased'>
+        <ThemeProvider attribute='class' defaultTheme='dark' disableTransitionOnChange>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

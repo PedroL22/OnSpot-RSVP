@@ -2,11 +2,13 @@
 
 import { useActionState, useEffect, useRef } from 'react'
 
+import { FormField } from '~/components/forms/form-field'
+import { FormMessage } from '~/components/forms/form-message'
 import { FormSubmitButton } from '~/components/form-submit-button'
+import { Input } from '~/components/ui/input'
 
 import { createRsvp } from '~/app/actions/rsvps'
 import { initialCreateRsvpState } from '~/app/actions/types'
-import { cn } from '~/lib/utils'
 
 type PublicRsvpFormProps = {
   eventPublicId: string
@@ -35,51 +37,26 @@ export const PublicRsvpForm = ({ eventPublicId, submitLabel }: PublicRsvpFormPro
       <form action={formAction} className='space-y-4' ref={formRef}>
         <input name='eventPublicId' type='hidden' value={eventPublicId} />
 
-        <div className='space-y-2'>
-          <label className='text-label' htmlFor='public-name'>
-            Name
-          </label>
-          <input
-            aria-invalid={Boolean(nameError)}
-            className={cn('input-editorial', nameError && 'border-vermillion/50 bg-vermillion/[0.02]')}
-            id='public-name'
-            name='name'
-            placeholder='Alex Morgan'
-            type='text'
-          />
-          {nameError ? <p className='text-sm text-vermillion'>{nameError}</p> : null}
-        </div>
+        <FormField error={nameError} htmlFor='public-name' label='Name'>
+          <Input aria-invalid={Boolean(nameError)} id='public-name' name='name' placeholder='Alex Morgan' type='text' />
+        </FormField>
 
-        <div className='space-y-2'>
-          <label className='text-label' htmlFor='public-email'>
-            Email
-          </label>
-          <input
+        <FormField error={emailError} htmlFor='public-email' label='Email'>
+          <Input
             aria-invalid={Boolean(emailError)}
-            className={cn('input-editorial', emailError && 'border-vermillion/50 bg-vermillion/[0.02]')}
             id='public-email'
             name='email'
             placeholder='alex@onspot.app'
             type='email'
           />
-          {emailError ? <p className='text-sm text-vermillion'>{emailError}</p> : null}
-        </div>
+        </FormField>
 
         <FormSubmitButton idleLabel={submitLabel} pendingLabel='Submitting...' />
       </form>
 
-      {!!state.message && (
-        <div
-          className={cn(
-            'rounded-lg border p-4 text-sm',
-            state.success
-              ? 'border-emerald/20 bg-emerald/5 text-emerald-dim'
-              : 'border-vermillion/20 bg-vermillion/5 text-vermillion'
-          )}
-        >
-          <p className='font-medium'>{state.message}</p>
-        </div>
-      )}
+      {state.message ? (
+        <FormMessage tone={state.success ? 'success' : 'destructive'}>{state.message}</FormMessage>
+      ) : null}
     </div>
   )
 }

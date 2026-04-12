@@ -1,24 +1,20 @@
+import { LoadingCardSkeleton } from '~/components/feedback/loading-card-skeleton'
+import { Skeleton } from '~/components/ui/skeleton'
+
 export default function DashboardLoading() {
   return (
-    <div className='animate-pulse space-y-8'>
-      {/* Header skeleton */}
-      <div className='flex items-end justify-between border-b border-border pb-6'>
+    <div className='space-y-8'>
+      <div className='flex items-end justify-between border-border border-b pb-6'>
         <div className='space-y-3'>
-          <div className='h-2.5 w-32 rounded bg-void-surface' />
-          <div className='h-10 w-48 rounded bg-void-surface' />
+          <Skeleton className='h-3 w-32' />
+          <Skeleton className='h-12 w-56' />
         </div>
-        <div className='h-9 w-28 rounded bg-void-surface' />
+        <Skeleton className='h-10 w-32' />
       </div>
 
-      {/* Label skeleton */}
-      <div className='h-2.5 w-20 rounded bg-void-surface' />
+      <Skeleton className='h-3 w-24' />
 
-      {/* Event row skeletons */}
-      <div className='space-y-3'>
-        {[1, 2, 3].map((i) => (
-          <div className='h-24 rounded border border-border bg-void-raised' key={i} />
-        ))}
-      </div>
+      <LoadingCardSkeleton count={3} />
     </div>
   )
 }

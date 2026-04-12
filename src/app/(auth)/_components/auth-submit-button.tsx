@@ -1,7 +1,9 @@
 'use client'
 
+import { CircleNotch } from '@phosphor-icons/react/dist/ssr'
 import { useFormStatus } from 'react-dom'
 
+import { Button } from '~/components/ui/button'
 import { cn } from '~/lib/utils'
 
 type AuthSubmitButtonProps = {
@@ -14,22 +16,19 @@ export const AuthSubmitButton = ({ className, idleLabel, pendingLabel }: AuthSub
   const { pending } = useFormStatus()
 
   return (
-    <button
-      className={cn('btn-primary w-full', pending && 'cursor-not-allowed opacity-70', className)}
+    <Button
+      className={cn('h-10 w-full gap-2 text-[0.8rem] uppercase tracking-[0.16em]', className)}
       disabled={pending}
       type='submit'
     >
       {pending ? (
         <>
-          <svg aria-hidden='true' className='h-4 w-4 animate-spin' fill='none' focusable='false' viewBox='0 0 24 24'>
-            <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4' />
-            <path className='opacity-75' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z' fill='currentColor' />
-          </svg>
+          <CircleNotch className='animate-spin' data-icon='inline-start' />
           {pendingLabel}
         </>
       ) : (
         idleLabel
       )}
-    </button>
+    </Button>
   )
 }

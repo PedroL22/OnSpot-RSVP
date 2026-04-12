@@ -1,9 +1,12 @@
 'use client'
 
+import { ArrowUp, Check, CircleNotch } from '@phosphor-icons/react/dist/ssr'
 import { useOptimistic, useState, useTransition } from 'react'
 
+import { FormMessage } from '~/components/forms/form-message'
+import { Button } from '~/components/ui/button'
+
 import { promoteWaitlistedRsvp } from '~/app/actions/rsvps'
-import { cn } from '~/lib/utils'
 
 type PromoteWaitlistButtonProps = {
   eventId: string
@@ -34,46 +37,33 @@ export const PromoteWaitlistButton = ({ eventId, rsvpId, status }: PromoteWaitli
   }
 
   return (
-    <div className='flex flex-col gap-1.5'>
-      <button
-        className={cn(
-          'inline-flex min-w-[7rem] items-center justify-center gap-1.5 rounded border px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider transition-all duration-150',
-          optimisticStatus === 'CONFIRMED'
-            ? 'cursor-not-allowed border-success/30 bg-success/10 text-success'
-            : 'border-warn/30 bg-warn/10 text-warn hover:bg-warn/20 active:scale-[0.98]'
-        )}
+    <div className='flex min-w-[9rem] flex-col gap-2'>
+      <Button
+        className='justify-center text-[0.7rem] uppercase tracking-[0.16em]'
         disabled={optimisticStatus === 'CONFIRMED' || isPending}
         onClick={handlePromote}
         type='button'
+        variant={optimisticStatus === 'CONFIRMED' ? 'secondary' : 'outline'}
       >
         {optimisticStatus === 'CONFIRMED' ? (
           <>
-            <svg aria-hidden='true' className='h-3 w-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-              <path d='M5 13l4 4L19 7' strokeLinecap='round' strokeLinejoin='round' strokeWidth={2.5} />
-            </svg>
+            <Check data-icon='inline-start' weight='bold' />
             Promoted
           </>
         ) : isPending ? (
           <>
-            <svg aria-hidden='true' className='h-3 w-3 animate-spin' fill='none' viewBox='0 0 24 24'>
-              <circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4' />
-              <path className='opacity-75' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z' fill='currentColor' />
-            </svg>
+            <CircleNotch className='animate-spin' data-icon='inline-start' />
             Promoting...
           </>
         ) : (
           <>
-            <svg aria-hidden='true' className='h-3 w-3' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-              <path d='M5 10l7-7m0 0l7 7m-7-7v18' strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} />
-            </svg>
+            <ArrowUp data-icon='inline-start' />
             Promote
           </>
         )}
-      </button>
+      </Button>
 
-      {message ? (
-        <p className='max-w-[10rem] font-mono text-[10px] text-danger'>{message}</p>
-      ) : null}
+      {message ? <FormMessage tone='destructive'>{message}</FormMessage> : null}
     </div>
   )
 }
