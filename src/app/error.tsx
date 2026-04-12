@@ -3,6 +3,7 @@
 import Link from 'next/link'
 
 import { ErrorState } from '~/components/feedback/error-state'
+import { PageThemeToggle } from '~/components/layout/page-theme-toggle'
 import { PatternBackground } from '~/components/layout/pattern-background'
 import { buttonVariants } from '~/components/ui/button'
 
@@ -18,6 +19,7 @@ type RootErrorProps = {
 export default function RootError({ reset }: RootErrorProps) {
   return (
     <main className='flex min-h-screen items-center justify-center p-6'>
+      <PageThemeToggle />
       <PatternBackground className='opacity-60' variant='grid' />
       <div className='relative w-full max-w-xl animate-[scale-in_0.4s_var(--ease-out-expo)_both]'>
         <ErrorState

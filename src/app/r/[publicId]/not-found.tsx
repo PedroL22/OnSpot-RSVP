@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 import { EmptyState } from '~/components/feedback/empty-state'
 import { PatternBackground } from '~/components/layout/pattern-background'
+import { PageThemeToggle } from '~/components/layout/page-theme-toggle'
 import { buttonVariants } from '~/components/ui/button'
 
 import { cn } from '~/lib/utils'
@@ -9,6 +10,7 @@ import { cn } from '~/lib/utils'
 export default function PublicEventNotFound() {
   return (
     <main className='flex min-h-screen items-center justify-center p-6'>
+      <PageThemeToggle />
       <PatternBackground className='opacity-70' />
       <div className='fixed top-0 right-0 left-0 z-50 h-1 bg-primary/80' />
 

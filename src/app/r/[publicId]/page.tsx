@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 
 import { BrandMark } from '~/components/brand/brand-mark'
 import { PatternBackground } from '~/components/layout/pattern-background'
+import { ThemeToggle } from '~/components/theme-toggle'
 import { PublicEventHeroCard } from './_components/public-event-hero-card'
 import { PublicRsvpSidebar } from './_components/public-rsvp-sidebar'
 
@@ -43,8 +44,12 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
         <header className='mb-12 flex animate-[fade-in_0.4s_ease_both] items-center justify-between gap-4'>
           <BrandMark />
 
-          <div className='flex items-center justify-center rounded-full border border-border bg-card/80 px-3 py-1.5'>
-            <span className='font-mono text-[10px] text-primary uppercase tracking-[0.2em]'>Live event</span>
+          <div className='flex items-center gap-3'>
+            <ThemeToggle />
+
+            <div className='flex items-center justify-center rounded-full border border-border bg-card/80 px-3 py-1.5'>
+              <span className='font-mono text-[10px] text-primary uppercase tracking-[0.2em]'>Live event</span>
+            </div>
           </div>
         </header>
 
