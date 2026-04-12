@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ErrorState } from '~/components/feedback/error-state'
 import { PatternBackground } from '~/components/layout/pattern-background'
 import { buttonVariants } from '~/components/ui/button'
+
 import { cn } from '~/lib/utils'
 
 type RootErrorProps = {

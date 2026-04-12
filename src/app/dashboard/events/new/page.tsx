@@ -1,12 +1,11 @@
 import Link from 'next/link'
 
 import { CaretLeftIcon } from '@phosphor-icons/react/dist/ssr'
-
 import { buttonVariants } from '~/components/ui/button'
-import { cn } from '~/lib/utils'
-
 import { EventCreateFormCard } from './_components/event-create-form-card'
 import { EventCreateIntro } from './_components/event-create-intro'
+
+import { cn } from '~/lib/utils'
 
 export default function CreateEventPage() {
   return (

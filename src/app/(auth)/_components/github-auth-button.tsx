@@ -1,8 +1,8 @@
 'use client'
 
-import { GithubLogo } from '@phosphor-icons/react/dist/ssr'
 import { useActionState } from 'react'
 
+import { GithubLogoIcon } from '@phosphor-icons/react/dist/ssr'
 import { FormMessage } from '~/components/forms/form-message'
 import { Button } from '~/components/ui/button'
 
@@ -19,14 +19,16 @@ export const GitHubAuthButton = ({ callbackURL }: GitHubAuthButtonProps) => {
   return (
     <form action={formAction} className='flex flex-col gap-3'>
       <input name='callbackURL' type='hidden' value={callbackURL} />
-      {state.error ? <FormMessage tone='destructive'>{state.error}</FormMessage> : null}
+
+      {!!state.error && <FormMessage tone='destructive'>{state.error}</FormMessage>}
+
       <Button
         className='h-10 w-full gap-3 text-[0.8rem] uppercase tracking-[0.16em]'
         disabled={isPending}
         type='submit'
         variant='outline'
       >
-        <GithubLogo data-icon='inline-start' weight='fill' />
+        <GithubLogoIcon data-icon='inline-start' weight='fill' />
         {isPending ? 'Redirecting...' : 'Continue with GitHub'}
       </Button>
     </form>

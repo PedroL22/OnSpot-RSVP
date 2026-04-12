@@ -1,15 +1,14 @@
 import Link from 'next/link'
 
 import { ExportIcon } from '@phosphor-icons/react/dist/ssr'
-
 import { ShareLinkButton } from '~/components/events/share-link-button'
-import { buttonVariants } from '~/components/ui/button'
-import { Card, CardContent } from '~/components/ui/card'
-import { cn } from '~/lib/utils'
-
 import { DisplayTitle } from '~/components/layout/display-title'
 import { Eyebrow } from '~/components/layout/eyebrow'
+import { buttonVariants } from '~/components/ui/button'
+import { Card, CardContent } from '~/components/ui/card'
 import { EventMetaGrid } from './event-meta-grid'
+
+import { cn } from '~/lib/utils'
 
 type EventDetailHeroProps = {
   capacityLabel: string | null

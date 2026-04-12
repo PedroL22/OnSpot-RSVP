@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 
 import { DisplayTitle } from '~/components/layout/display-title'
-
 import { FeatureList } from './feature-list'
 
 type LandingHeroProps = {

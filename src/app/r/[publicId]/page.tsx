@@ -2,11 +2,11 @@ import { notFound } from 'next/navigation'
 
 import { BrandMark } from '~/components/brand/brand-mark'
 import { PatternBackground } from '~/components/layout/pattern-background'
-import { formatEventDate } from '~/lib/formatters'
-import { getPublicEvent } from '~/server/queries/events'
-
 import { PublicEventHeroCard } from './_components/public-event-hero-card'
 import { PublicRsvpSidebar } from './_components/public-rsvp-sidebar'
+
+import { formatEventDate } from '~/lib/formatters'
+import { getPublicEvent } from '~/server/queries/events'
 
 type PublicEventPageProps = {
   params: Promise<{ publicId: string }>

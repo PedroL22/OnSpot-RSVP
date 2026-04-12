@@ -24,6 +24,7 @@ export const CapacityMeter = ({ className, label = 'Capacity', summary, value }:
         <span className='font-mono text-[10px] text-muted-foreground uppercase tracking-[0.22em]'>{label}</span>
         <span className='font-mono text-[11px] text-muted-foreground'>{summary ?? `${value}% filled`}</span>
       </div>
+
       <div className='h-2 overflow-hidden rounded-full bg-muted'>
         <div
           className={cn('h-full rounded-full transition-all duration-500', toneClassName(value))}

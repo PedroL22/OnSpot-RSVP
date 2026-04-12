@@ -1,8 +1,8 @@
 'use client'
 
-import { ArrowUp, Check, CircleNotch } from '@phosphor-icons/react/dist/ssr'
 import { useOptimistic, useState, useTransition } from 'react'
 
+import { ArrowUpIcon, CheckIcon, CircleNotchIcon } from '@phosphor-icons/react/dist/ssr'
 import { FormMessage } from '~/components/forms/form-message'
 import { Button } from '~/components/ui/button'
 
@@ -37,7 +37,7 @@ export const PromoteWaitlistButton = ({ eventId, rsvpId, status }: PromoteWaitli
   }
 
   return (
-    <div className='flex min-w-[9rem] flex-col gap-2'>
+    <div className='flex min-w-36 flex-col gap-2'>
       <Button
         className='justify-center text-[0.7rem] uppercase tracking-[0.16em]'
         disabled={optimisticStatus === 'CONFIRMED' || isPending}
@@ -47,23 +47,23 @@ export const PromoteWaitlistButton = ({ eventId, rsvpId, status }: PromoteWaitli
       >
         {optimisticStatus === 'CONFIRMED' ? (
           <>
-            <Check data-icon='inline-start' weight='bold' />
+            <CheckIcon data-icon='inline-start' weight='bold' />
             Promoted
           </>
         ) : isPending ? (
           <>
-            <CircleNotch className='animate-spin' data-icon='inline-start' />
+            <CircleNotchIcon className='animate-spin' data-icon='inline-start' />
             Promoting...
           </>
         ) : (
           <>
-            <ArrowUp data-icon='inline-start' />
+            <ArrowUpIcon data-icon='inline-start' />
             Promote
           </>
         )}
       </Button>
 
-      {message ? <FormMessage tone='destructive'>{message}</FormMessage> : null}
+      {!!message && <FormMessage tone='destructive'>{message}</FormMessage>}
     </div>
   )
 }

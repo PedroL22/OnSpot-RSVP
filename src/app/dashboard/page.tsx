@@ -1,12 +1,12 @@
 import { redirect } from 'next/navigation'
 
-import { env } from '~/env'
-import { getSession } from '~/server/better-auth/server'
-import { getOrganizerEvents } from '~/server/queries/events'
-
 import { DashboardPageHeader } from './_components/dashboard-page-header'
 import { EventList } from './_components/event-list'
 import { EventsEmptyState } from './_components/events-empty-state'
+
+import { env } from '~/env'
+import { getSession } from '~/server/better-auth/server'
+import { getOrganizerEvents } from '~/server/queries/events'
 
 const getCapacitySummary = (capacity: number | null, confirmedCount: number, waitlistedCount: number) => {
   if (capacity === null) return null

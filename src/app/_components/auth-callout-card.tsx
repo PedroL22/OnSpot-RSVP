@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 
 import { Card, CardContent } from '~/components/ui/card'
-
 import { DisplayTitle } from '../../components/layout/display-title'
 import { Eyebrow } from '../../components/layout/eyebrow'
 

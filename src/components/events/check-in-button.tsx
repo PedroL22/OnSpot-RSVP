@@ -1,8 +1,8 @@
 'use client'
 
-import { Check, CircleNotch } from '@phosphor-icons/react/dist/ssr'
 import { useOptimistic, useState, useTransition } from 'react'
 
+import { CheckIcon, CircleNotchIcon } from '@phosphor-icons/react/dist/ssr'
 import { FormMessage } from '~/components/forms/form-message'
 import { Button } from '~/components/ui/button'
 
@@ -37,7 +37,7 @@ export const CheckInButton = ({ checkedIn, eventId, rsvpId }: CheckInButtonProps
   }
 
   return (
-    <div className='flex min-w-[9rem] flex-col gap-2'>
+    <div className='flex min-w-36 flex-col gap-2'>
       <Button
         className='justify-center text-[0.7rem] uppercase tracking-[0.16em]'
         disabled={optimisticCheckedIn || isPending}
@@ -47,12 +47,12 @@ export const CheckInButton = ({ checkedIn, eventId, rsvpId }: CheckInButtonProps
       >
         {optimisticCheckedIn ? (
           <>
-            <Check data-icon='inline-start' weight='bold' />
+            <CheckIcon data-icon='inline-start' weight='bold' />
             Checked in
           </>
         ) : isPending ? (
           <>
-            <CircleNotch className='animate-spin' data-icon='inline-start' />
+            <CircleNotchIcon className='animate-spin' data-icon='inline-start' />
             Checking...
           </>
         ) : (
@@ -60,7 +60,7 @@ export const CheckInButton = ({ checkedIn, eventId, rsvpId }: CheckInButtonProps
         )}
       </Button>
 
-      {message ? <FormMessage tone='destructive'>{message}</FormMessage> : null}
+      {!!message && <FormMessage tone='destructive'>{message}</FormMessage>}
     </div>
   )
 }

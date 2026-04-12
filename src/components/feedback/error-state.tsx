@@ -1,11 +1,10 @@
 import type { ReactNode } from 'react'
 
-import { WarningCircle } from '@phosphor-icons/react/dist/ssr'
-
+import { WarningCircleIcon } from '@phosphor-icons/react/dist/ssr'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
-import { cn } from '~/lib/utils'
-
 import { Eyebrow } from '../layout/eyebrow'
+
+import { cn } from '~/lib/utils'
 
 type ErrorStateProps = {
   actions?: ReactNode
@@ -20,7 +19,7 @@ export const ErrorState = ({ actions, className, description, eyebrow, title }: 
     <Card className={cn('border border-border/80 bg-card py-8 shadow-(--shadow-md)', className)}>
       <CardHeader className='flex flex-col items-center px-8 text-center'>
         <div className='flex size-16 items-center justify-center rounded-2xl bg-destructive/10 text-destructive'>
-          <WarningCircle className='size-8' weight='duotone' />
+          <WarningCircleIcon className='size-8' weight='duotone' />
         </div>
 
         <div className='space-y-3'>

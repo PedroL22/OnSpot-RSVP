@@ -1,11 +1,11 @@
 import Link from 'next/link'
 
 import { ArrowRightIcon } from '@phosphor-icons/react/dist/ssr'
-
 import { CapacityMeter } from '~/components/data/capacity-meter'
 import { ShareLinkButton } from '~/components/events/share-link-button'
 import { buttonVariants } from '~/components/ui/button'
 import { Card, CardContent } from '~/components/ui/card'
+
 import { cn } from '~/lib/utils'
 
 type EventListItemProps = {

@@ -1,15 +1,15 @@
 import Link from 'next/link'
 
-import { signOut } from '~/app/(auth)/actions'
 import { PatternBackground } from '~/components/layout/pattern-background'
 import { buttonVariants } from '~/components/ui/button'
-import { cn } from '~/lib/utils'
-import { getSession } from '~/server/better-auth/server'
-
 import { AuthCalloutCard } from './_components/auth-callout-card'
 import { LandingHeader } from './_components/landing-header'
 import { LandingHero } from './_components/landing-hero'
 import { SiteFooter } from './_components/site-footer'
+
+import { signOut } from '~/app/(auth)/actions'
+import { cn } from '~/lib/utils'
+import { getSession } from '~/server/better-auth/server'
 
 export default async function Home() {
   const session = await getSession()

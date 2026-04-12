@@ -1,6 +1,6 @@
-import { formatEventDate } from '~/lib/formatters'
-
 import { EventListItem } from './event-list-item'
+
+import { formatEventDate } from '~/lib/formatters'
 
 type EventSummary = {
   capacity: number | null

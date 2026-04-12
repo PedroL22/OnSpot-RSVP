@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
-import { CalendarDots } from '@phosphor-icons/react/dist/ssr'
-
+import { CalendarDotsIcon } from '@phosphor-icons/react/dist/ssr'
 import { EmptyState } from '~/components/feedback/empty-state'
 import { buttonVariants } from '~/components/ui/button'
+
 import { cn } from '~/lib/utils'
 
 export const EventsEmptyState = () => {
@@ -18,7 +18,7 @@ export const EventsEmptyState = () => {
         </Link>
       }
       description='Create your first event and start collecting RSVPs. A shareable page is generated automatically.'
-      icon={<CalendarDots className='size-7' />}
+      icon={<CalendarDotsIcon className='size-7' />}
       title='No events yet'
     />
   )

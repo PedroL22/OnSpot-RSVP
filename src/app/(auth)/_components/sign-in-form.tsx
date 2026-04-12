@@ -6,11 +6,11 @@ import { FormField } from '~/components/forms/form-field'
 import { FormMessage } from '~/components/forms/form-message'
 import { Input } from '~/components/ui/input'
 import { Separator } from '~/components/ui/separator'
+import { AuthSubmitButton } from './auth-submit-button'
+import { GitHubAuthButton } from './github-auth-button'
 
 import { signInWithEmail } from '../actions'
 import { initialAuthActionState } from '../auth-schemas'
-import { AuthSubmitButton } from './auth-submit-button'
-import { GitHubAuthButton } from './github-auth-button'
 
 type SignInFormProps = {
   callbackURL: string

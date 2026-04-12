@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { Label } from '~/components/ui/label'
+
 import { cn } from '~/lib/utils'
 
 type FormFieldProps = {
@@ -18,9 +19,10 @@ export const FormField = ({ children, className, description, error, htmlFor, la
       <Label className='font-mono text-[10px] text-muted-foreground uppercase tracking-[0.22em]' htmlFor={htmlFor}>
         {label}
       </Label>
+
       {children}
-      {description ? <p className='text-muted-foreground text-sm'>{description}</p> : null}
-      {error ? <p className='text-destructive text-sm'>{error}</p> : null}
+      {!!description && <p className='text-muted-foreground text-sm'>{description}</p>}
+      {!!error && <p className='text-destructive text-sm'>{error}</p>}
     </div>
   )
 }

@@ -1,8 +1,8 @@
 'use client'
 
-import { CheckIcon, CopySimpleIcon } from '@phosphor-icons/react/dist/ssr'
 import { useState } from 'react'
 
+import { CheckIcon, CopySimpleIcon } from '@phosphor-icons/react/dist/ssr'
 import { Button } from '~/components/ui/button'
 
 type ShareLinkButtonProps = {

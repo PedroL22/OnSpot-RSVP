@@ -6,14 +6,17 @@ export const EventCreateIntro = () => {
   return (
     <Card className='overflow-hidden border-border/80 bg-card/95 py-0 shadow-(--shadow-sm)'>
       <div className='h-1 w-full bg-primary' />
+
       <CardContent className='space-y-8 p-8'>
         <div className='space-y-4'>
           <Eyebrow withDot>New event</Eyebrow>
+
           <DisplayTitle size='lg'>
             Create your
             <br />
             <span className='text-primary'>event</span>
           </DisplayTitle>
+
           <p className='text-muted-foreground text-sm leading-relaxed'>
             Set up once, share immediately. The public RSVP page is generated automatically and capacity limits are
             enforced server-side.
@@ -22,6 +25,7 @@ export const EventCreateIntro = () => {
 
         <div className='rounded-2xl border border-border bg-muted/50 p-5'>
           <p className='font-mono text-[11px] text-muted-foreground uppercase tracking-[0.18em]'>What happens next</p>
+
           <ul className='mt-4 space-y-3'>
             {[
               'Public RSVP page is created automatically.',

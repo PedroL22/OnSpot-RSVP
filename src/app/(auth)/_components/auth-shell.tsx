@@ -4,10 +4,10 @@ import type { ReactNode } from 'react'
 import { BrandMark } from '~/components/brand/brand-mark'
 import { PatternBackground } from '~/components/layout/pattern-background'
 import { buttonVariants } from '~/components/ui/button'
-import { cn } from '~/lib/utils'
-
 import { AuthBrandPanel } from './auth-brand-panel'
 import { AuthCardFrame } from './auth-card-frame'
+
+import { cn } from '~/lib/utils'
 
 type AuthShellProps = {
   alternateHref: string

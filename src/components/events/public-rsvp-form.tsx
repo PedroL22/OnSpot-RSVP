@@ -2,9 +2,9 @@
 
 import { useActionState, useEffect, useRef } from 'react'
 
+import { FormSubmitButton } from '~/components/form-submit-button'
 import { FormField } from '~/components/forms/form-field'
 import { FormMessage } from '~/components/forms/form-message'
-import { FormSubmitButton } from '~/components/form-submit-button'
 import { Input } from '~/components/ui/input'
 
 import { createRsvp } from '~/app/actions/rsvps'
@@ -54,9 +54,7 @@ export const PublicRsvpForm = ({ eventPublicId, submitLabel }: PublicRsvpFormPro
         <FormSubmitButton idleLabel={submitLabel} pendingLabel='Submitting...' />
       </form>
 
-      {state.message ? (
-        <FormMessage tone={state.success ? 'success' : 'destructive'}>{state.message}</FormMessage>
-      ) : null}
+      {!!state.message && <FormMessage tone={state.success ? 'success' : 'destructive'}>{state.message}</FormMessage>}
     </div>
   )
 }

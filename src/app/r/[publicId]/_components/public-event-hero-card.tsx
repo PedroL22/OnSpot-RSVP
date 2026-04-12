@@ -1,7 +1,6 @@
-import { Card, CardContent } from '~/components/ui/card'
-
 import { DisplayTitle } from '~/components/layout/display-title'
 import { Eyebrow } from '~/components/layout/eyebrow'
+import { Card, CardContent } from '~/components/ui/card'
 import { PublicEventInfoGrid } from './public-event-info-grid'
 
 type PublicEventHeroCardProps = {

@@ -17,13 +17,15 @@ export const EventMetaGrid = ({ capacityLabel, capacityValue, location, startsAt
           <p className='font-mono text-foreground text-sm'>{startsAtLabel}</p>
         </CardContent>
       </Card>
+
       <Card className='bg-muted/50 py-0 shadow-none'>
         <CardContent className='space-y-2 p-4'>
           <p className='font-mono text-[10px] text-muted-foreground uppercase tracking-[0.22em]'>Where</p>
           <p className='font-mono text-foreground text-sm'>{location}</p>
         </CardContent>
       </Card>
-      {capacityLabel ? (
+
+      {!!capacityLabel && (
         <Card className='bg-muted/50 py-0 shadow-none'>
           <CardContent className='space-y-3 p-4'>
             <p className='font-mono text-[10px] text-muted-foreground uppercase tracking-[0.22em]'>Capacity</p>
@@ -31,7 +33,7 @@ export const EventMetaGrid = ({ capacityLabel, capacityValue, location, startsAt
             <CapacityMeter summary={`${capacityValue ?? 0}% filled`} value={capacityValue} />
           </CardContent>
         </Card>
-      ) : null}
+      )}
     </div>
   )
 }

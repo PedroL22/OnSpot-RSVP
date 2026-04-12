@@ -3,9 +3,9 @@ import type { ReactNode } from 'react'
 
 import { signOut } from '~/app/(auth)/actions'
 import { PatternBackground } from '~/components/layout/pattern-background'
-import { getSession } from '~/server/better-auth/server'
-
 import { DashboardHeader } from './_components/dashboard-header'
+
+import { getSession } from '~/server/better-auth/server'
 
 export default async function DashboardLayout({ children }: Readonly<{ children: ReactNode }>) {
   const session = await getSession()

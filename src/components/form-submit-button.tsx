@@ -1,9 +1,10 @@
 'use client'
 
-import { CircleNotch } from '@phosphor-icons/react/dist/ssr'
 import { useFormStatus } from 'react-dom'
 
+import { CircleNotchIcon } from '@phosphor-icons/react/dist/ssr'
 import { Button } from '~/components/ui/button'
+
 import { cn } from '~/lib/utils'
 
 type FormSubmitButtonProps = {
@@ -30,7 +31,7 @@ export const FormSubmitButton = ({
     >
       {pending ? (
         <>
-          <CircleNotch className='animate-spin' data-icon='inline-start' />
+          <CircleNotchIcon className='animate-spin' data-icon='inline-start' />
           {pendingLabel}
         </>
       ) : (

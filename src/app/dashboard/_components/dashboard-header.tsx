@@ -1,7 +1,6 @@
 import { BrandMark } from '~/components/brand/brand-mark'
 import { ThemeToggle } from '~/components/theme-toggle'
 import { Button } from '~/components/ui/button'
-
 import { DashboardNav } from './dashboard-nav'
 import { DashboardUserChip } from './dashboard-user-chip'
 
@@ -23,6 +22,7 @@ export const DashboardHeader = ({ onSignOut, userName }: DashboardHeaderProps) =
         <div className='flex items-center gap-3'>
           <ThemeToggle />
           <DashboardUserChip name={userName} />
+
           <form action={onSignOut}>
             <Button className='font-mono text-[11px] uppercase tracking-[0.16em]' type='submit' variant='ghost'>
               Sign out

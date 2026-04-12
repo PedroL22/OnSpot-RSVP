@@ -1,4 +1,4 @@
-import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
+import { ArrowRightIcon } from '@phosphor-icons/react/dist/ssr'
 
 type FeatureListProps = {
   features: Array<{
@@ -19,11 +19,13 @@ export const FeatureList = ({ features }: FeatureListProps) => {
           <span className='shrink-0 font-mono text-[11px] text-dim-foreground tabular-nums'>
             {String(index + 1).padStart(2, '0')}
           </span>
+
           <div className='min-w-0'>
             <p className='font-medium text-foreground text-sm'>{feature.title}</p>
             <p className='mt-1 text-muted-foreground text-xs'>{feature.description}</p>
           </div>
-          <ArrowRight className='ml-auto size-3.5 translate-x-0 text-primary opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100' />
+
+          <ArrowRightIcon className='ml-auto size-3.5 translate-x-0 text-primary opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100' />
         </div>
       ))}
     </div>

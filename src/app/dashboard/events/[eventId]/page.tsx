@@ -2,18 +2,17 @@ import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 
 import { CaretLeftIcon } from '@phosphor-icons/react/dist/ssr'
-
 import { buttonVariants } from '~/components/ui/button'
+import { ActivityFeed } from './_components/activity-feed'
+import { EventDetailHero } from './_components/event-detail-hero'
+import { EventStatsGrid } from './_components/event-stats-grid'
+import { GuestListTable } from './_components/guest-list-table'
+
 import { env } from '~/env'
 import { formatEventDate } from '~/lib/formatters'
 import { cn } from '~/lib/utils'
 import { getSession } from '~/server/better-auth/server'
 import { getOrganizerEventDetail } from '~/server/queries/events'
-
-import { ActivityFeed } from './_components/activity-feed'
-import { EventDetailHero } from './_components/event-detail-hero'
-import { EventStatsGrid } from './_components/event-stats-grid'
-import { GuestListTable } from './_components/guest-list-table'
 
 type EventDetailPageProps = {
   params: Promise<{ eventId: string }>
