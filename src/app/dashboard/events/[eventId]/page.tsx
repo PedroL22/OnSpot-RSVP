@@ -11,9 +11,7 @@ import { getSession } from '~/server/better-auth/server'
 import { getOrganizerEventDetail } from '~/server/queries/events'
 
 type EventDetailPageProps = {
-  params: Promise<{
-    eventId: string
-  }>
+  params: Promise<{ eventId: string }>
 }
 
 const getStatusBadgeClassName = (status: 'CONFIRMED' | 'WAITLISTED') => {
@@ -35,70 +33,94 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
 
   const shareUrl = new URL(`/r/${event.publicId}`, env.BETTER_AUTH_URL).toString()
 
+  const capacityPct =
+    event.capacity && event.capacity > 0
+      ? Math.min(100, Math.round((event.confirmedCount / event.capacity) * 100))
+      : null
+
   return (
     <div className='space-y-6'>
-      {/* Back navigation */}
+
+      {/* ── Back nav ─────────────────────────────────────────── */}
       <Link
-        className='group inline-flex items-center gap-2 text-ink-subtle text-sm transition-colors hover:text-ink'
+        className='group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-smoke-muted transition-colors hover:text-acid'
         href='/dashboard'
       >
-        <span className='transition-transform group-hover:-translate-x-1'>&larr;</span>
+        <span className='transition-transform group-hover:-translate-x-0.5'>←</span>
         Back to dashboard
       </Link>
 
-      {/* Event header card */}
-      <section className='grid gap-6 lg:grid-cols-[1.2fr_0.8fr]'>
-        {/* Main info */}
-        <div className='relative overflow-hidden rounded-2xl bg-ink p-8 lg:p-10'>
-          {/* Decorative gradient */}
-          <div className='absolute top-0 right-0 h-80 w-80 rounded-full bg-gradient-to-bl from-vermillion/15 to-transparent blur-3xl' />
-          <div className='absolute bottom-0 left-0 h-48 w-48 rounded-full bg-gradient-to-tr from-paper/5 to-transparent blur-2xl' />
+      {/* ── Event header ─────────────────────────────────────── */}
+      <section className='grid gap-4 lg:grid-cols-[1fr_300px]'>
 
-          <div className='relative space-y-6'>
-            <div className='space-y-4'>
-              <div className='inline-flex items-center gap-2'>
-                <span className='h-1.5 w-1.5 rounded-full bg-vermillion' />
-                <span className='text-label text-paper/60'>Event Details</span>
+        {/* Main card */}
+        <div className='relative overflow-hidden rounded border border-border bg-void-raised'>
+          {/* Acid top strip */}
+          <div className='h-0.5 w-full bg-acid opacity-90' />
+
+          {/* Dot pattern overlay */}
+          <div className='dot-pattern absolute inset-0 opacity-60' />
+
+          <div className='relative p-8'>
+            <div className='mb-6 flex items-start justify-between gap-4'>
+              <div className='space-y-3'>
+                <div className='flex items-center gap-2'>
+                  <span className='h-1.5 w-1.5 rounded-full bg-acid' />
+                  <span className='text-label' style={{ color: 'rgba(201,255,0,0.6)' }}>Event Details</span>
+                </div>
+                <h1
+                  className='text-display-lg leading-none'
+                  style={{ maxWidth: '600px' }}
+                >
+                  {event.title}
+                </h1>
               </div>
 
-              <h1 className='text-display-lg text-paper'>{event.title}</h1>
-
-              <p className='max-w-xl text-paper/60 leading-relaxed'>{event.description}</p>
+              <div className='flex shrink-0 items-center gap-2 pt-2'>
+                <ShareLinkButton shareUrl={shareUrl} />
+              </div>
             </div>
 
-            {/* Event meta */}
-            <div className='grid gap-4 sm:grid-cols-2'>
-              <div className='rounded-xl border border-paper/10 bg-paper/5 p-4'>
-                <p className='mb-2 text-label text-paper/40'>Starts at</p>
-                <p className='font-medium text-paper'>{formatEventDate(event.startsAt, event.startsAtOffsetMinutes)}</p>
+            <p className='mb-6 max-w-2xl text-smoke-muted leading-relaxed' style={{ fontSize: '0.9375rem' }}>
+              {event.description}
+            </p>
+
+            {/* Meta grid */}
+            <div className='grid gap-3 sm:grid-cols-2 lg:grid-cols-3'>
+              <div className='rounded border border-border bg-void-surface p-4'>
+                <p className='stat-label'>When</p>
+                <p className='font-mono text-sm text-smoke'>{formatEventDate(event.startsAt, event.startsAtOffsetMinutes)}</p>
               </div>
-              <div className='rounded-xl border border-paper/10 bg-paper/5 p-4'>
-                <p className='mb-2 text-label text-paper/40'>Location</p>
-                <p className='font-medium text-paper'>{event.location}</p>
+              <div className='rounded border border-border bg-void-surface p-4'>
+                <p className='stat-label'>Where</p>
+                <p className='font-mono text-sm text-smoke'>{event.location}</p>
               </div>
+              {event.capacity && (
+                <div className='rounded border border-border bg-void-surface p-4'>
+                  <p className='stat-label'>Capacity</p>
+                  <div className='space-y-2'>
+                    <p className='font-mono text-sm text-smoke'>{event.confirmedCount} / {event.capacity}</p>
+                    {capacityPct !== null && (
+                      <div className='h-1 rounded-full bg-void overflow-hidden'>
+                        <div
+                          className='h-full rounded-full bg-acid transition-all'
+                          style={{ width: `${capacityPct}%`, opacity: 0.8 }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Actions */}
-            <div className='flex flex-wrap items-center gap-3 pt-2'>
-              <ShareLinkButton shareUrl={shareUrl} />
+            {/* Export action */}
+            <div className='mt-6 pt-6 border-t border-border'>
               <Link
-                className='btn-ghost text-paper/80 text-sm hover:bg-paper/10 hover:text-paper'
+                className='btn-ghost px-3 py-1.5 text-[11px]'
                 href={`/dashboard/events/${event.id}/export`}
               >
-                <svg
-                  aria-hidden='true'
-                  className='h-4 w-4'
-                  fill='none'
-                  focusable='false'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                >
-                  <path
-                    d='M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                  />
+                <svg aria-hidden='true' className='h-3.5 w-3.5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                  <path d='M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4' strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} />
                 </svg>
                 Export CSV
               </Link>
@@ -106,85 +128,87 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           </div>
         </div>
 
-        {/* Stats grid */}
-        <div className='grid grid-cols-2 gap-4'>
-          <div className='card p-6'>
-            <p className='stat-label'>Confirmed</p>
-            <p className='stat-value'>{event.confirmedCount}</p>
-          </div>
-          <div className='card p-6'>
-            <p className='stat-label'>Checked in</p>
-            <p className='stat-value'>{event.checkedInCount}</p>
-          </div>
-          <div className='card p-6'>
-            <p className='stat-label'>Waitlist</p>
-            <p className='stat-value'>{event.waitlistedCount}</p>
-          </div>
-          <div className='card p-6'>
-            <p className='stat-label'>Remaining</p>
-            <p className='stat-value'>
-              {event.remainingCapacity === null ? <span className='text-3xl'>&infin;</span> : event.remainingCapacity}
-            </p>
-          </div>
+        {/* Stats sidebar */}
+        <div className='grid grid-cols-2 gap-3 lg:grid-cols-1 lg:grid-rows-4 content-start'>
+          {[
+            { label: 'Confirmed', value: event.confirmedCount, color: 'var(--color-smoke)' },
+            { label: 'Checked in', value: event.checkedInCount, color: 'var(--color-acid)' },
+            { label: 'Waitlisted', value: event.waitlistedCount, color: 'var(--color-warn)' },
+            {
+              label: 'Remaining',
+              value: event.remainingCapacity === null ? '∞' : event.remainingCapacity,
+              color: 'var(--color-smoke)',
+            },
+          ].map(({ label, value, color }) => (
+            <div className='stat-block' key={label}>
+              <p className='stat-label'>{label}</p>
+              <p className='font-mono text-4xl tabular-nums leading-none' style={{ color, fontFamily: 'var(--font-jetbrains)' }}>
+                {value}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* Guest list table */}
+      {/* ── Guest list ───────────────────────────────────────── */}
       <section className='card overflow-hidden'>
-        <div className='border-border border-b p-6'>
-          <div className='flex items-center justify-between'>
-            <div>
-              <h2 className='font-serif text-2xl'>Guest List</h2>
-              <p className='mt-1 text-ink-subtle text-sm'>
-                {event.rsvps.length} {event.rsvps.length === 1 ? 'guest' : 'guests'} registered
-              </p>
-            </div>
+        <div className='flex items-center justify-between border-b border-border px-6 py-4'>
+          <div>
+            <h2 className='font-display text-2xl uppercase tracking-wide' style={{ fontFamily: 'var(--font-bebas)' }}>
+              Guest List
+            </h2>
+            <p className='mt-0.5 font-mono text-[11px] text-smoke-muted'>
+              {event.rsvps.length} {event.rsvps.length === 1 ? 'guest' : 'guests'} registered
+            </p>
           </div>
         </div>
 
         {event.rsvps.length === 0 ? (
-          <div className='p-10 text-center'>
-            <p className='text-ink-subtle'>No guests have RSVP&apos;d yet.</p>
+          <div className='px-6 py-16 text-center'>
+            <p className='font-mono text-[11px] uppercase tracking-wider text-smoke-muted'>No guests have RSVP'd yet</p>
           </div>
         ) : (
           <div className='overflow-x-auto'>
             <table className='w-full'>
               <thead>
-                <tr className='border-border border-b bg-surface-sunken'>
-                  <th className='px-6 py-3 text-left text-label'>Guest</th>
-                  <th className='px-6 py-3 text-left text-label'>Status</th>
-                  <th className='px-6 py-3 text-left text-label'>RSVP&apos;d</th>
-                  <th className='px-6 py-3 text-left text-label'>Check-in</th>
-                  <th className='px-6 py-3 text-left text-label'>Action</th>
+                <tr className='border-b border-border bg-void-surface'>
+                  {['Guest', 'Status', 'RSVP\'d', 'Check-in', 'Action'].map((col) => (
+                    <th className='px-5 py-3 text-left' key={col}>
+                      <span className='font-mono text-[9px] uppercase tracking-[0.2em] text-smoke-muted'>{col}</span>
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody className='divide-y divide-border'>
                 {event.rsvps.map((rsvp) => (
-                  <tr className='transition-colors hover:bg-surface-sunken/50' key={rsvp.id}>
-                    <td className='px-6 py-4'>
-                      <div>
-                        <p className='font-medium text-ink'>{rsvp.name}</p>
-                        <p className='text-ink-subtle text-sm'>{rsvp.email}</p>
-                      </div>
+                  <tr
+                    className='transition-colors hover:bg-void-surface/50'
+                    key={rsvp.id}
+                  >
+                    <td className='px-5 py-4'>
+                      <p className='font-medium text-smoke text-sm'>{rsvp.name}</p>
+                      <p className='font-mono text-[11px] text-smoke-muted mt-0.5'>{rsvp.email}</p>
                     </td>
-                    <td className='px-6 py-4'>
+                    <td className='px-5 py-4'>
                       <span className={getStatusBadgeClassName(rsvp.status)}>
                         {rsvp.status === 'CONFIRMED' ? 'Confirmed' : 'Waitlisted'}
                       </span>
                     </td>
-                    <td className='px-6 py-4 text-ink-subtle text-sm'>
-                      {formatEventDate(rsvp.createdAt, event.startsAtOffsetMinutes)}
+                    <td className='px-5 py-4'>
+                      <span className='font-mono text-[11px] text-smoke-muted'>
+                        {formatEventDate(rsvp.createdAt, event.startsAtOffsetMinutes)}
+                      </span>
                     </td>
-                    <td className='px-6 py-4 text-ink-subtle text-sm'>
+                    <td className='px-5 py-4'>
                       {rsvp.checkedInAt ? (
-                        <span className='font-medium text-emerald-dim'>
+                        <span className='font-mono text-[11px] text-success'>
                           {formatEventDate(rsvp.checkedInAt, event.startsAtOffsetMinutes)}
                         </span>
                       ) : (
-                        <span className='text-ink-subtle/50'>Not yet</span>
+                        <span className='font-mono text-[11px] text-smoke-dim'>—</span>
                       )}
                     </td>
-                    <td className='px-6 py-4'>
+                    <td className='px-5 py-4'>
                       {rsvp.status === 'CONFIRMED' ? (
                         <CheckInButton checkedIn={Boolean(rsvp.checkedInAt)} eventId={event.id} rsvpId={rsvp.id} />
                       ) : (
@@ -199,32 +223,39 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
         )}
       </section>
 
-      {/* Activity log */}
-      <section className='card'>
-        <div className='border-border border-b p-6'>
-          <h2 className='font-serif text-2xl'>Activity Log</h2>
-          <p className='mt-1 text-ink-subtle text-sm'>Recent guest activity</p>
+      {/* ── Activity log ─────────────────────────────────────── */}
+      <section className='card overflow-hidden'>
+        <div className='border-b border-border px-6 py-4'>
+          <h2 className='font-display text-2xl uppercase tracking-wide' style={{ fontFamily: 'var(--font-bebas)' }}>
+            Activity Log
+          </h2>
+          <p className='mt-0.5 font-mono text-[11px] text-smoke-muted'>Recent guest activity</p>
         </div>
 
         {event.activities.length === 0 ? (
-          <div className='p-10 text-center'>
-            <p className='text-ink-subtle'>Activity will appear here as guests RSVP and get checked in.</p>
+          <div className='px-6 py-12 text-center'>
+            <p className='font-mono text-[11px] uppercase tracking-wider text-smoke-muted'>
+              Activity will appear here as guests RSVP and get checked in
+            </p>
           </div>
         ) : (
           <div className='divide-y divide-border'>
             {event.activities.map((activity) => (
               <div className='flex items-center justify-between gap-4 px-6 py-4' key={activity.id}>
-                <div className='min-w-0 space-y-1'>
-                  <p className='truncate font-medium text-ink'>{activity.message}</p>
-                  <p className='text-ink-subtle text-sm'>
-                    {activity.actorType === 'ORGANIZER'
-                      ? `Organizer${activity.actorUser?.name ? `: ${activity.actorUser.name}` : ''}`
-                      : activity.actorType === 'GUEST'
-                        ? 'Guest'
-                        : 'System'}
-                  </p>
+                <div className='min-w-0 flex items-center gap-3'>
+                  <div className='h-1.5 w-1.5 shrink-0 rounded-full bg-border-strong' />
+                  <div>
+                    <p className='truncate text-sm text-smoke'>{activity.message}</p>
+                    <p className='font-mono text-[10px] text-smoke-muted mt-0.5'>
+                      {activity.actorType === 'ORGANIZER'
+                        ? `Organizer${activity.actorUser?.name ? `: ${activity.actorUser.name}` : ''}`
+                        : activity.actorType === 'GUEST'
+                          ? 'Guest'
+                          : 'System'}
+                    </p>
+                  </div>
                 </div>
-                <p className='whitespace-nowrap text-ink-subtle text-sm'>
+                <p className='shrink-0 font-mono text-[11px] text-smoke-muted'>
                   {formatEventDate(activity.createdAt, event.startsAtOffsetMinutes)}
                 </p>
               </div>

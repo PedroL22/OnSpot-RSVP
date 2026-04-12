@@ -32,13 +32,13 @@ export default function DashboardError({ reset }: DashboardErrorProps) {
           </svg>
         </div>
 
-        <p className='mb-3 text-label text-vermillion'>Something went wrong</p>
+        <p className='mb-3 text-label' style={{ color: 'var(--color-danger)' }}>Something went wrong</p>
         <h2 className='mb-4 text-display-md'>
           Dashboard could not
           <br />
-          <span className='italic'>finish loading</span>
+          <span className='text-acid'>finish loading</span>
         </h2>
-        <p className='mb-8 text-ink-subtle leading-relaxed'>
+        <p className='mb-8 text-smoke-muted leading-relaxed'>
           Please try again. If the problem persists, return to the home page and reopen the dashboard.
         </p>
 

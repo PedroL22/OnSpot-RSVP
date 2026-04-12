@@ -13,61 +13,72 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
   }
 
   return (
-    <main className='min-h-screen'>
-      {/* Subtle grid background */}
-      <div className='grid-pattern pointer-events-none fixed inset-0 opacity-30' />
+    <div className='min-h-screen'>
+      {/* Dot pattern bg */}
+      <div className='dot-pattern pointer-events-none fixed inset-0 opacity-100' />
 
-      <div className='relative mx-auto max-w-7xl px-6 py-6 lg:px-8 lg:py-8'>
-        {/* Header */}
-        <header className='flex animate-fade-up items-center justify-between py-2'>
+      {/* Top acid line */}
+      <div className='fixed top-0 left-0 right-0 z-50 h-px bg-acid' style={{ opacity: 0.8 }} />
+
+      {/* Header */}
+      <header className='sticky top-0 z-40 border-b border-border bg-void/90 backdrop-blur-sm'>
+        <div className='mx-auto flex max-w-7xl items-center justify-between px-6 py-3 lg:px-10'>
+
+          {/* Left — Logo + nav */}
           <div className='flex items-center gap-6'>
-            <Link className='group flex items-center gap-3' href='/dashboard'>
-              <div className='relative flex h-9 w-9 items-center justify-center rounded-lg bg-ink text-paper transition-transform duration-300 group-hover:scale-105'>
-                <svg aria-hidden='true' className='h-5 w-5' fill='currentColor' focusable='false' viewBox='0 0 24 24'>
+            <Link className='group flex items-center gap-2.5' href='/dashboard'>
+              <div className='flex h-7 w-7 items-center justify-center rounded bg-acid transition-colors group-hover:bg-acid-dim'>
+                <svg aria-hidden='true' className='h-4 w-4' fill='currentColor' focusable='false' viewBox='0 0 24 24'
+                  style={{ filter: 'invert(1)' }}>
                   <path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5' />
                 </svg>
               </div>
               <div className='hidden sm:block'>
-                <p className='font-semibold text-ink leading-none tracking-tight'>OnSpot</p>
-                <p className='mt-0.5 text-[10px] text-ink-subtle uppercase tracking-wider'>Dashboard</p>
+                <p className='font-mono text-[11px] font-medium uppercase tracking-widest text-smoke'>OnSpot</p>
               </div>
             </Link>
 
-            <nav className='hidden items-center gap-1 md:flex'>
+            {/* Divider */}
+            <div className='hidden h-4 w-px bg-border-strong md:block' />
+
+            <nav className='hidden items-center gap-0.5 md:flex'>
               <Link
-                className='rounded-md px-3 py-1.5 text-ink-subtle text-sm transition-colors hover:bg-surface-sunken hover:text-ink'
+                className='rounded px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider text-smoke-muted transition-colors hover:bg-void-surface hover:text-smoke'
                 href='/dashboard'
               >
                 Events
               </Link>
               <Link
-                className='rounded-md px-3 py-1.5 text-ink-subtle text-sm transition-colors hover:bg-surface-sunken hover:text-ink'
+                className='rounded px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider text-smoke-muted transition-colors hover:bg-void-surface hover:text-smoke'
                 href='/dashboard/events/new'
               >
-                Create new
+                + New
               </Link>
             </nav>
           </div>
 
+          {/* Right — User info + sign out */}
           <div className='flex items-center gap-3'>
-            <div className='hidden items-center gap-2 rounded-lg bg-surface-sunken px-3 py-1.5 sm:flex'>
-              <div className='h-2 w-2 animate-pulse rounded-full bg-emerald' />
-              <span className='text-ink-subtle text-sm'>
-                <span className='font-medium text-ink'>{session.user.name}</span>
+            <div className='hidden items-center gap-2 rounded border border-border bg-void-surface px-3 py-1.5 sm:flex'>
+              <span className='block h-1.5 w-1.5 rounded-full bg-success' />
+              <span className='font-mono text-[11px] text-smoke-muted'>
+                {session.user.name}
               </span>
             </div>
 
             <form action={signOut}>
-              <button className='btn-ghost text-ink-subtle text-sm hover:text-ink' type='submit'>
+              <button className='btn-ghost px-3 py-1.5 font-mono text-[11px]' type='submit'>
                 Sign out
               </button>
             </form>
           </div>
-        </header>
+        </div>
+      </header>
 
-        {/* Main content */}
-        <div className='animation-delay-100 mt-8 animate-fade-up'>{children}</div>
-      </div>
-    </main>
+      {/* Page content */}
+      <main className='relative mx-auto max-w-7xl px-6 py-8 lg:px-10 lg:py-10'>
+        <div className='animate-fade-up'>{children}</div>
+      </main>
+    </div>
   )
 }

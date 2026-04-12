@@ -1,13 +1,22 @@
 export default function DashboardLoading() {
   return (
     <div className='animate-pulse space-y-8'>
-      {/* Hero skeleton */}
-      <div className='h-64 rounded-2xl bg-ink/5' />
+      {/* Header skeleton */}
+      <div className='flex items-end justify-between border-b border-border pb-6'>
+        <div className='space-y-3'>
+          <div className='h-2.5 w-32 rounded bg-void-surface' />
+          <div className='h-10 w-48 rounded bg-void-surface' />
+        </div>
+        <div className='h-9 w-28 rounded bg-void-surface' />
+      </div>
 
-      {/* Cards grid skeleton */}
-      <div className='grid gap-4 lg:grid-cols-2'>
-        {[1, 2, 3, 4].map((i) => (
-          <div className='h-56 rounded-xl border border-border bg-surface-elevated' key={i} />
+      {/* Label skeleton */}
+      <div className='h-2.5 w-20 rounded bg-void-surface' />
+
+      {/* Event row skeletons */}
+      <div className='space-y-3'>
+        {[1, 2, 3].map((i) => (
+          <div className='h-24 rounded border border-border bg-void-raised' key={i} />
         ))}
       </div>
     </div>

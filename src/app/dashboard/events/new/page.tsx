@@ -5,76 +5,80 @@ import { CreateEventForm } from '~/components/events/create-event-form'
 export default function CreateEventPage() {
   return (
     <div className='space-y-6'>
-      {/* Back navigation */}
+
+      {/* Back nav */}
       <Link
-        className='group inline-flex items-center gap-2 text-ink-subtle text-sm transition-colors hover:text-ink'
+        className='group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-smoke-muted transition-colors hover:text-acid'
         href='/dashboard'
       >
-        <span className='transition-transform group-hover:-translate-x-1'>&larr;</span>
+        <span className='transition-transform group-hover:-translate-x-0.5'>←</span>
         Back to dashboard
       </Link>
 
-      <section className='grid items-start gap-6 lg:grid-cols-[0.85fr_1.15fr]'>
-        {/* Left - Info panel */}
-        <div className='relative overflow-hidden rounded-2xl bg-ink p-8 lg:p-10'>
-          {/* Decorative elements */}
-          <div className='diagonal-lines absolute inset-0 opacity-20' />
-          <div className='absolute top-0 right-0 h-64 w-64 rounded-full bg-gradient-to-bl from-vermillion/20 to-transparent blur-3xl' />
+      <section className='grid items-start gap-6 lg:grid-cols-[340px_1fr]'>
 
-          <div className='relative space-y-8'>
-            <div className='space-y-4'>
-              <div className='inline-flex items-center gap-2'>
-                <span className='h-1.5 w-1.5 rounded-full bg-vermillion' />
-                <span className='text-label text-paper/50'>New Event</span>
+        {/* Left — Info panel */}
+        <div className='relative overflow-hidden rounded border border-border bg-void-raised'>
+          {/* Acid strip */}
+          <div className='h-0.5 w-full bg-acid' />
+          {/* Dot pattern */}
+          <div className='dot-pattern absolute inset-0 opacity-60' />
+
+          <div className='relative p-8'>
+            <div className='space-y-8'>
+              <div className='space-y-4'>
+                <div className='flex items-center gap-2'>
+                  <span className='h-1.5 w-1.5 rounded-full bg-acid' />
+                  <span className='text-label' style={{ color: 'rgba(201,255,0,0.6)' }}>New Event</span>
+                </div>
+
+                <h1 className='text-display-lg leading-none'>
+                  Create your
+                  <br />
+                  <span className='text-acid'>event</span>
+                </h1>
+
+                <p className='text-smoke-muted text-sm leading-relaxed'>
+                  Set up once, share immediately. The public RSVP page is generated automatically and capacity limits are
+                  enforced server-side.
+                </p>
               </div>
 
-              <h1 className='text-display-lg text-paper'>
-                Create your
-                <br />
-                <span className='italic'>event</span>
-              </h1>
+              {/* What happens next */}
+              <div className='space-y-4 rounded border border-border bg-void-surface p-5'>
+                <p className='font-mono text-[11px] uppercase tracking-wider text-smoke-muted'>What happens next</p>
 
-              <p className='text-paper/60 leading-relaxed'>
-                Set up once, share immediately. The public RSVP page is generated automatically and capacity limits are
-                enforced server-side.
-              </p>
-            </div>
-
-            {/* What happens next */}
-            <div className='space-y-4 rounded-xl border border-paper/10 bg-paper/5 p-6'>
-              <p className='font-medium text-paper'>What happens next</p>
-
-              <ul className='space-y-3 text-paper/60 text-sm'>
-                <li className='flex gap-3'>
-                  <span className='text-vermillion'>01</span>
-                  <span>Public RSVP page is created automatically</span>
-                </li>
-                <li className='flex gap-3'>
-                  <span className='text-vermillion'>02</span>
-                  <span>Capacity limits enforced on the server</span>
-                </li>
-                <li className='flex gap-3'>
-                  <span className='text-vermillion'>03</span>
-                  <span>Waitlisted guests can be promoted manually</span>
-                </li>
-              </ul>
+                <ul className='space-y-3'>
+                  {[
+                    'Public RSVP page is created automatically',
+                    'Capacity limits enforced server-side',
+                    'Waitlisted guests can be promoted manually',
+                  ].map((item, i) => (
+                    <li className='flex items-start gap-3' key={item}>
+                      <span className='font-mono text-[10px] text-acid mt-0.5 shrink-0'>0{i + 1}</span>
+                      <span className='text-smoke-muted text-sm'>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Right - Form */}
-        <div className='card-elevated p-8 lg:p-10'>
-          <div className='mb-8 space-y-3'>
-            <p className='text-label text-vermillion'>Event details</p>
+        {/* Right — Form */}
+        <div className='card-elevated overflow-hidden'>
+          <div className='h-0.5 w-full bg-acid' />
+          <div className='p-8'>
+            <div className='mb-8 space-y-3'>
+              <p className='text-label text-acid' style={{ color: 'var(--color-acid)', opacity: 0.8 }}>Event details</p>
+              <h2 className='text-display-md leading-none'>Set the basics</h2>
+              <p className='text-smoke-muted text-sm leading-relaxed'>
+                Fill in the event details. Capacity is optional — leave it blank for unlimited attendance.
+              </p>
+            </div>
 
-            <h2 className='text-display-md'>Set the basics</h2>
-
-            <p className='text-ink-subtle leading-relaxed'>
-              Fill in the event details below. Capacity is optional &mdash; leave it blank for unlimited attendance.
-            </p>
+            <CreateEventForm />
           </div>
-
-          <CreateEventForm />
         </div>
       </section>
     </div>
