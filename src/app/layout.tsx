@@ -39,7 +39,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       suppressHydrationWarning
     >
       <body className='antialiased'>
-        <ThemeProvider attribute='class' defaultTheme='dark' disableTransitionOnChange>
+        <ThemeProvider attribute='class' defaultTheme='system' disableTransitionOnChange>
           {children}
         </ThemeProvider>
       </body>
