@@ -25,7 +25,7 @@ type EventListProps = {
 export const EventList = ({ baseUrl, events, getCapacityPct, getCapacitySummary }: EventListProps) => {
   return (
     <div className='space-y-3'>
-      {events.map((event, index) => (
+      {events.map((event) => (
         <EventListItem
           capacitySummary={getCapacitySummary(event.capacity, event.confirmedCount, event.waitlistedCount)}
           capacityValue={getCapacityPct(event.capacity, event.confirmedCount)}
@@ -33,7 +33,6 @@ export const EventList = ({ baseUrl, events, getCapacityPct, getCapacitySummary 
           confirmedCount={event.confirmedCount}
           dayLabel={new Date(event.startsAt).getDate()}
           href={`/dashboard/events/${event.id}`}
-          index={index}
           key={event.id}
           location={event.location}
           monthLabel={new Date(event.startsAt).toLocaleString('en', { month: 'short' }).toUpperCase()}

@@ -14,7 +14,6 @@ type EventListItemProps = {
   confirmedCount: number
   dayLabel: number
   href: string
-  index: number
   location: string
   monthLabel: string
   shareUrl: string
@@ -30,7 +29,6 @@ export const EventListItem = ({
   confirmedCount,
   dayLabel,
   href,
-  index,
   location,
   monthLabel,
   shareUrl,
@@ -39,10 +37,7 @@ export const EventListItem = ({
   waitlistedCount,
 }: EventListItemProps) => {
   return (
-    <Card
-      className='animate-[fade-up_0.5s_var(--ease-out-expo)_both] overflow-hidden border-border/80 bg-card/95 py-0 shadow-(--shadow-sm)'
-      style={{ animationDelay: `${index * 60}ms` }}
-    >
+    <Card className='overflow-hidden border-border/80 bg-card/95 py-0 shadow-(--shadow-sm)'>
       <div className='h-1 w-full bg-primary/80' />
 
       <CardContent className='p-5 pt-2.5'>
