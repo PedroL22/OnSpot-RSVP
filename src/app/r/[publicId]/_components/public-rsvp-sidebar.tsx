@@ -14,10 +14,12 @@ type PublicRsvpSidebarProps = {
 export const PublicRsvpSidebar = ({ eventPublicId, isFull, submitLabel }: PublicRsvpSidebarProps) => {
   return (
     <div className='space-y-4'>
-      <Card className='overflow-hidden border-border/80 bg-card/95 py-0 shadow-[var(--shadow-md)]'>
+      <Card className='overflow-hidden border-border/80 bg-card/95 py-0 shadow-(--shadow-md)'>
         <div className='h-1 w-full bg-primary' />
-        <CardHeader className='px-8 pt-8'>
+
+        <CardHeader className='px-8 pt-6'>
           <Eyebrow>{isFull ? 'Join waitlist' : 'RSVP'}</Eyebrow>
+
           <CardTitle className='p-0'>
             <DisplayTitle size='md'>
               {isFull ? 'Secure your' : 'Reserve your'}
@@ -25,12 +27,14 @@ export const PublicRsvpSidebar = ({ eventPublicId, isFull, submitLabel }: Public
               <span className='text-primary'>spot</span>
             </DisplayTitle>
           </CardTitle>
+
           <p className='text-muted-foreground text-sm leading-relaxed'>
             {isFull
               ? "Confirmed spots are full. Join the waitlist and we'll notify you if one opens up."
               : 'Enter your details to confirm attendance. Takes under 30 seconds.'}
           </p>
         </CardHeader>
+
         <CardContent className='px-8 pb-8'>
           <PublicRsvpForm eventPublicId={eventPublicId} submitLabel={submitLabel} />
         </CardContent>

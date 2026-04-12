@@ -22,10 +22,12 @@ export const PublicEventInfoGrid = ({
           <p className='font-mono text-[10px] text-muted-foreground uppercase tracking-[0.22em]'>When</p>
           <p className='font-mono text-foreground text-sm leading-snug'>{startsAtLabel}</p>
         </div>
+
         <div className='space-y-2'>
           <p className='font-mono text-[10px] text-muted-foreground uppercase tracking-[0.22em]'>Where</p>
           <p className='font-mono text-foreground text-sm leading-snug'>{location}</p>
         </div>
+
         <div className='space-y-2'>
           <p className='font-mono text-[10px] text-muted-foreground uppercase tracking-[0.22em]'>Availability</p>
           <p className='font-mono text-foreground text-sm leading-snug'>{availabilityLabel}</p>
