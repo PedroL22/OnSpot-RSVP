@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 type DashboardErrorProps = {
   error: Error & {
     digest?: string
@@ -9,20 +11,45 @@ type DashboardErrorProps = {
 
 export default function DashboardError({ reset }: DashboardErrorProps) {
   return (
-    <div className='rounded-[2rem] border border-red-200 bg-white p-8 shadow-[0_24px_70px_rgba(15,23,42,0.08)]'>
-      <div className='max-w-xl space-y-4'>
-        <p className='text-red-600 text-sm uppercase tracking-[0.28em]'>Something went wrong</p>
-        <h2 className='font-bold text-3xl tracking-[-0.03em]'>The dashboard could not finish loading.</h2>
-        <p className='text-slate-600 leading-7'>
-          Please try again. If the problem keeps happening, return to the home page and reopen the dashboard.
+    <div className='card-elevated animate-scale-in p-10'>
+      <div className='mx-auto max-w-lg text-center'>
+        {/* Error icon */}
+        <div className='mb-6 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-vermillion/10'>
+          <svg
+            aria-hidden='true'
+            className='h-7 w-7 text-vermillion'
+            fill='none'
+            focusable='false'
+            stroke='currentColor'
+            viewBox='0 0 24 24'
+          >
+            <path
+              d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth={1.5}
+            />
+          </svg>
+        </div>
+
+        <p className='mb-3 text-label text-vermillion'>Something went wrong</p>
+        <h2 className='mb-4 text-display-md'>
+          Dashboard could not
+          <br />
+          <span className='italic'>finish loading</span>
+        </h2>
+        <p className='mb-8 text-ink-subtle leading-relaxed'>
+          Please try again. If the problem persists, return to the home page and reopen the dashboard.
         </p>
-        <button
-          className='inline-flex items-center justify-center rounded-full bg-[#111827] px-6 py-3 font-semibold text-white transition hover:bg-[#1f2937]'
-          onClick={() => reset()}
-          type='button'
-        >
-          Try again
-        </button>
+
+        <div className='flex flex-col justify-center gap-3 sm:flex-row'>
+          <button className='btn-primary' onClick={() => reset()} type='button'>
+            Try again
+          </button>
+          <Link className='btn-outline' href='/'>
+            Return home
+          </Link>
+        </div>
       </div>
     </div>
   )

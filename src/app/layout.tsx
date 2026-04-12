@@ -1,22 +1,33 @@
 import '~/styles/globals.css'
 
 import type { Metadata } from 'next'
-import { DM_Sans } from 'next/font/google'
+import { Instrument_Serif, Sora } from 'next/font/google'
 import type { ReactNode } from 'react'
 
 import { cn } from '~/lib/utils'
 
-const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-dm-sans' })
+const sora = Sora({
+  subsets: ['latin'],
+  variable: '--font-sora',
+  weight: ['300', '400', '500', '600', '700'],
+})
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  variable: '--font-instrument',
+  weight: ['400'],
+  style: ['normal', 'italic'],
+})
 
 export const metadata: Metadata = {
   title: 'OnSpot RSVP',
-  description: 'A simple RSVP app built with Next.js and Tailwind CSS.',
+  description: 'The elegant event check-in system for modern organizers.',
 }
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html className={cn(dmSans.variable, 'font-sans')} lang='en'>
-      <body>{children}</body>
+    <html className={cn(sora.variable, instrumentSerif.variable)} lang='en'>
+      <body className='antialiased'>{children}</body>
     </html>
   )
 }

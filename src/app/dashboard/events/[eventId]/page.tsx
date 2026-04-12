@@ -17,7 +17,7 @@ type EventDetailPageProps = {
 }
 
 const getStatusBadgeClassName = (status: 'CONFIRMED' | 'WAITLISTED') => {
-  return status === 'CONFIRMED' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'
+  return status === 'CONFIRMED' ? 'badge-confirmed' : 'badge-waitlisted'
 }
 
 export default async function EventDetailPage({ params }: EventDetailPageProps) {
@@ -36,110 +36,155 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
   const shareUrl = new URL(`/r/${event.publicId}`, env.BETTER_AUTH_URL).toString()
 
   return (
-    <section className='flex flex-col gap-6'>
-      <div className='grid gap-6 lg:grid-cols-[1.1fr_0.9fr]'>
-        <div className='rounded-[2rem] bg-[#111827] p-8 text-white shadow-[0_24px_80px_rgba(17,24,39,0.24)]'>
-          <div className='flex h-full flex-col justify-between gap-8'>
+    <div className='space-y-6'>
+      {/* Back navigation */}
+      <Link
+        className='group inline-flex items-center gap-2 text-ink-subtle text-sm transition-colors hover:text-ink'
+        href='/dashboard'
+      >
+        <span className='transition-transform group-hover:-translate-x-1'>&larr;</span>
+        Back to dashboard
+      </Link>
+
+      {/* Event header card */}
+      <section className='grid gap-6 lg:grid-cols-[1.2fr_0.8fr]'>
+        {/* Main info */}
+        <div className='relative overflow-hidden rounded-2xl bg-ink p-8 lg:p-10'>
+          {/* Decorative gradient */}
+          <div className='absolute top-0 right-0 h-80 w-80 rounded-full bg-gradient-to-bl from-vermillion/15 to-transparent blur-3xl' />
+          <div className='absolute bottom-0 left-0 h-48 w-48 rounded-full bg-gradient-to-tr from-paper/5 to-transparent blur-2xl' />
+
+          <div className='relative space-y-6'>
             <div className='space-y-4'>
-              <p className='text-[#fbbf24] text-sm uppercase tracking-[0.28em]'>Event detail</p>
-              <div className='space-y-3'>
-                <h1 className='font-black text-4xl tracking-[-0.04em] sm:text-5xl'>{event.title}</h1>
-                <p className='max-w-2xl text-slate-300 leading-7'>{event.description}</p>
+              <div className='inline-flex items-center gap-2'>
+                <span className='h-1.5 w-1.5 rounded-full bg-vermillion' />
+                <span className='text-label text-paper/60'>Event Details</span>
               </div>
-              <div className='grid gap-4 sm:grid-cols-2'>
-                <div className='rounded-[1.5rem] border border-white/10 bg-white/6 p-4'>
-                  <p className='text-slate-400 text-sm uppercase tracking-[0.22em]'>Starts at</p>
-                  <p className='mt-2 font-semibold text-lg'>
-                    {formatEventDate(event.startsAt, event.startsAtOffsetMinutes)}
-                  </p>
-                </div>
-                <div className='rounded-[1.5rem] border border-white/10 bg-white/6 p-4'>
-                  <p className='text-slate-400 text-sm uppercase tracking-[0.22em]'>Location</p>
-                  <p className='mt-2 font-semibold text-lg'>{event.location}</p>
-                </div>
+
+              <h1 className='text-display-lg text-paper'>{event.title}</h1>
+
+              <p className='max-w-xl text-paper/60 leading-relaxed'>{event.description}</p>
+            </div>
+
+            {/* Event meta */}
+            <div className='grid gap-4 sm:grid-cols-2'>
+              <div className='rounded-xl border border-paper/10 bg-paper/5 p-4'>
+                <p className='mb-2 text-label text-paper/40'>Starts at</p>
+                <p className='font-medium text-paper'>{formatEventDate(event.startsAt, event.startsAtOffsetMinutes)}</p>
+              </div>
+              <div className='rounded-xl border border-paper/10 bg-paper/5 p-4'>
+                <p className='mb-2 text-label text-paper/40'>Location</p>
+                <p className='font-medium text-paper'>{event.location}</p>
               </div>
             </div>
 
-            <div className='flex flex-wrap items-center gap-3'>
+            {/* Actions */}
+            <div className='flex flex-wrap items-center gap-3 pt-2'>
               <ShareLinkButton shareUrl={shareUrl} />
               <Link
-                className='inline-flex items-center justify-center rounded-full border border-white/15 bg-white/8 px-4 py-2 font-medium text-sm text-white transition hover:bg-white/14'
+                className='btn-ghost text-paper/80 text-sm hover:bg-paper/10 hover:text-paper'
                 href={`/dashboard/events/${event.id}/export`}
               >
+                <svg
+                  aria-hidden='true'
+                  className='h-4 w-4'
+                  fill='none'
+                  focusable='false'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                >
+                  <path
+                    d='M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                  />
+                </svg>
                 Export CSV
-              </Link>
-              <Link className='inline-flex items-center text-[#fbbf24] underline underline-offset-4' href='/dashboard'>
-                Back to dashboard
               </Link>
             </div>
           </div>
         </div>
 
-        <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-1'>
-          <div className='rounded-[2rem] border border-black/5 bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)]'>
-            <p className='text-slate-500 text-sm'>Confirmed guests</p>
-            <p className='mt-3 font-bold text-4xl tracking-[-0.04em]'>{event.confirmedCount}</p>
+        {/* Stats grid */}
+        <div className='grid grid-cols-2 gap-4'>
+          <div className='card p-6'>
+            <p className='stat-label'>Confirmed</p>
+            <p className='stat-value'>{event.confirmedCount}</p>
           </div>
-          <div className='rounded-[2rem] border border-black/5 bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)]'>
-            <p className='text-slate-500 text-sm'>Checked in</p>
-            <p className='mt-3 font-bold text-4xl tracking-[-0.04em]'>{event.checkedInCount}</p>
+          <div className='card p-6'>
+            <p className='stat-label'>Checked in</p>
+            <p className='stat-value'>{event.checkedInCount}</p>
           </div>
-          <div className='rounded-[2rem] border border-black/5 bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)]'>
-            <p className='text-slate-500 text-sm'>Waitlist</p>
-            <p className='mt-3 font-bold text-4xl tracking-[-0.04em]'>{event.waitlistedCount}</p>
+          <div className='card p-6'>
+            <p className='stat-label'>Waitlist</p>
+            <p className='stat-value'>{event.waitlistedCount}</p>
           </div>
-          <div className='rounded-[2rem] border border-black/5 bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)]'>
-            <p className='text-slate-500 text-sm'>Remaining capacity</p>
-            <p className='mt-3 font-bold text-4xl tracking-[-0.04em]'>
-              {event.remainingCapacity === null ? '∞' : event.remainingCapacity}
+          <div className='card p-6'>
+            <p className='stat-label'>Remaining</p>
+            <p className='stat-value'>
+              {event.remainingCapacity === null ? <span className='text-3xl'>&infin;</span> : event.remainingCapacity}
             </p>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className='rounded-[2rem] border border-black/5 bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)]'>
-        <div className='mb-6 flex flex-col gap-2'>
-          <p className='text-[#b45309] text-sm uppercase tracking-[0.28em]'>Guest list</p>
-          <h2 className='font-bold text-3xl tracking-[-0.03em]'>RSVPs and check-in</h2>
+      {/* Guest list table */}
+      <section className='card overflow-hidden'>
+        <div className='border-border border-b p-6'>
+          <div className='flex items-center justify-between'>
+            <div>
+              <h2 className='font-serif text-2xl'>Guest List</h2>
+              <p className='mt-1 text-ink-subtle text-sm'>
+                {event.rsvps.length} {event.rsvps.length === 1 ? 'guest' : 'guests'} registered
+              </p>
+            </div>
+          </div>
         </div>
 
         {event.rsvps.length === 0 ? (
-          <p className='rounded-[1.5rem] bg-[#faf7f2] px-5 py-4 text-slate-600'>No guests have RSVP&apos;d yet.</p>
+          <div className='p-10 text-center'>
+            <p className='text-ink-subtle'>No guests have RSVP&apos;d yet.</p>
+          </div>
         ) : (
           <div className='overflow-x-auto'>
-            <table className='min-w-full border-separate border-spacing-y-3'>
+            <table className='w-full'>
               <thead>
-                <tr className='text-left text-slate-500 text-sm'>
-                  <th className='px-4 py-2 font-medium'>Guest</th>
-                  <th className='px-4 py-2 font-medium'>Status</th>
-                  <th className='px-4 py-2 font-medium'>RSVP&apos;d</th>
-                  <th className='px-4 py-2 font-medium'>Check-in</th>
-                  <th className='px-4 py-2 font-medium'>Action</th>
+                <tr className='border-border border-b bg-surface-sunken'>
+                  <th className='px-6 py-3 text-left text-label'>Guest</th>
+                  <th className='px-6 py-3 text-left text-label'>Status</th>
+                  <th className='px-6 py-3 text-left text-label'>RSVP&apos;d</th>
+                  <th className='px-6 py-3 text-left text-label'>Check-in</th>
+                  <th className='px-6 py-3 text-left text-label'>Action</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className='divide-y divide-border'>
                 {event.rsvps.map((rsvp) => (
-                  <tr className='rounded-[1.5rem] bg-[#faf7f2]' key={rsvp.id}>
-                    <td className='rounded-l-[1.5rem] px-4 py-4 align-top'>
-                      <div className='flex flex-col gap-1'>
-                        <p className='font-semibold'>{rsvp.name}</p>
-                        <p className='text-slate-600 text-sm'>{rsvp.email}</p>
+                  <tr className='transition-colors hover:bg-surface-sunken/50' key={rsvp.id}>
+                    <td className='px-6 py-4'>
+                      <div>
+                        <p className='font-medium text-ink'>{rsvp.name}</p>
+                        <p className='text-ink-subtle text-sm'>{rsvp.email}</p>
                       </div>
                     </td>
-                    <td className='px-4 py-4 align-top'>
-                      <span
-                        className={`inline-flex rounded-full px-3 py-1 font-medium text-xs uppercase tracking-[0.18em] ${getStatusBadgeClassName(rsvp.status)}`}
-                      >
+                    <td className='px-6 py-4'>
+                      <span className={getStatusBadgeClassName(rsvp.status)}>
                         {rsvp.status === 'CONFIRMED' ? 'Confirmed' : 'Waitlisted'}
                       </span>
                     </td>
-                    <td className='px-4 py-4 align-top text-slate-600 text-sm'>
+                    <td className='px-6 py-4 text-ink-subtle text-sm'>
                       {formatEventDate(rsvp.createdAt, event.startsAtOffsetMinutes)}
                     </td>
-                    <td className='px-4 py-4 align-top text-slate-600 text-sm'>
-                      {rsvp.checkedInAt ? formatEventDate(rsvp.checkedInAt, event.startsAtOffsetMinutes) : 'Not yet'}
+                    <td className='px-6 py-4 text-ink-subtle text-sm'>
+                      {rsvp.checkedInAt ? (
+                        <span className='font-medium text-emerald-dim'>
+                          {formatEventDate(rsvp.checkedInAt, event.startsAtOffsetMinutes)}
+                        </span>
+                      ) : (
+                        <span className='text-ink-subtle/50'>Not yet</span>
+                      )}
                     </td>
-                    <td className='rounded-r-[1.5rem] px-4 py-4 align-top'>
+                    <td className='px-6 py-4'>
                       {rsvp.status === 'CONFIRMED' ? (
                         <CheckInButton checkedIn={Boolean(rsvp.checkedInAt)} eventId={event.id} rsvpId={rsvp.id} />
                       ) : (
@@ -152,42 +197,41 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
             </table>
           </div>
         )}
-      </div>
+      </section>
 
-      <div className='rounded-[2rem] border border-black/5 bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.08)]'>
-        <div className='mb-6 flex flex-col gap-2'>
-          <p className='text-[#b45309] text-sm uppercase tracking-[0.28em]'>Activity log</p>
-          <h2 className='font-bold text-3xl tracking-[-0.03em]'>Recent guest activity</h2>
+      {/* Activity log */}
+      <section className='card'>
+        <div className='border-border border-b p-6'>
+          <h2 className='font-serif text-2xl'>Activity Log</h2>
+          <p className='mt-1 text-ink-subtle text-sm'>Recent guest activity</p>
         </div>
 
         {event.activities.length === 0 ? (
-          <p className='rounded-[1.5rem] bg-[#faf7f2] px-5 py-4 text-slate-600'>
-            Activity will appear here as guests RSVP and get checked in.
-          </p>
+          <div className='p-10 text-center'>
+            <p className='text-ink-subtle'>Activity will appear here as guests RSVP and get checked in.</p>
+          </div>
         ) : (
-          <div className='flex flex-col gap-3'>
+          <div className='divide-y divide-border'>
             {event.activities.map((activity) => (
-              <div className='rounded-[1.5rem] bg-[#faf7f2] px-5 py-4' key={activity.id}>
-                <div className='flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between'>
-                  <div className='space-y-1'>
-                    <p className='font-medium'>{activity.message}</p>
-                    <p className='text-slate-500 text-sm'>
-                      {activity.actorType === 'ORGANIZER'
-                        ? `Organizer${activity.actorUser?.name ? `: ${activity.actorUser.name}` : ''}`
-                        : activity.actorType === 'GUEST'
-                          ? 'Guest'
-                          : 'System'}
-                    </p>
-                  </div>
-                  <p className='text-slate-500 text-sm'>
-                    {formatEventDate(activity.createdAt, event.startsAtOffsetMinutes)}
+              <div className='flex items-center justify-between gap-4 px-6 py-4' key={activity.id}>
+                <div className='min-w-0 space-y-1'>
+                  <p className='truncate font-medium text-ink'>{activity.message}</p>
+                  <p className='text-ink-subtle text-sm'>
+                    {activity.actorType === 'ORGANIZER'
+                      ? `Organizer${activity.actorUser?.name ? `: ${activity.actorUser.name}` : ''}`
+                      : activity.actorType === 'GUEST'
+                        ? 'Guest'
+                        : 'System'}
                   </p>
                 </div>
+                <p className='whitespace-nowrap text-ink-subtle text-sm'>
+                  {formatEventDate(activity.createdAt, event.startsAtOffsetMinutes)}
+                </p>
               </div>
             ))}
           </div>
         )}
-      </div>
-    </section>
+      </section>
+    </div>
   )
 }

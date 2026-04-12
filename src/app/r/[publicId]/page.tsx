@@ -14,14 +14,14 @@ type PublicEventPageProps = {
 
 const getCapacityMessage = (capacity: number | null, remainingCapacity: number | null) => {
   if (capacity === null) {
-    return 'Unlimited capacity. Everyone who RSVPs will be confirmed automatically.'
+    return 'Open attendance'
   }
 
   if ((remainingCapacity ?? 0) > 0) {
-    return `${remainingCapacity} confirmed spot${remainingCapacity === 1 ? '' : 's'} left before new RSVPs join the waitlist.`
+    return `${remainingCapacity} spot${remainingCapacity === 1 ? '' : 's'} left`
   }
 
-  return 'Confirmed spots are full. New RSVPs will join the waitlist.'
+  return 'Waitlist only'
 }
 
 export default async function PublicEventPage({ params }: PublicEventPageProps) {
@@ -33,86 +33,132 @@ export default async function PublicEventPage({ params }: PublicEventPageProps) 
   }
 
   const submitLabel = event.remainingCapacity === 0 ? 'Join waitlist' : 'Confirm attendance'
+  const isFull = event.remainingCapacity === 0
 
   return (
-    <main className='min-h-screen bg-[#f6efe5] px-6 py-10 text-[#111827] sm:px-8 lg:px-10'>
-      <div className='mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl gap-6 lg:grid-cols-[1.05fr_0.95fr]'>
-        <section className='relative overflow-hidden rounded-[2rem] bg-[#111827] p-8 text-white shadow-[0_24px_80px_rgba(17,24,39,0.24)] sm:p-12'>
-          <div className='absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.24),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.18),transparent_32%)]' />
+    <main className='min-h-screen'>
+      {/* Background pattern */}
+      <div className='grid-pattern pointer-events-none fixed inset-0 opacity-30' />
 
-          <div className='absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),transparent_38%,transparent_62%,rgba(255,255,255,0.03))]' />
-
-          <div className='relative flex h-full flex-col justify-between gap-10'>
-            <div className='space-y-6'>
-              <Link
-                className='inline-flex items-center rounded-full border border-white/15 bg-white/8 px-4 py-1 text-[#fbbf24] text-xs uppercase tracking-[0.28em]'
-                href='/'
+      <div className='relative mx-auto max-w-6xl px-6 py-10 lg:px-8 lg:py-16'>
+        {/* Header */}
+        <header className='mb-10 animate-fade-up'>
+          <Link className='group inline-flex items-center gap-3' href='/'>
+            <div className='flex h-9 w-9 items-center justify-center rounded-lg bg-ink transition-transform duration-300 group-hover:scale-105'>
+              <svg
+                aria-hidden='true'
+                className='h-5 w-5 text-paper'
+                fill='currentColor'
+                focusable='false'
+                viewBox='0 0 24 24'
               >
-                OnSpot RSVP
-              </Link>
+                <path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5' />
+              </svg>
+            </div>
+            <span className='text-label'>OnSpot RSVP</span>
+          </Link>
+        </header>
 
-              <div className='space-y-5'>
-                <h1 className='max-w-3xl font-black text-5xl tracking-[-0.04em] sm:text-6xl'>{event.title}</h1>
-                <p className='max-w-2xl text-base text-slate-300 leading-7 sm:text-lg'>{event.description}</p>
+        {/* Main content grid */}
+        <div className='grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12'>
+          {/* Left - Event details */}
+          <section className='animation-delay-100 relative animate-fade-up overflow-hidden rounded-2xl bg-ink p-8 lg:p-12'>
+            {/* Decorative elements */}
+            <div className='diagonal-lines absolute inset-0 opacity-20' />
+            <div className='absolute top-0 right-0 h-80 w-80 rounded-full bg-gradient-to-bl from-vermillion/20 to-transparent blur-3xl' />
+            <div className='absolute bottom-0 left-0 h-48 w-48 rounded-full bg-gradient-to-tr from-paper/5 to-transparent blur-2xl' />
+
+            {/* Ticket stub edge effect */}
+            <div className='ticket-edge-right absolute top-0 right-0 bottom-0 w-6 opacity-20' />
+
+            <div className='relative space-y-8'>
+              {/* Event title */}
+              <div className='space-y-4'>
+                <div className='inline-flex items-center gap-2'>
+                  <span className='h-1.5 w-1.5 rounded-full bg-vermillion' />
+                  <span className='text-label text-paper/50'>Event Invitation</span>
+                </div>
+
+                <h1 className='text-display-xl text-paper'>{event.title}</h1>
+
+                <p className='max-w-xl text-lg text-paper/60 leading-relaxed'>{event.description}</p>
+              </div>
+
+              {/* Event meta cards */}
+              <div className='grid gap-4 sm:grid-cols-3'>
+                <div className='rounded-xl border border-paper/10 bg-paper/5 p-5'>
+                  <p className='mb-2 text-label text-paper/40'>When</p>
+                  <p className='font-medium text-paper'>
+                    {formatEventDate(event.startsAt, event.startsAtOffsetMinutes)}
+                  </p>
+                </div>
+
+                <div className='rounded-xl border border-paper/10 bg-paper/5 p-5'>
+                  <p className='mb-2 text-label text-paper/40'>Where</p>
+                  <p className='font-medium text-paper'>{event.location}</p>
+                </div>
+
+                <div className='rounded-xl border border-paper/10 bg-paper/5 p-5'>
+                  <p className='mb-2 text-label text-paper/40'>Availability</p>
+                  <p className={`font-medium ${isFull ? 'text-amber' : 'text-emerald'}`}>
+                    {getCapacityMessage(event.capacity, event.remainingCapacity)}
+                  </p>
+                </div>
               </div>
             </div>
+          </section>
 
-            <div className='grid gap-4 sm:grid-cols-3'>
-              <div className='rounded-[1.5rem] border border-white/10 bg-white/6 p-4 backdrop-blur-sm'>
-                <p className='text-slate-400 text-sm uppercase tracking-[0.22em]'>Starts at</p>
-                <p className='mt-2 font-semibold text-lg'>
-                  {formatEventDate(event.startsAt, event.startsAtOffsetMinutes)}
+          {/* Right - RSVP form */}
+          <section className='card-elevated animation-delay-200 animate-fade-up p-8 lg:p-10'>
+            <div className='space-y-8'>
+              {/* Form header */}
+              <div className='space-y-3'>
+                <p className='text-label text-vermillion'>RSVP</p>
+                <h2 className='text-display-md'>
+                  Reserve your
+                  <br />
+                  <span className='italic'>spot</span>
+                </h2>
+                <p className='text-ink-subtle leading-relaxed'>
+                  {isFull
+                    ? "Confirmed spots are full. Join the waitlist and we'll notify you if a spot opens up."
+                    : 'Enter your details below to confirm your attendance. It only takes a moment.'}
                 </p>
               </div>
 
-              <div className='rounded-[1.5rem] border border-white/10 bg-white/6 p-4 backdrop-blur-sm'>
-                <p className='text-slate-400 text-sm uppercase tracking-[0.22em]'>Location</p>
-                <p className='mt-2 font-semibold text-lg'>{event.location}</p>
+              {/* Stats */}
+              <div className='grid grid-cols-3 gap-3'>
+                <div className='stat-block text-center'>
+                  <p className='stat-label'>Confirmed</p>
+                  <p className='stat-value text-2xl'>{event.confirmedCount}</p>
+                </div>
+                <div className='stat-block text-center'>
+                  <p className='stat-label'>Waitlist</p>
+                  <p className='stat-value text-2xl'>{event.waitlistedCount}</p>
+                </div>
+                <div className='stat-block text-center'>
+                  <p className='stat-label'>Remaining</p>
+                  <p className='stat-value text-2xl'>
+                    {event.remainingCapacity === null ? <span>&infin;</span> : event.remainingCapacity}
+                  </p>
+                </div>
               </div>
 
-              <div className='rounded-[1.5rem] border border-white/10 bg-white/6 p-4 backdrop-blur-sm'>
-                <p className='text-slate-400 text-sm uppercase tracking-[0.22em]'>Capacity</p>
-                <p className='mt-2 font-semibold text-lg'>
-                  {getCapacityMessage(event.capacity, event.remainingCapacity)}
-                </p>
-              </div>
+              {/* RSVP Form */}
+              <PublicRsvpForm eventPublicId={event.publicId} submitLabel={submitLabel} />
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
 
-        <section className='rounded-[2rem] border border-black/5 bg-white p-8 shadow-[0_24px_70px_rgba(15,23,42,0.08)] sm:p-10'>
-          <div className='flex h-full flex-col justify-between gap-8'>
-            <div className='space-y-3'>
-              <p className='text-[#b45309] text-sm uppercase tracking-[0.28em]'>Public RSVP</p>
-              <h2 className='font-bold text-3xl tracking-[-0.03em]'>Reserve your spot or join the waitlist.</h2>
-              <p className='text-base text-slate-600 leading-7'>
-                RSVP once with your name and email. If confirmed spots are full, you will automatically join the
-                waitlist.
-              </p>
-            </div>
-
-            <div className='grid gap-4 sm:grid-cols-3'>
-              <div className='rounded-[1.5rem] bg-[#faf7f2] p-4'>
-                <p className='text-slate-500 text-sm'>Confirmed</p>
-                <p className='mt-2 font-semibold text-2xl'>{event.confirmedCount}</p>
-              </div>
-
-              <div className='rounded-[1.5rem] bg-[#faf7f2] p-4'>
-                <p className='text-slate-500 text-sm'>Waitlist</p>
-                <p className='mt-2 font-semibold text-2xl'>{event.waitlistedCount}</p>
-              </div>
-
-              <div className='rounded-[1.5rem] bg-[#faf7f2] p-4'>
-                <p className='text-slate-500 text-sm'>Spots left</p>
-                <p className='mt-2 font-semibold text-2xl'>
-                  {event.remainingCapacity === null ? '∞' : event.remainingCapacity}
-                </p>
-              </div>
-            </div>
-
-            <PublicRsvpForm eventPublicId={event.publicId} submitLabel={submitLabel} />
-          </div>
-        </section>
+        {/* Footer */}
+        <footer className='animation-delay-400 mt-16 animate-fade-up text-center'>
+          <p className='text-ink-subtle text-xs'>
+            Powered by{' '}
+            <Link className='font-medium text-ink transition-colors hover:text-vermillion' href='/'>
+              OnSpot RSVP
+            </Link>
+          </p>
+        </footer>
       </div>
     </main>
   )

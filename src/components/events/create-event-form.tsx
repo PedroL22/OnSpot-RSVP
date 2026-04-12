@@ -8,11 +8,6 @@ import { createEvent } from '~/app/actions/events'
 import { initialActionState } from '~/app/actions/types'
 import { cn } from '~/lib/utils'
 
-const inputClassName =
-  'min-h-12 w-full rounded-2xl border border-[#111827]/10 bg-[#faf7f2] px-4 text-[#111827] outline-none transition placeholder:text-slate-400 focus:border-[#111827]/25 focus:bg-white'
-
-const textareaClassName = `${inputClassName} min-h-36 py-3`
-
 const getFieldError = (fieldErrors: Record<string, string[]> | undefined, field: string) => {
   return fieldErrors?.[field]?.[0]
 }
@@ -39,93 +34,95 @@ export const CreateEventForm = () => {
   const capacityError = getFieldError(state.fieldErrors, 'capacity')
 
   return (
-    <form action={formAction} className='flex flex-col gap-5'>
+    <form action={formAction} className='space-y-6'>
       <input name='startsAtOffsetMinutes' type='hidden' value={startsAtOffsetMinutes} />
 
       <div className='grid gap-5 sm:grid-cols-2'>
-        <div className='flex flex-col gap-2 sm:col-span-2'>
-          <label className='font-medium text-slate-700 text-sm' htmlFor='title'>
-            Title
+        <div className='space-y-2 sm:col-span-2'>
+          <label className='text-label' htmlFor='title'>
+            Event title
           </label>
-
           <input
             aria-invalid={Boolean(titleError)}
-            className={cn(inputClassName, titleError && 'border-red-300 bg-red-50')}
+            className={cn('input-editorial', titleError && 'border-vermillion/50 bg-vermillion/[0.02]')}
             id='title'
             name='title'
             placeholder='Spring launch gathering'
             type='text'
           />
-          {titleError ? <p className='text-red-600 text-sm'>{titleError}</p> : null}
+          {titleError ? <p className='text-sm text-vermillion'>{titleError}</p> : null}
         </div>
 
-        <div className='flex flex-col gap-2 sm:col-span-2'>
-          <label className='font-medium text-slate-700 text-sm' htmlFor='description'>
+        <div className='space-y-2 sm:col-span-2'>
+          <label className='text-label' htmlFor='description'>
             Description
           </label>
-
           <textarea
             aria-invalid={Boolean(descriptionError)}
-            className={cn(textareaClassName, descriptionError && 'border-red-300 bg-red-50')}
+            className={cn(
+              'input-editorial min-h-32 resize-none py-3',
+              descriptionError && 'border-vermillion/50 bg-vermillion/[0.02]'
+            )}
             id='description'
             name='description'
             placeholder='What guests should know before they arrive.'
           />
-          {descriptionError ? <p className='text-red-600 text-sm'>{descriptionError}</p> : null}
+          {descriptionError ? <p className='text-sm text-vermillion'>{descriptionError}</p> : null}
         </div>
 
-        <div className='flex flex-col gap-2'>
-          <label className='font-medium text-slate-700 text-sm' htmlFor='startsAt'>
+        <div className='space-y-2'>
+          <label className='text-label' htmlFor='startsAt'>
             Starts at
           </label>
-
           <input
             aria-invalid={Boolean(startsAtError)}
-            className={cn(inputClassName, startsAtError && 'border-red-300 bg-red-50')}
+            className={cn('input-editorial', startsAtError && 'border-vermillion/50 bg-vermillion/[0.02]')}
             id='startsAt'
             name='startsAt'
             onChange={(event) => setStartsAtOffsetMinutes(getDateTimeOffsetMinutes(event.currentTarget.value))}
             type='datetime-local'
           />
-          {startsAtError ? <p className='text-red-600 text-sm'>{startsAtError}</p> : null}
+          {startsAtError ? <p className='text-sm text-vermillion'>{startsAtError}</p> : null}
         </div>
 
-        <div className='flex flex-col gap-2'>
-          <label className='font-medium text-slate-700 text-sm' htmlFor='capacity'>
+        <div className='space-y-2'>
+          <label className='text-label' htmlFor='capacity'>
             Capacity
           </label>
-
           <input
             aria-invalid={Boolean(capacityError)}
-            className={cn(inputClassName, capacityError && 'border-red-300 bg-red-50')}
+            className={cn('input-editorial', capacityError && 'border-vermillion/50 bg-vermillion/[0.02]')}
             id='capacity'
             name='capacity'
             placeholder='Leave blank for unlimited'
             type='number'
           />
-          {capacityError ? <p className='text-red-600 text-sm'>{capacityError}</p> : null}
+          {capacityError ? <p className='text-sm text-vermillion'>{capacityError}</p> : null}
         </div>
 
-        <div className='flex flex-col gap-2 sm:col-span-2'>
-          <label className='font-medium text-slate-700 text-sm' htmlFor='location'>
+        <div className='space-y-2 sm:col-span-2'>
+          <label className='text-label' htmlFor='location'>
             Location
           </label>
-
           <input
             aria-invalid={Boolean(locationError)}
-            className={cn(inputClassName, locationError && 'border-red-300 bg-red-50')}
+            className={cn('input-editorial', locationError && 'border-vermillion/50 bg-vermillion/[0.02]')}
             id='location'
             name='location'
             placeholder='Rua dos Mercadores, 88'
             type='text'
           />
-          {locationError ? <p className='text-red-600 text-sm'>{locationError}</p> : null}
+          {locationError ? <p className='text-sm text-vermillion'>{locationError}</p> : null}
         </div>
       </div>
 
-      {state.message && !state.success ? <p className='text-red-600 text-sm'>{state.message}</p> : null}
+      {state.message && !state.success ? (
+        <div className='rounded-lg border border-vermillion/20 bg-vermillion/5 p-4'>
+          <p className='text-sm text-vermillion'>{state.message}</p>
+        </div>
+      ) : null}
 
-      <FormSubmitButton idleLabel='Create event' pendingLabel='Creating event...' />
+      <FormSubmitButton idleLabel='Create event' pendingLabel='Creating...' />
     </form>
   )
 }

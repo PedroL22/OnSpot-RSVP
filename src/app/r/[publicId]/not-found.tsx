@@ -2,22 +2,54 @@ import Link from 'next/link'
 
 export default function PublicEventNotFound() {
   return (
-    <main className='min-h-screen bg-[#f6efe5] px-6 py-10 text-[#111827] sm:px-8 lg:px-10'>
-      <div className='mx-auto flex min-h-[calc(100vh-5rem)] max-w-3xl items-center justify-center'>
-        <div className='w-full rounded-[2rem] border border-black/5 bg-white p-10 text-center shadow-[0_24px_70px_rgba(15,23,42,0.08)]'>
-          <p className='text-[#b45309] text-sm uppercase tracking-[0.28em]'>Event not found</p>
+    <main className='flex min-h-screen items-center justify-center p-6'>
+      {/* Background pattern */}
+      <div className='grid-pattern pointer-events-none fixed inset-0 opacity-30' />
 
-          <h1 className='mt-4 font-bold text-4xl tracking-[-0.04em]'>This RSVP page is no longer available.</h1>
+      <div className='relative w-full max-w-lg animate-scale-in'>
+        <div className='card-elevated p-10 text-center'>
+          {/* Not found icon */}
+          <div className='mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-sunken'>
+            <svg
+              aria-hidden='true'
+              className='h-8 w-8 text-ink-subtle'
+              fill='none'
+              focusable='false'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path
+                d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={1.5}
+              />
+              <path d='M10 14l2 2 4-4' strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} />
+            </svg>
+          </div>
 
-          <p className='mt-4 text-slate-600 leading-7'>
+          <p className='mb-4 text-label'>Event not found</p>
+          <h1 className='mb-4 text-display-md'>
+            This RSVP page is
+            <br />
+            <span className='italic'>no longer available</span>
+          </h1>
+          <p className='mb-8 text-ink-subtle leading-relaxed'>
             The link may be incorrect, or the organizer may have removed the event.
           </p>
 
-          <Link
-            className='mt-8 inline-flex items-center justify-center rounded-full bg-[#111827] px-6 py-3 font-semibold text-white transition hover:bg-[#1f2937]'
-            href='/'
-          >
+          <Link className='btn-primary inline-flex' href='/'>
             Return home
+            <svg
+              aria-hidden='true'
+              className='h-4 w-4'
+              fill='none'
+              focusable='false'
+              stroke='currentColor'
+              viewBox='0 0 24 24'
+            >
+              <path d='M17 8l4 4m0 0l-4 4m4-4H3' strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} />
+            </svg>
           </Link>
         </div>
       </div>

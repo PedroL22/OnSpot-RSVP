@@ -12,9 +12,6 @@ type PublicRsvpFormProps = {
   submitLabel: string
 }
 
-const inputClassName =
-  'min-h-12 w-full rounded-2xl border border-[#111827]/10 bg-[#faf7f2] px-4 text-[#111827] outline-none transition placeholder:text-slate-400 focus:border-[#111827]/25 focus:bg-white'
-
 const getFieldError = (fieldErrors: Record<string, string[]> | undefined, field: string) => {
   return fieldErrors?.[field]?.[0]
 }
@@ -33,56 +30,54 @@ export const PublicRsvpForm = ({ eventPublicId, submitLabel }: PublicRsvpFormPro
   const emailError = getFieldError(state.fieldErrors, 'email')
 
   return (
-    <div className='flex flex-col gap-5'>
-      <form action={formAction} className='flex flex-col gap-4' ref={formRef}>
+    <div className='space-y-5'>
+      <form action={formAction} className='space-y-4' ref={formRef}>
         <input name='eventPublicId' type='hidden' value={eventPublicId} />
 
-        <div className='flex flex-col gap-2'>
-          <label className='font-medium text-slate-700 text-sm' htmlFor='public-name'>
+        <div className='space-y-2'>
+          <label className='text-label' htmlFor='public-name'>
             Name
           </label>
-
           <input
             aria-invalid={Boolean(nameError)}
-            className={cn(inputClassName, nameError && 'border-red-300 bg-red-50')}
+            className={cn('input-editorial', nameError && 'border-vermillion/50 bg-vermillion/[0.02]')}
             id='public-name'
             name='name'
             placeholder='Alex Morgan'
             type='text'
           />
-          {nameError ? <p className='text-red-600 text-sm'>{nameError}</p> : null}
+          {nameError ? <p className='text-sm text-vermillion'>{nameError}</p> : null}
         </div>
 
-        <div className='flex flex-col gap-2'>
-          <label className='font-medium text-slate-700 text-sm' htmlFor='public-email'>
+        <div className='space-y-2'>
+          <label className='text-label' htmlFor='public-email'>
             Email
           </label>
-
           <input
             aria-invalid={Boolean(emailError)}
-            className={cn(inputClassName, emailError && 'border-red-300 bg-red-50')}
+            className={cn('input-editorial', emailError && 'border-vermillion/50 bg-vermillion/[0.02]')}
             id='public-email'
             name='email'
             placeholder='alex@onspot.app'
             type='email'
           />
-          {emailError ? <p className='text-red-600 text-sm'>{emailError}</p> : null}
+          {emailError ? <p className='text-sm text-vermillion'>{emailError}</p> : null}
         </div>
 
-        <FormSubmitButton idleLabel={submitLabel} pendingLabel='Submitting RSVP...' />
+        <FormSubmitButton idleLabel={submitLabel} pendingLabel='Submitting...' />
       </form>
 
       {!!state.message && (
-        <p
+        <div
           className={cn(
-            'rounded-2xl border px-4 py-3 text-sm',
+            'rounded-lg border p-4 text-sm',
             state.success
-              ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
-              : 'border-red-200 bg-red-50 text-red-700'
+              ? 'border-emerald/20 bg-emerald/5 text-emerald-dim'
+              : 'border-vermillion/20 bg-vermillion/5 text-vermillion'
           )}
         >
-          {state.message}
-        </p>
+          <p className='font-medium'>{state.message}</p>
+        </div>
       )}
     </div>
   )

@@ -19,60 +19,110 @@ export const AuthShell = ({
   title,
 }: AuthShellProps) => {
   return (
-    <main className='min-h-screen bg-[#f6efe5] px-6 py-10 text-[#111827] sm:px-8 lg:px-10'>
-      <div className='mx-auto grid min-h-[calc(100vh-5rem)] max-w-6xl gap-6 lg:grid-cols-[1.05fr_0.95fr]'>
-        <section className='relative overflow-hidden rounded-[2rem] bg-[#111827] p-8 text-white shadow-[0_24px_80px_rgba(17,24,39,0.24)] sm:p-12'>
-          <div className='absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.24),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,0.18),transparent_32%)]' />
-          <div className='absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),transparent_38%,transparent_62%,rgba(255,255,255,0.03))]' />
-          <div className='relative flex h-full flex-col justify-between gap-10'>
-            <div className='space-y-6'>
-              <Link
-                className='inline-flex items-center rounded-full border border-white/15 bg-white/8 px-4 py-1 text-[#fbbf24] text-xs uppercase tracking-[0.28em]'
-                href='/'
+    <main className='flex min-h-screen'>
+      {/* Left panel - Branding */}
+      <div className='relative hidden overflow-hidden bg-ink lg:flex lg:w-1/2'>
+        {/* Decorative elements */}
+        <div className='diagonal-lines absolute inset-0 opacity-20' />
+        <div className='absolute top-0 right-0 h-96 w-96 rounded-full bg-gradient-to-bl from-vermillion/20 to-transparent blur-3xl' />
+        <div className='absolute bottom-0 left-0 h-64 w-64 rounded-full bg-gradient-to-tr from-paper/10 to-transparent blur-2xl' />
+
+        {/* Grid pattern overlay */}
+        <div className='grid-pattern absolute inset-0 opacity-5' />
+
+        <div className='relative z-10 flex w-full flex-col justify-between p-12'>
+          {/* Logo */}
+          <Link className='group flex items-center gap-3' href='/'>
+            <div className='flex h-10 w-10 items-center justify-center rounded-lg border border-paper/10 bg-paper/10 transition-all duration-300 group-hover:bg-paper/15'>
+              <svg
+                aria-hidden='true'
+                className='h-5 w-5 text-paper'
+                fill='currentColor'
+                focusable='false'
+                viewBox='0 0 24 24'
               >
-                OnSpot RSVP
-              </Link>
-              <div className='max-w-xl space-y-5'>
-                <h1 className='font-black text-5xl tracking-[-0.04em] sm:text-6xl'>{title}</h1>
-                <p className='text-base text-slate-300 leading-7 sm:text-lg'>{description}</p>
+                <path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5' />
+              </svg>
+            </div>
+            <span className='font-semibold text-paper tracking-tight'>OnSpot</span>
+          </Link>
+
+          {/* Main content */}
+          <div className='space-y-8'>
+            <div className='space-y-6'>
+              <div className='inline-flex items-center gap-2'>
+                <span className='h-1.5 w-1.5 rounded-full bg-vermillion' />
+                <span className='text-label text-paper/50'>Authentication</span>
               </div>
+
+              <h1 className='max-w-md text-display-xl text-paper'>{title}</h1>
+
+              <p className='max-w-md text-lg text-paper/60 leading-relaxed'>{description}</p>
             </div>
 
-            <div className='grid gap-4 sm:grid-cols-2'>
-              <div className='rounded-[1.5rem] border border-white/10 bg-white/6 p-5 backdrop-blur-sm'>
-                <p className='text-slate-400 text-sm uppercase tracking-[0.22em]'>Fast path</p>
-                <p className='mt-3 font-semibold text-lg'>Email and password work out of the box.</p>
+            {/* Feature highlights */}
+            <div className='grid max-w-md gap-4'>
+              <div className='rounded-xl border border-paper/10 bg-paper/5 p-5'>
+                <p className='mb-2 text-label text-paper/40'>Fast path</p>
+                <p className='font-medium text-paper'>Email and password work out of the box</p>
               </div>
-              <div className='rounded-[1.5rem] border border-white/10 bg-white/6 p-5 backdrop-blur-sm'>
-                <p className='text-slate-400 text-sm uppercase tracking-[0.22em]'>Flexible entry</p>
-                <p className='mt-3 font-semibold text-lg'>GitHub appears automatically when the OAuth keys exist.</p>
+              <div className='rounded-xl border border-paper/10 bg-paper/5 p-5'>
+                <p className='mb-2 text-label text-paper/40'>Flexible entry</p>
+                <p className='font-medium text-paper'>GitHub appears when OAuth keys exist</p>
               </div>
             </div>
           </div>
-        </section>
 
-        <section className='flex rounded-[2rem] border border-black/5 bg-white p-8 shadow-[0_24px_70px_rgba(15,23,42,0.08)] sm:p-10'>
-          <div className='flex w-full flex-col justify-between gap-8'>
-            <div className='space-y-3'>
-              <p className='text-[#b45309] text-sm uppercase tracking-[0.28em]'>Authentication</p>
-              <p className='max-w-lg text-base text-slate-600 leading-7'>
-                Keep the browser session thin and let Better Auth handle the account lifecycle on the server.
-              </p>
-            </div>
+          {/* Footer */}
+          <p className='text-paper/40 text-sm'>Secure authentication powered by Better Auth</p>
+        </div>
+      </div>
 
-            {children}
+      {/* Right panel - Form */}
+      <div className='flex flex-1 items-center justify-center p-6 lg:p-12'>
+        {/* Subtle background pattern */}
+        <div className='grid-pattern pointer-events-none fixed inset-0 opacity-30 lg:left-1/2' />
 
-            <p className='text-slate-500 text-sm'>
+        <div className='relative w-full max-w-md animate-fade-up space-y-8'>
+          {/* Mobile logo */}
+          <div className='lg:hidden'>
+            <Link className='mb-8 flex items-center gap-3' href='/'>
+              <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-ink'>
+                <svg
+                  aria-hidden='true'
+                  className='h-5 w-5 text-paper'
+                  fill='currentColor'
+                  focusable='false'
+                  viewBox='0 0 24 24'
+                >
+                  <path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5' />
+                </svg>
+              </div>
+              <span className='font-semibold text-ink tracking-tight'>OnSpot</span>
+            </Link>
+          </div>
+
+          {/* Form header */}
+          <div className='space-y-2'>
+            <p className='text-label'>Authentication</p>
+            <p className='text-ink-subtle leading-relaxed'>
+              Keep the browser session thin and let Better Auth handle the account lifecycle on the server.
+            </p>
+          </div>
+
+          {/* Form content */}
+          <div className='space-y-6'>{children}</div>
+
+          {/* Alternate link */}
+          <div className='border-border border-t pt-6'>
+            <p className='text-ink-subtle text-sm'>
               {alternateLabel}{' '}
-              <Link
-                className='font-semibold text-[#111827] underline decoration-[#f59e0b]/60 underline-offset-4'
-                href={alternateHref}
-              >
+              <Link className='font-semibold text-ink transition-colors hover:text-vermillion' href={alternateHref}>
                 {alternateText}
               </Link>
             </p>
           </div>
-        </section>
+        </div>
       </div>
     </main>
   )
