@@ -1,7 +1,12 @@
+import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 
+import { CaretLeftIcon } from '@phosphor-icons/react/dist/ssr'
+
+import { buttonVariants } from '~/components/ui/button'
 import { env } from '~/env'
 import { formatEventDate } from '~/lib/formatters'
+import { cn } from '~/lib/utils'
 import { getSession } from '~/server/better-auth/server'
 import { getOrganizerEventDetail } from '~/server/queries/events'
 
@@ -37,7 +42,18 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
 
   return (
     <div className='space-y-6'>
-      <section className='grid gap-4 lg:grid-cols-[1fr_280px]'>
+      <Link
+        className={cn(
+          buttonVariants({ size: 'sm', variant: 'ghost' }),
+          'w-fit gap-2 font-mono text-[11px] uppercase tracking-[0.16em]'
+        )}
+        href='/dashboard'
+      >
+        <CaretLeftIcon data-icon='inline-start' />
+        Back to dashboard
+      </Link>
+
+      <section className='grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_128px]'>
         <EventDetailHero
           capacityLabel={event.capacity ? `${event.confirmedCount} / ${event.capacity}` : null}
           capacityValue={capacityPct}
@@ -48,6 +64,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
           startsAtLabel={formatDate(event.startsAt)}
           title={event.title}
         />
+
         <EventStatsGrid
           checkedInCount={event.checkedInCount}
           confirmedCount={event.confirmedCount}

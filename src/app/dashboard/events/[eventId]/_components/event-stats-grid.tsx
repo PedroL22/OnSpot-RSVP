@@ -14,7 +14,7 @@ export const EventStatsGrid = ({
   waitlistedCount,
 }: EventStatsGridProps) => {
   return (
-    <div className='grid grid-cols-2 gap-3 lg:grid-cols-1'>
+    <div className='grid h-full grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-1'>
       <MetricCard label='Confirmed' value={confirmedCount} />
       <MetricCard label='Checked in' tone='primary' value={checkedInCount} />
       <MetricCard label='Waitlisted' tone='warning' value={waitlistedCount} />

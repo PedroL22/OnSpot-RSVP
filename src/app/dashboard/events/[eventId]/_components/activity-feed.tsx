@@ -27,11 +27,12 @@ const getActorLabel = (activity: ActivityFeedProps['activities'][number]) => {
 
 export const ActivityFeed = ({ activities, formatDate }: ActivityFeedProps) => {
   return (
-    <Card className='border-border/80 bg-card/95 py-0 shadow-(--shadow-sm)'>
+    <Card className='gap-0 border-border/80 bg-card/95 py-0 shadow-(--shadow-sm'>
       <CardHeader className='border-border border-b px-6 py-4'>
         <CardTitle className='font-display text-3xl uppercase tracking-[0.03em]'>Activity log</CardTitle>
         <p className='font-mono text-[11px] text-muted-foreground'>Recent guest activity</p>
       </CardHeader>
+
       <CardContent className='px-0 py-0'>
         {activities.length === 0 ? (
           <div className='px-6 py-12 text-center font-mono text-[11px] text-muted-foreground uppercase tracking-[0.18em]'>
@@ -43,11 +44,13 @@ export const ActivityFeed = ({ activities, formatDate }: ActivityFeedProps) => {
               <div className='flex items-center justify-between gap-4 px-6 py-4' key={activity.id}>
                 <div className='flex min-w-0 items-start gap-3'>
                   <span className='mt-1.5 size-1.5 shrink-0 rounded-full bg-primary/60' />
+
                   <div className='min-w-0'>
                     <p className='truncate text-foreground text-sm'>{activity.message}</p>
                     <p className='mt-1 font-mono text-[10px] text-muted-foreground'>{getActorLabel(activity)}</p>
                   </div>
                 </div>
+
                 <p className='shrink-0 font-mono text-[11px] text-muted-foreground'>{formatDate(activity.createdAt)}</p>
               </div>
             ))}
