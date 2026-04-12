@@ -1,51 +1,102 @@
 # OnSpot RSVP
 
-OnSpot RSVP is a lightweight event RSVP and check-in app built with Next.js App Router. The goal is simple: ship the smallest useful version of "the simplest possible Partiful" without dragging in architecture that the product does not need.
+Lightweight event RSVP and check-in app built for the Gathering take-home project with Next.js App Router, Prisma, PostgreSQL, Better Auth, and Tailwind CSS.
 
-The project leans hard into server-first React, thin client boundaries, and pragmatic UX. Database reads happen in React Server Components, mutations flow through Server Actions, and interactive client surfaces stay small and focused.
+## Setup
 
-## Tech Stack
+1. Install dependencies:
 
-- Next.js 15
-- React 19
-- TypeScript
-- PostgreSQL
-- Prisma
-- Better Auth
-- Zod
-- Tailwind CSS v4
-- shadcn/ui patterns
-- Base UI primitives
-- Biome
-- Bun
+```bash
+bun install
+```
 
-## Architecture Notes
+2. Copy `.env.example` to `.env` and fill in:
 
-### Server-First by Default
+```env
+DATABASE_URL=
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_GITHUB_CLIENT_ID=
+BETTER_AUTH_GITHUB_CLIENT_SECRET=
+```
 
-This codebase prefers React Server Components for reads and Server Actions for writes. That keeps data access close to the database, avoids unnecessary client-side orchestration, and reduces the amount of JavaScript shipped to the browser.
+3. Run the database migration:
 
-Input validation happens at the mutation boundary with Zod, and fallible async work is normalized through the shared `tryCatch` utility for explicit result handling.
+```bash
+bunx --bun prisma migrate dev
+```
+
+4. Seed demo data:
+
+```bash
+bun run db:seed
+```
+
+5. Start the app:
+
+```bash
+bun run dev
+```
+
+6. Optional verification commands:
+
+```bash
+bun run verify
+bun run build
+```
+
+## Demo Credentials
+
+- Email: `organizer@onspot.app`
+- Password: `OnspotDemo123!`
+
+## Deployed URL
+
+- [https://on-spot-rsvp.vercel.app/](https://on-spot-rsvp.vercel.app/)
+- Verified against `/`, `/sign-in`, `/sign-up`, and unauthenticated `/dashboard`.
+
+## What I Built
+
+- Organizer auth with Better Auth email/password flows and protected dashboard routes.
+- Event creation with title, description, starts at, location, and optional capacity.
+- Public RSVP pages at `/r/[publicId]`.
+- Organizer dashboard with event summaries, guest counts, check-in status, and share-link copy actions.
+- Organizer event detail pages with RSVP table, manual check-in, CSV export, and activity log.
+- Deterministic seed data with one organizer and three realistic review scenarios.
+
+## Stretch Goals I Picked
+
+- `Waitlist`: automatic waitlisting when confirmed capacity is full, plus manual organizer promotion.
+- `Activity log`: event activity records for RSVP creation, waitlist joins, promotions, and check-ins.
+- Bonus shipped: `CSV export` via a protected per-event guest-list export route.
+
+## What I Cut and Why
+
+- Custom RSVP questions: useful, but it would expand the schema, public form UX, and dashboard rendering surface too much for the timebox.
+- Check-in codes: interesting, but manual organizer check-in already proves the event-day workflow.
+- Mock email confirmation: intentionally skipped to keep the project focused on the RSVP lifecycle instead of external delivery plumbing.
+- Event editing and deletion: valuable for production, but lower priority than shipping create, RSVP, waitlist, and check-in flows solidly.
+- Google OAuth: deliberately cut from the timebox because Google Cloud Console setup adds meaningful overhead (consent screen, test users, provider configuration) for limited additional evaluation value. Email/password plus GitHub OAuth already demonstrate both native auth and third-party provider integration while keeping the project focused on the core RSVP flow.
+
+## Trade-offs
 
 ### Data Fetching & State Strategy: Native App Router vs. tRPC & TanStack Query
 
 Given my strong background in the T3 Stack, my initial instinct was to reach for tRPC and TanStack Query to guarantee end-to-end type safety and handle client-side state. However, I deliberately chose to avoid them.
 
-The project brief requested a lightweight tool, essentially "the simplest possible Partiful". Introducing the boilerplate required for tRPC, such as routers, context, and client-side providers, would be an over-engineering trap for an application of this scope.
+The project brief requested a lightweight tool, essentially "the simplest possible Partiful". Introducing the boilerplate required for tRPC (routers, context, client-side providers) would be an over-engineering trap for an application of this scope.
 
-Instead, I fully embraced the modern Next.js App Router paradigm, directly addressing the evaluation criteria around server versus client component decisions. By using React Server Components for direct database reads, I get the same native end-to-end type safety while drastically reducing the client-side JavaScript bundle, which matters for a fast-loading public RSVP page.
+Instead, I fully embraced the modern Next.js App Router paradigm, directly addressing the evaluation criteria regarding server versus client component decisions. By utilizing React Server Components (RSC) for direct database reads, I achieved the same end-to-end type safety natively while drastically reducing the client-side JavaScript bundle—which is crucial for a fast-loading public RSVP page.
 
-For highly interactive client elements, such as an admin check-in toggle that needs zero-latency feedback, the common reflex would be TanStack Query with optimistic updates. Instead, I use React's native `useOptimistic` hook paired with Server Actions. That gives the interface the immediate, snappy behavior expected in high-interactivity flows without paying the architectural cost of a heavier client-side state management library.
+Furthermore, for highly interactive client elements—such as the admin "Check-in" toggle that requires zero-latency feedback—reaching for TanStack Query for optimistic updates is a common reflex. Instead, I utilized React's native `useOptimistic` hook paired with Server Actions. This delivers the immediate, snappy UX expected in high-interactivity scenarios without the architectural cost of shipping a heavy client-side state management library.
 
-This is a deliberate choice: prefer modern React and App Router primitives first, and only introduce extra abstraction when the product actually earns it.
+### UI Primitives: shadcn/ui patterns with Base UI vs. Radix UI
 
-### UI Primitives: shadcn/ui Patterns with Base UI vs. Radix UI
+While shadcn/ui provides excellent rapid scaffolding for a polished, accessible interface, its default reliance on Radix UI primitives (which was a massive paradigm shift at the time) can sometimes introduce heavier abstraction layers, extensive context providers, and complex `asChild` prop-drilling.
 
-While shadcn/ui provides excellent rapid scaffolding for a polished, accessible interface, its default reliance on Radix UI primitives can sometimes introduce heavier abstraction layers, extensive context providers, and complex `asChild` prop-drilling.
+For this project, I maintained the shadcn/ui design patterns and Tailwind integration but opted to back the interactive components with **Base UI** headless primitives instead of Radix.
 
-For this project, I kept the shadcn/ui design patterns and Tailwind integration so the product could move quickly without burning time on custom CSS from scratch, but I backed interactive components with **Base UI** primitives instead of Radix.
-
-Base UI provides a leaner DOM footprint and a more straightforward API surface. For a lightweight, public-facing RSVP flow where time-to-interactive and bundle size matter, that tradeoff fits the project better while still preserving strong accessibility guarantees.
+Base UI offers a significantly leaner DOM footprint and a more straightforward, modern API surface. For a lightweight, public-facing RSVP page where time-to-interactive and client bundle size are critical, Base UI delivers the necessary WAI-ARIA accessibility guarantees without the abstraction tax. This aligns perfectly with the goal of keeping the React 19 client boundaries as thin and fast as possible.
 
 ### Deterministic Builds & Dependency Management
 
@@ -55,97 +106,32 @@ All direct dependencies in the package.json are explicitly pinned to exact versi
 
 To maintain security without sacrificing determinism, in a production environment, this exact-pinning strategy would be paired with automated dependency updates (e.g., Dependabot or Renovate) to catch and patch CVEs through the CI/CD pipeline.
 
-### What I Cut and Why: Google OAuth Integration
-While Google OAuth is an industry standard for B2C applications, I deliberately cut it from this 8-hour scope. The Google Cloud Console requires significant configuration overhead (consent screens, test user whitelisting, scope approvals) just to get a development environment running.
+- I used opaque `publicId` values for share links instead of slugs. They are simpler to expose publicly and decouple routing from mutable event titles.
+- I kept Better Auth's generated tables as-is and only enforced the stricter snake_case mapping rules on app-owned domain models. That avoided spending the timebox fighting the auth adapter.
 
-Instead, I implemented GitHub OAuth alongside traditional Email/Password credentials. This combination successfully demonstrates my ability to implement both native session management and external OAuth2 identity providers, while strictly respecting the time budget and remaining pragmatic.
+## AI Usage
 
-## Local Development
+- OpenAI Codex (GPT-5.4) for implementation support, refactors, validation passes, and deployment remediation.
+- Claude Code (Sonnet 4.6) for some UI design iteration.
 
-This repository uses `bun` as the package manager because `bun.lock` is present in the project root.
+## Time Spent
 
-### 1. Install dependencies
+`~8.5 hours`, focused on core architecture, server/client boundaries, Prisma modeling, and the two chosen stretch goals. `CSV export` was added as a small bonus once the core RSVP flow was stable.
 
-```bash
-bun install
-```
+## If This Were Going to Production at 10x Scale, the First Three Things I Would Change
 
-### 2. Create your environment file
+- Replace per-page RSVP aggregation with dedicated summary queries or read models so dashboard and event counts stay cheap as data grows.
+- Add rate limiting, abuse controls, and stronger transactional retry strategy around public RSVP capacity hotspots.
+- Add end-to-end coverage plus production-grade observability: tracing, structured sinks, alerting, and deployment health checks.
 
-Copy `.env.example` to `.env` and fill in the required values.
+## Seeded Review Data
 
-Required variables:
+The seed script creates:
 
-- `DATABASE_URL`
-- `BETTER_AUTH_SECRET`
-- `BETTER_AUTH_GITHUB_CLIENT_ID`
-- `BETTER_AUTH_GITHUB_CLIENT_SECRET`
+- `Founders Breakfast`: unlimited capacity.
+- `Product Demo Night`: open confirmed spots plus existing waitlist entries, so waitlist promotion can be exercised.
+- `Rooftop Afterparty`: full confirmed capacity, so new public RSVPs land on the waitlist immediately.
 
-The GitHub OAuth callback configured in the app is:
+## Notes
 
-```text
-http://localhost:3000/api/auth/callback/github
-```
-
-### 3. Prepare the database
-
-For local development:
-
-```bash
-bun run db:generate
-```
-
-That script currently runs `prisma migrate dev`, which also regenerates the Prisma client.
-
-### 4. Start the app
-
-```bash
-bun run dev
-```
-
-The app will be available at `http://localhost:3000`.
-
-## Available Scripts
-
-```bash
-bun run dev
-bun run build
-bun run start
-bun run preview
-bun run check
-bun run check:write
-bun run check:unsafe
-bun run test
-bun run test:watch
-bun run typecheck
-bun run db:generate
-bun run db:migrate
-bun run db:push
-bun run db:studio
-```
-
-## Project Structure
-
-```text
-prisma/                  Prisma schema and migrations
-src/app/                 App Router routes, layouts, and Server Actions
-src/app/api/auth/        Better Auth route handler
-src/components/          UI and client components
-src/server/better-auth/  Better Auth configuration and session helpers
-src/server/db.ts         Prisma client singleton
-src/utils/try-catch.ts   Shared async result wrapper
-src/env.ts               Environment variable validation
-```
-
-## Current Foundation
-
-The repository already includes the core platform pieces:
-
-- Better Auth wired to Prisma
-- PostgreSQL access through Prisma
-- Environment validation with Zod
-- Server Action form handling
-- Tailwind v4 styling
-- Base UI plus shadcn-style component patterns
-
-The product direction is a focused RSVP and check-in workflow built on top of that foundation while keeping client boundaries thin and performance-oriented.
+- GitHub OAuth remains optional. Email/password is the primary review path, even though the production deployment currently shows the GitHub button because those OAuth keys are configured there.
