@@ -5,16 +5,13 @@ import { SignInForm } from '../_components/sign-in-form'
 
 import { RoutePrefetch } from '~/components/navigation/route-prefetch'
 import { isGitHubAuthEnabled } from '~/server/better-auth'
+import { sanitizeCallbackURL } from '~/server/better-auth/callback-url'
 import { getSession } from '~/server/better-auth/server'
 
 type SignInPageProps = {
   searchParams: Promise<{
     callbackURL?: string
   }>
-}
-
-const getCallbackURL = (callbackURL?: string) => {
-  return callbackURL?.startsWith('/') ? callbackURL : '/dashboard'
 }
 
 export default async function SignInPage({ searchParams }: SignInPageProps) {
@@ -24,7 +21,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
     redirect('/')
   }
 
-  const nextCallbackURL = getCallbackURL(callbackURL)
+  const nextCallbackURL = sanitizeCallbackURL(callbackURL)
 
   return (
     <AuthShell

@@ -11,5 +11,6 @@ export default defineConfig({
   test: {
     environment: 'node',
     exclude: ['.next/**', 'generated/**', 'node_modules/**'],
+    setupFiles: ['./src/test/setup.ts'],
   },
 })

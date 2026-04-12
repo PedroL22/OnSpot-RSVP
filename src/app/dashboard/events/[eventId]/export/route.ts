@@ -1,5 +1,6 @@
 import { headers } from 'next/headers'
 
+import { escapeCsvCell } from '~/lib/csv'
 import { toSlug } from '~/lib/formatters'
 import { auth } from '~/server/better-auth'
 import { db } from '~/server/db'
@@ -9,12 +10,6 @@ type ExportRouteProps = {
   params: Promise<{
     eventId: string
   }>
-}
-
-const escapeCsvCell = (value: string) => {
-  const escaped = value.replaceAll('"', '""')
-
-  return `"${escaped}"`
 }
 
 export async function GET(_request: Request, { params }: ExportRouteProps) {
@@ -69,8 +64,10 @@ export async function GET(_request: Request, { params }: ExportRouteProps) {
 
   return new Response(csv, {
     headers: {
+      'Cache-Control': 'private, no-store, max-age=0',
       'Content-Disposition': `attachment; filename="${filename}"`,
       'Content-Type': 'text/csv; charset=utf-8',
+      'X-Content-Type-Options': 'nosniff',
     },
     status: 200,
   })

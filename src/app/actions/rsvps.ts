@@ -4,7 +4,7 @@ import { Prisma, type RsvpStatus } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 
 import { getSession } from '~/server/better-auth/server'
-import { db } from '~/server/db'
+import { runSerializableTransaction } from '~/server/db/serializable'
 import { withServerAction } from '~/server/observability/server-action'
 import { hasAvailableCapacity } from '~/server/queries/rsvps'
 import { checkInSchema, createRsvpSchema, promoteWaitlistSchema } from '~/server/validation/rsvps'
@@ -48,97 +48,97 @@ export const createRsvp = withServerAction(
     })
 
     const { data: result, error } = await tryCatch(
-      db.$transaction(
-        async (tx) => {
-          const event = await tx.event.findUnique({
-            select: {
-              capacity: true,
-              id: true,
-              publicId: true,
-            },
-            where: {
-              publicId: parsed.data.eventPublicId,
-            },
-          })
+      runSerializableTransaction(async (tx) => {
+        const event = await tx.event.findUnique({
+          select: {
+            capacity: true,
+            id: true,
+            publicId: true,
+          },
+          where: {
+            publicId: parsed.data.eventPublicId,
+          },
+        })
 
-          if (!event) {
-            return {
-              kind: 'missing-event',
-            } as const
-          }
+        if (!event) {
+          return {
+            kind: 'missing-event',
+          } as const
+        }
 
-          const existingRsvp = await tx.rsvp.findUnique({
-            select: {
-              id: true,
-              status: true,
-            },
-            where: {
-              eventId_email: {
-                email: parsed.data.email,
-                eventId: event.id,
-              },
-            },
-          })
-
-          if (existingRsvp) {
-            return {
-              kind: 'duplicate',
-            } as const
-          }
-
-          const confirmedCount = await tx.rsvp.count({
-            where: {
-              eventId: event.id,
-              status: 'CONFIRMED',
-            },
-          })
-
-          const nextStatus: RsvpStatus = hasAvailableCapacity(event.capacity, confirmedCount)
-            ? 'CONFIRMED'
-            : 'WAITLISTED'
-
-          const rsvp = await tx.rsvp.create({
-            data: {
+        const existingRsvp = await tx.rsvp.findUnique({
+          select: {
+            id: true,
+            status: true,
+          },
+          where: {
+            eventId_email: {
               email: parsed.data.email,
               eventId: event.id,
-              name: parsed.data.name,
-              status: nextStatus,
             },
-          })
+          },
+        })
 
-          await tx.eventActivity.create({
-            data: {
-              actorType: 'GUEST',
-              eventId: event.id,
-              message:
-                nextStatus === 'CONFIRMED'
-                  ? `${parsed.data.name} RSVP'd and is confirmed.`
-                  : `${parsed.data.name} joined the waitlist.`,
-              metadata: {
-                email: parsed.data.email,
-              },
-              rsvpId: rsvp.id,
-              type: nextStatus === 'CONFIRMED' ? 'RSVP_CREATED' : 'RSVP_WAITLISTED',
-            },
-          })
-
+        if (existingRsvp) {
           return {
-            eventId: event.id,
-            eventPublicId: event.publicId,
-            kind: 'created',
-            rsvpId: rsvp.id,
-            status: nextStatus,
+            kind: 'duplicate',
           } as const
-        },
-        {
-          isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
         }
-      )
+
+        const confirmedCount = await tx.rsvp.count({
+          where: {
+            eventId: event.id,
+            status: 'CONFIRMED',
+          },
+        })
+
+        const nextStatus: RsvpStatus = hasAvailableCapacity(event.capacity, confirmedCount) ? 'CONFIRMED' : 'WAITLISTED'
+
+        const rsvp = await tx.rsvp.create({
+          data: {
+            email: parsed.data.email,
+            eventId: event.id,
+            name: parsed.data.name,
+            status: nextStatus,
+          },
+        })
+
+        await tx.eventActivity.create({
+          data: {
+            actorType: 'GUEST',
+            eventId: event.id,
+            message:
+              nextStatus === 'CONFIRMED'
+                ? `${parsed.data.name} RSVP'd and is confirmed.`
+                : `${parsed.data.name} joined the waitlist.`,
+            metadata: {
+              email: parsed.data.email,
+            },
+            rsvpId: rsvp.id,
+            type: nextStatus === 'CONFIRMED' ? 'RSVP_CREATED' : 'RSVP_WAITLISTED',
+          },
+        })
+
+        return {
+          eventId: event.id,
+          eventPublicId: event.publicId,
+          kind: 'created',
+          rsvpId: rsvp.id,
+          status: nextStatus,
+        } as const
+      })
     )
 
     if (isKnownPrismaError(error, 'P2002')) {
       return {
         message: "This email has already RSVP'd for this event.",
+        success: false,
+      }
+    }
+
+    if (isKnownPrismaError(error, 'P2034')) {
+      return {
+        message: 'This event is busy right now. Please try again.',
         success: false,
       }
     }
@@ -208,92 +208,87 @@ export const markRsvpCheckedIn = withServerAction(
     }
 
     const { data: result, error } = await tryCatch(
-      db.$transaction(
-        async (tx) => {
-          const event = await tx.event.findFirst({
-            select: {
-              id: true,
-              publicId: true,
-            },
-            where: {
-              id: parsed.data.eventId,
-              organizerId: session.user.id,
-            },
-          })
+      runSerializableTransaction(async (tx) => {
+        const event = await tx.event.findFirst({
+          select: {
+            id: true,
+            publicId: true,
+          },
+          where: {
+            id: parsed.data.eventId,
+            organizerId: session.user.id,
+          },
+        })
 
-          if (!event) {
+        if (!event) {
+          return {
+            kind: 'missing-event',
+          } as const
+        }
+
+        const rsvp = await tx.rsvp.findFirst({
+          select: {
+            checkedInAt: true,
+            id: true,
+            name: true,
+            status: true,
+          },
+          where: {
+            eventId: event.id,
+            id: parsed.data.rsvpId,
+          },
+        })
+
+        if (!rsvp) {
+          return {
+            kind: 'missing-rsvp',
+          } as const
+        }
+
+        const checkedInAt = new Date()
+
+        const checkedInRsvp = await tx.rsvp.updateMany({
+          data: {
+            checkedInAt,
+          },
+          where: {
+            checkedInAt: null,
+            eventId: event.id,
+            id: rsvp.id,
+            status: 'CONFIRMED',
+          },
+        })
+
+        if (checkedInRsvp.count === 0) {
+          if (rsvp.status !== 'CONFIRMED') {
             return {
-              kind: 'missing-event',
+              kind: 'waitlisted',
             } as const
           }
-
-          const rsvp = await tx.rsvp.findFirst({
-            select: {
-              checkedInAt: true,
-              id: true,
-              name: true,
-              status: true,
-            },
-            where: {
-              eventId: event.id,
-              id: parsed.data.rsvpId,
-            },
-          })
-
-          if (!rsvp) {
-            return {
-              kind: 'missing-rsvp',
-            } as const
-          }
-
-          const checkedInAt = new Date()
-
-          const checkedInRsvp = await tx.rsvp.updateMany({
-            data: {
-              checkedInAt,
-            },
-            where: {
-              checkedInAt: null,
-              eventId: event.id,
-              id: rsvp.id,
-              status: 'CONFIRMED',
-            },
-          })
-
-          if (checkedInRsvp.count === 0) {
-            if (rsvp.status !== 'CONFIRMED') {
-              return {
-                kind: 'waitlisted',
-              } as const
-            }
-
-            return {
-              kind: 'already-checked-in',
-            } as const
-          }
-
-          await tx.eventActivity.create({
-            data: {
-              actorType: 'ORGANIZER',
-              actorUserId: session.user.id,
-              eventId: event.id,
-              message: `${rsvp.name} was checked in.`,
-              rsvpId: rsvp.id,
-              type: 'RSVP_CHECKED_IN',
-            },
-          })
 
           return {
-            eventId: event.id,
-            eventPublicId: event.publicId,
-            kind: 'checked-in',
-            rsvpId: rsvp.id,
+            kind: 'already-checked-in',
           } as const
-        },
-        {
-          isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
         }
-      )
+
+        await tx.eventActivity.create({
+          data: {
+            actorType: 'ORGANIZER',
+            actorUserId: session.user.id,
+            eventId: event.id,
+            message: `${rsvp.name} was checked in.`,
+            rsvpId: rsvp.id,
+            type: 'RSVP_CHECKED_IN',
+          },
+        })
+
+        return {
+          eventId: event.id,
+          eventPublicId: event.publicId,
+          kind: 'checked-in',
+          rsvpId: rsvp.id,
+        } as const
+      })
     )
 
     if (error) {
@@ -364,110 +359,98 @@ export const promoteWaitlistedRsvp = withServerAction(
     }
 
     const { data: result, error } = await tryCatch(
-      db.$transaction(
-        async (tx) => {
-          const event = await tx.event.findFirst({
-            select: {
-              capacity: true,
-              id: true,
-              publicId: true,
-            },
-            where: {
-              id: parsed.data.eventId,
-              organizerId: session.user.id,
-            },
-          })
+      runSerializableTransaction(async (tx) => {
+        const event = await tx.event.findFirst({
+          select: {
+            capacity: true,
+            id: true,
+            publicId: true,
+          },
+          where: {
+            id: parsed.data.eventId,
+            organizerId: session.user.id,
+          },
+        })
 
-          if (!event) {
-            return {
-              kind: 'missing-event',
-            } as const
-          }
-
-          const rsvp = await tx.rsvp.findFirst({
-            select: {
-              id: true,
-              name: true,
-              status: true,
-            },
-            where: {
-              eventId: event.id,
-              id: parsed.data.rsvpId,
-            },
-          })
-
-          if (!rsvp) {
-            return {
-              kind: 'missing-rsvp',
-            } as const
-          }
-
-          if (rsvp.status !== 'WAITLISTED') {
-            return {
-              kind: 'already-confirmed',
-            } as const
-          }
-
-          const confirmedCount = await tx.rsvp.count({
-            where: {
-              eventId: event.id,
-              status: 'CONFIRMED',
-            },
-          })
-
-          if (!hasAvailableCapacity(event.capacity, confirmedCount)) {
-            return {
-              kind: 'full',
-            } as const
-          }
-
-          const promotedRsvp = await tx.rsvp.updateMany({
-            data: {
-              status: 'CONFIRMED',
-            },
-            where: {
-              eventId: event.id,
-              id: rsvp.id,
-              status: 'WAITLISTED',
-            },
-          })
-
-          if (promotedRsvp.count === 0) {
-            return {
-              kind: 'already-confirmed',
-            } as const
-          }
-
-          await tx.eventActivity.create({
-            data: {
-              actorType: 'ORGANIZER',
-              actorUserId: session.user.id,
-              eventId: event.id,
-              message: `${rsvp.name} was promoted from the waitlist.`,
-              rsvpId: rsvp.id,
-              type: 'RSVP_PROMOTED',
-            },
-          })
-
+        if (!event) {
           return {
-            eventId: event.id,
-            eventPublicId: event.publicId,
-            kind: 'promoted',
-            rsvpId: rsvp.id,
+            kind: 'missing-event',
           } as const
-        },
-        {
-          isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
         }
-      )
-    )
 
-    if (isKnownPrismaError(error, 'P2034')) {
-      return {
-        message: 'No confirmed spots are available right now.',
-        success: false,
-      }
-    }
+        const rsvp = await tx.rsvp.findFirst({
+          select: {
+            id: true,
+            name: true,
+            status: true,
+          },
+          where: {
+            eventId: event.id,
+            id: parsed.data.rsvpId,
+          },
+        })
+
+        if (!rsvp) {
+          return {
+            kind: 'missing-rsvp',
+          } as const
+        }
+
+        if (rsvp.status !== 'WAITLISTED') {
+          return {
+            kind: 'already-confirmed',
+          } as const
+        }
+
+        const confirmedCount = await tx.rsvp.count({
+          where: {
+            eventId: event.id,
+            status: 'CONFIRMED',
+          },
+        })
+
+        if (!hasAvailableCapacity(event.capacity, confirmedCount)) {
+          return {
+            kind: 'full',
+          } as const
+        }
+
+        const promotedRsvp = await tx.rsvp.updateMany({
+          data: {
+            status: 'CONFIRMED',
+          },
+          where: {
+            eventId: event.id,
+            id: rsvp.id,
+            status: 'WAITLISTED',
+          },
+        })
+
+        if (promotedRsvp.count === 0) {
+          return {
+            kind: 'already-confirmed',
+          } as const
+        }
+
+        await tx.eventActivity.create({
+          data: {
+            actorType: 'ORGANIZER',
+            actorUserId: session.user.id,
+            eventId: event.id,
+            message: `${rsvp.name} was promoted from the waitlist.`,
+            rsvpId: rsvp.id,
+            type: 'RSVP_PROMOTED',
+          },
+        })
+
+        return {
+          eventId: event.id,
+          eventPublicId: event.publicId,
+          kind: 'promoted',
+          rsvpId: rsvp.id,
+        } as const
+      })
+    )
 
     if (error) {
       return {

@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import type { z } from 'zod'
 
 import { auth, isGitHubAuthEnabled } from '~/server/better-auth'
+import { sanitizeCallbackURL } from '~/server/better-auth/callback-url'
 import { getSession } from '~/server/better-auth/server'
 import { withServerAction } from '~/server/observability/server-action'
 import { tryCatch } from '~/utils/try-catch'
@@ -23,8 +24,9 @@ const getValidationError = (error: z.ZodError) => {
 export const signInWithEmail = withServerAction(
   'auth_sign_in_with_email',
   async (context, _prevState: AuthActionState, formData: FormData): Promise<AuthActionState> => {
+    const callbackURL = sanitizeCallbackURL(formData.get('callbackURL')?.toString())
     const parsed = signInWithEmailSchema.safeParse({
-      callbackURL: formData.get('callbackURL') ?? '/dashboard',
+      callbackURL,
       email: formData.get('email'),
       password: formData.get('password'),
     })
@@ -64,8 +66,9 @@ export const signInWithEmail = withServerAction(
 export const signUpWithEmail = withServerAction(
   'auth_sign_up_with_email',
   async (context, _prevState: AuthActionState, formData: FormData): Promise<AuthActionState> => {
+    const callbackURL = sanitizeCallbackURL(formData.get('callbackURL')?.toString())
     const parsed = signUpWithEmailSchema.safeParse({
-      callbackURL: formData.get('callbackURL') ?? '/dashboard',
+      callbackURL,
       email: formData.get('email'),
       name: formData.get('name'),
       password: formData.get('password'),
@@ -111,8 +114,9 @@ export const signInWithGitHub = withServerAction(
       return { success: false, error: 'GitHub sign-in is not configured yet.' }
     }
 
+    const callbackURL = sanitizeCallbackURL(formData.get('callbackURL')?.toString())
     const parsed = signInWithGitHubSchema.safeParse({
-      callbackURL: formData.get('callbackURL') ?? '/dashboard',
+      callbackURL,
     })
 
     if (!parsed.success) {

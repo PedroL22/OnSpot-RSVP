@@ -105,6 +105,25 @@ describe('auth actions', () => {
     })
   })
 
+  it('sanitizes malicious sign-in callback URLs before calling Better Auth and redirecting', async () => {
+    signInEmailMock.mockResolvedValue({ token: 'session_token' })
+
+    const { signInWithEmail } = await loadActions()
+    const formData = new FormData()
+    formData.set('callbackURL', '//evil.com')
+    formData.set('email', 'alex@onspot.app')
+    formData.set('password', 'password123')
+
+    await expect(signInWithEmail({ success: false }, formData)).rejects.toThrow('REDIRECT:/dashboard')
+    expect(signInEmailMock).toHaveBeenCalledWith({
+      body: {
+        callbackURL: '/dashboard',
+        email: 'alex@onspot.app',
+        password: 'password123',
+      },
+    })
+  })
+
   it('rejects empty sign-up names', async () => {
     const { signUpWithEmail } = await loadActions()
     const formData = new FormData()
@@ -168,6 +187,27 @@ describe('auth actions', () => {
     })
   })
 
+  it('sanitizes malicious sign-up callback URLs before calling Better Auth and redirecting', async () => {
+    signUpEmailMock.mockResolvedValue({ token: 'session_token' })
+
+    const { signUpWithEmail } = await loadActions()
+    const formData = new FormData()
+    formData.set('callbackURL', '//evil.com')
+    formData.set('name', 'Alex')
+    formData.set('email', 'alex@onspot.app')
+    formData.set('password', 'password123')
+
+    await expect(signUpWithEmail({ success: false }, formData)).rejects.toThrow('REDIRECT:/dashboard')
+    expect(signUpEmailMock).toHaveBeenCalledWith({
+      body: {
+        callbackURL: '/dashboard',
+        email: 'alex@onspot.app',
+        name: 'Alex',
+        password: 'password123',
+      },
+    })
+  })
+
   it('returns a clear error when GitHub auth is disabled', async () => {
     const { signInWithGitHub } = await loadActions({ githubEnabled: false })
     const formData = new FormData()
@@ -178,6 +218,24 @@ describe('auth actions', () => {
       error: 'GitHub sign-in is not configured yet.',
     })
     expect(signInSocialMock).not.toHaveBeenCalled()
+  })
+
+  it('sanitizes malicious GitHub callback URLs before starting OAuth', async () => {
+    signInSocialMock.mockResolvedValue({ url: 'https://github.com/login/oauth/authorize?state=test' })
+
+    const { signInWithGitHub } = await loadActions()
+    const formData = new FormData()
+    formData.set('callbackURL', '//evil.com')
+
+    await expect(signInWithGitHub({ success: false }, formData)).rejects.toThrow(
+      'REDIRECT:https://github.com/login/oauth/authorize?state=test'
+    )
+    expect(signInSocialMock).toHaveBeenCalledWith({
+      body: {
+        callbackURL: '/dashboard',
+        provider: 'github',
+      },
+    })
   })
 
   it('signs the current user out and redirects home', async () => {
