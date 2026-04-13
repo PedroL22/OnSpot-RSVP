@@ -72,8 +72,8 @@ describe('event export route', () => {
     findFirstMock.mockResolvedValue({
       rsvps: [
         {
-          checkedInAt: new Date('2026-05-12T23:00:00.000Z'),
-          createdAt: new Date('2026-05-10T20:00:00.000Z'),
+          checkedInAt: new Date('2026-04-12T23:00:00.000Z'),
+          createdAt: new Date('2026-04-10T20:00:00.000Z'),
           email: '+alex@onspot.app',
           name: '=SUM(A1:A2)',
           status: 'CONFIRMED',

@@ -36,14 +36,14 @@ describe('CreateEventForm', () => {
     const startsAtInput = screen.getByLabelText('Starts at')
     fireEvent.change(startsAtInput, {
       target: {
-        value: '2026-05-12T19:30',
+        value: '2026-04-12T19:30',
       },
     })
 
     const offsetInput = document.querySelector<HTMLInputElement>('input[name="startsAtOffsetMinutes"]')
 
     expect(offsetInput).not.toBeNull()
-    expect(offsetInput?.value).toBe(new Date('2026-05-12T19:30').getTimezoneOffset().toString())
+    expect(offsetInput?.value).toBe(new Date('2026-04-12T19:30').getTimezoneOffset().toString())
   })
 
   it('renders field-level validation messages from the action state', () => {

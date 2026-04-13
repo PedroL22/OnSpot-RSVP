@@ -86,7 +86,7 @@ describe('createEvent', () => {
     const formData = new FormData()
     formData.set('title', 'Launch party')
     formData.set('description', 'A small launch gathering.')
-    formData.set('startsAt', '2026-05-12T19:30')
+    formData.set('startsAt', '2026-04-12T19:30')
     formData.set('startsAtOffsetMinutes', '180')
     formData.set('location', 'Fortaleza')
     formData.set('capacity', '40')
@@ -98,7 +98,7 @@ describe('createEvent', () => {
         description: 'A small launch gathering.',
         location: 'Fortaleza',
         organizerId: 'user_123',
-        startsAt: new Date('2026-05-12T22:30:00.000Z'),
+        startsAt: new Date('2026-04-12T22:30:00.000Z'),
         startsAtOffsetMinutes: 180,
         title: 'Launch party',
       },
@@ -114,7 +114,7 @@ describe('createEvent', () => {
     const formData = new FormData()
     formData.set('title', 'Launch party')
     formData.set('description', 'A small launch gathering.')
-    formData.set('startsAt', '2026-05-12T19:30')
+    formData.set('startsAt', '2026-04-12T19:30')
     formData.set('startsAtOffsetMinutes', '180')
     formData.set('location', 'Fortaleza')
 
