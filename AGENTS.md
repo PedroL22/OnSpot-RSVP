@@ -4,7 +4,7 @@ description: Modern Next.js App Router architecture guidelines focusing on React
 globs: "**/*.{ts,tsx,json,lock,yaml,prisma}"
 ---
 
-# Next.js 15 / React 19 Architecture Guidelines
+# Next.js 16 / React 19 Architecture Guidelines
 
 ## 0. Environment Awareness (Package Manager)
 Before generating any terminal commands (install, run, build), you **must** detect the active package manager by scanning the project root for lockfiles.
