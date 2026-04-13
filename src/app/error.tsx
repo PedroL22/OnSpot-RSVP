@@ -1,9 +1,10 @@
 'use client'
 
+import Link from 'next/link'
+
 import { ErrorState } from '~/components/feedback/error-state'
 import { PageThemeToggle } from '~/components/layout/page-theme-toggle'
 import { PatternBackground } from '~/components/layout/pattern-background'
-import { AppLink } from '~/components/navigation/app-link'
 import { buttonVariants } from '~/components/ui/button'
 
 import { cn } from '~/lib/utils'
@@ -31,7 +32,7 @@ export default function RootError({ reset }: RootErrorProps) {
               >
                 Try again
               </button>
-              <AppLink
+              <Link
                 className={cn(
                   buttonVariants({ size: 'lg', variant: 'outline' }),
                   'font-mono text-[11px] uppercase tracking-[0.16em]'
@@ -39,7 +40,7 @@ export default function RootError({ reset }: RootErrorProps) {
                 href='/'
               >
                 Return home
-              </AppLink>
+              </Link>
             </>
           }
           description='Please try again. If the problem persists, return home and start the flow again.'

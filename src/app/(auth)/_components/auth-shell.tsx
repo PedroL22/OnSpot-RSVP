@@ -1,8 +1,8 @@
+import Link from 'next/link'
 import type { ReactNode } from 'react'
 
 import { BrandMark } from '~/components/brand/brand-mark'
 import { PatternBackground } from '~/components/layout/pattern-background'
-import { AppLink } from '~/components/navigation/app-link'
 import { buttonVariants } from '~/components/ui/button'
 import { AuthBrandPanel } from './auth-brand-panel'
 import { AuthCardFrame } from './auth-card-frame'
@@ -47,12 +47,12 @@ export const AuthShell = ({
               <div className='border-border border-t pt-6'>
                 <p className='font-mono text-[11px] text-muted-foreground'>
                   {alternateLabel}{' '}
-                  <AppLink
+                  <Link
                     className={cn(buttonVariants({ variant: 'link' }), 'h-auto px-0 py-0 text-[11px]')}
                     href={alternateHref}
                   >
                     {alternateText}
-                  </AppLink>
+                  </Link>
                 </p>
               </div>
             </div>

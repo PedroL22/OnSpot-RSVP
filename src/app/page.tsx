@@ -1,5 +1,6 @@
+import Link from 'next/link'
+
 import { PatternBackground } from '~/components/layout/pattern-background'
-import { AppLink } from '~/components/navigation/app-link'
 import { RoutePrefetch } from '~/components/navigation/route-prefetch'
 import { buttonVariants } from '~/components/ui/button'
 import { AuthCalloutCard } from './_components/auth-callout-card'
@@ -42,7 +43,7 @@ export default async function Home() {
               </div>
             ) : (
               <nav className='flex items-center gap-2'>
-                <AppLink
+                <Link
                   className={cn(
                     buttonVariants({ size: 'sm', variant: 'ghost' }),
                     'font-mono text-[11px] uppercase tracking-[0.16em]'
@@ -50,14 +51,14 @@ export default async function Home() {
                   href='/sign-in'
                 >
                   Sign in
-                </AppLink>
+                </Link>
 
-                <AppLink
+                <Link
                   className={cn(buttonVariants({ size: 'sm' }), 'font-mono text-[11px] uppercase tracking-[0.16em]')}
                   href='/sign-up'
                 >
                   Get started
-                </AppLink>
+                </Link>
               </nav>
             )
           }
@@ -73,7 +74,7 @@ export default async function Home() {
                       Your event dashboard is ready. Manage RSVPs, handle waitlists, and run check-in from one place.
                     </p>
 
-                    <AppLink
+                    <Link
                       className={cn(
                         buttonVariants({ size: 'lg' }),
                         'w-full font-mono text-[11px] uppercase tracking-[0.16em]'
@@ -81,7 +82,7 @@ export default async function Home() {
                       href='/dashboard'
                     >
                       Open dashboard
-                    </AppLink>
+                    </Link>
 
                     <form action={signOut}>
                       <button
@@ -101,7 +102,7 @@ export default async function Home() {
                       Sign up with email or connect via GitHub. Your first event is one form away.
                     </p>
 
-                    <AppLink
+                    <Link
                       className={cn(
                         buttonVariants({ size: 'lg' }),
                         'w-full font-mono text-[11px] uppercase tracking-[0.16em]'
@@ -109,9 +110,9 @@ export default async function Home() {
                       href='/sign-up'
                     >
                       Create an account
-                    </AppLink>
+                    </Link>
 
-                    <AppLink
+                    <Link
                       className={cn(
                         buttonVariants({ size: 'lg', variant: 'outline' }),
                         'w-full font-mono text-[11px] uppercase tracking-[0.16em]'
@@ -119,7 +120,7 @@ export default async function Home() {
                       href='/sign-in'
                     >
                       Sign in to continue
-                    </AppLink>
+                    </Link>
 
                     <p className='border-border border-t pt-5 text-center font-mono text-[10px] text-dim-foreground uppercase tracking-[0.18em]'>
                       No credit card required. Free for personal events.

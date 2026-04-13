@@ -1,6 +1,6 @@
 import Image from 'next/image'
+import Link from 'next/link'
 
-import { AppLink } from '~/components/navigation/app-link'
 import { cn } from '~/lib/utils'
 
 type BrandMarkProps = {
@@ -12,7 +12,7 @@ type BrandMarkProps = {
 
 export const BrandMark = ({ className, href = '/', logoClassName, textClassName }: BrandMarkProps) => {
   return (
-    <AppLink className={cn('group inline-flex items-center gap-3', className)} href={href}>
+    <Link className={cn('group inline-flex items-center gap-3', className)} href={href}>
       <Image
         alt='OnSpot RSVP'
         className={cn('size-8 transition-opacity group-hover:opacity-80', logoClassName)}
@@ -26,6 +26,6 @@ export const BrandMark = ({ className, href = '/', logoClassName, textClassName 
       >
         OnSpot
       </span>
-    </AppLink>
+    </Link>
   )
 }

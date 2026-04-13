@@ -1,7 +1,8 @@
+import Link from 'next/link'
+
 import { PublicRsvpForm } from '~/components/events/public-rsvp-form'
 import { DisplayTitle } from '~/components/layout/display-title'
 import { Eyebrow } from '~/components/layout/eyebrow'
-import { AppLink } from '~/components/navigation/app-link'
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 
 type PublicRsvpSidebarProps = {
@@ -41,9 +42,9 @@ export const PublicRsvpSidebar = ({ eventPublicId, isFull, submitLabel }: Public
 
       <p className='text-center font-mono text-[10px] text-dim-foreground uppercase tracking-[0.18em]'>
         Powered by{' '}
-        <AppLink className='text-muted-foreground transition-colors hover:text-primary' href='/'>
+        <Link className='text-muted-foreground transition-colors hover:text-primary' href='/'>
           OnSpot RSVP
-        </AppLink>
+        </Link>
       </p>
     </div>
   )

@@ -1,7 +1,7 @@
+import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 
 import { CaretLeftIcon } from '@phosphor-icons/react/dist/ssr'
-import { AppLink } from '~/components/navigation/app-link'
 import { RoutePrefetch } from '~/components/navigation/route-prefetch'
 import { buttonVariants } from '~/components/ui/button'
 import { ActivityFeed } from './_components/activity-feed'
@@ -44,7 +44,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
     <div className='space-y-6'>
       <RoutePrefetch hrefs={['/dashboard']} />
 
-      <AppLink
+      <Link
         className={cn(
           buttonVariants({ size: 'sm', variant: 'ghost' }),
           'w-fit gap-2 font-mono text-[11px] uppercase tracking-[0.16em]'
@@ -53,7 +53,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
       >
         <CaretLeftIcon data-icon='inline-start' />
         Back to dashboard
-      </AppLink>
+      </Link>
 
       <section className='grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_128px]'>
         <EventDetailHero

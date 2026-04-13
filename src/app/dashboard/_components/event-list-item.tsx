@@ -1,7 +1,8 @@
+import Link from 'next/link'
+
 import { ArrowRightIcon } from '@phosphor-icons/react/dist/ssr'
 import { CapacityMeter } from '~/components/data/capacity-meter'
 import { ShareLinkButton } from '~/components/events/share-link-button'
-import { AppLink } from '~/components/navigation/app-link'
 import { buttonVariants } from '~/components/ui/button'
 import { Card, CardContent } from '~/components/ui/card'
 
@@ -48,12 +49,12 @@ export const EventListItem = ({
           </div>
 
           <div className='min-w-0 flex-1 space-y-2'>
-            <AppLink
+            <Link
               className='block truncate font-display text-[1.6rem] text-foreground uppercase leading-none tracking-[0.03em] transition-colors hover:text-primary'
               href={href}
             >
               {title}
-            </AppLink>
+            </Link>
 
             <div className='flex flex-wrap items-center gap-3 font-mono text-[11px] text-muted-foreground'>
               <span>{location}</span>
@@ -86,7 +87,7 @@ export const EventListItem = ({
           <div className='flex shrink-0 items-center gap-2'>
             <ShareLinkButton shareUrl={shareUrl} />
 
-            <AppLink
+            <Link
               className={cn(
                 buttonVariants({ variant: 'outline' }),
                 'gap-2 font-mono text-[11px] uppercase tracking-[0.16em]'
@@ -95,7 +96,7 @@ export const EventListItem = ({
             >
               Manage
               <ArrowRightIcon data-icon='inline-end' />
-            </AppLink>
+            </Link>
           </div>
         </div>
       </CardContent>
