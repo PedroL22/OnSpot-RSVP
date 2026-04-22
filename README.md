@@ -2,6 +2,9 @@
 
 Lightweight event RSVP and check-in app built for the Gathering take-home project with Next.js App Router, Prisma, PostgreSQL, Better Auth, and Tailwind CSS.
 
+<img width="1613" height="1076" alt="image" src="https://github.com/user-attachments/assets/45915016-c242-4219-86d9-d75b24639bf4" />
+
+
 ## Setup
 
 1. Install dependencies:
