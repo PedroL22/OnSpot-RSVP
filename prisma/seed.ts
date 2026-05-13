@@ -206,8 +206,7 @@ const seedEvent = async (organizerId: string, seedEventInput: SeedEvent, eventIn
 }
 
 const main = async () => {
-  await resetDemoUser()
-  const demoUser = await ensureDemoUser()
+  const demoUser = await resetDemoUser().then(() => ensureDemoUser())
 
   await Promise.all(eventsToSeed.map((event, eventIndex) => seedEvent(demoUser.id, event, eventIndex)))
 
