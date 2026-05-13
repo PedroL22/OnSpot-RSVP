@@ -8,13 +8,13 @@ type RoutePrefetchProps = {
 }
 
 export const RoutePrefetch = ({ hrefs }: RoutePrefetchProps) => {
-  const router = useRouter()
+  const { prefetch } = useRouter()
 
   useEffect(() => {
     for (const href of new Set(hrefs.filter(Boolean))) {
-      router.prefetch(href)
+      prefetch(href)
     }
-  }, [hrefs, router])
+  }, [hrefs, prefetch])
 
   return null
 }

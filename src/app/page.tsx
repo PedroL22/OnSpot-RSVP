@@ -12,6 +12,11 @@ import { signOut } from '~/app/(auth)/actions'
 import { cn } from '~/lib/utils'
 import { getSession } from '~/server/better-auth/server'
 
+export const metadata = {
+  title: 'OnSpot RSVP',
+  description: 'Create event RSVP pages, manage waitlists, and run guest check-in from one dashboard.',
+}
+
 export default async function Home() {
   const session = await getSession()
   const prefetchHrefs = session?.user ? ['/dashboard'] : ['/sign-in', '/sign-up']

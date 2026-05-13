@@ -13,11 +13,13 @@ type ExportRouteProps = {
 }
 
 export async function GET(_request: Request, { params }: ExportRouteProps) {
-  const [{ eventId }, session] = await Promise.all([params, auth.api.getSession({ headers: await headers() })])
+  const session = await auth.api.getSession({ headers: await headers() })
 
   if (!session?.user) {
     return new Response('Unauthorized', { status: 401 })
   }
+
+  const { eventId } = await params
 
   const { data: event, error } = await tryCatch(
     db.event.findFirst({

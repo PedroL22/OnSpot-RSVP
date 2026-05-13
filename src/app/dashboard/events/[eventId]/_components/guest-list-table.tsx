@@ -28,7 +28,7 @@ export const GuestListTable = ({ eventId, formatDate, guests }: GuestListTablePr
         </p>
       </CardHeader>
 
-      <CardContent className='px-0 py-0'>
+      <CardContent className='p-0'>
         {guests.length === 0 ? (
           <div className='px-6 py-12 text-center font-mono text-[11px] text-muted-foreground uppercase tracking-[0.18em]'>
             No guests have RSVP&apos;d yet.

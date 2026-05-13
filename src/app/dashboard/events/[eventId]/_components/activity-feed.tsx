@@ -33,7 +33,7 @@ export const ActivityFeed = ({ activities, formatDate }: ActivityFeedProps) => {
         <p className='font-mono text-[11px] text-muted-foreground'>Recent guest activity</p>
       </CardHeader>
 
-      <CardContent className='px-0 py-0'>
+      <CardContent className='p-0'>
         {activities.length === 0 ? (
           <div className='px-6 py-12 text-center font-mono text-[11px] text-muted-foreground uppercase tracking-[0.18em]'>
             Activity will appear here as guests RSVP and get checked in.

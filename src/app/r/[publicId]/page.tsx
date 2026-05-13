@@ -1,5 +1,7 @@
 import { notFound } from 'next/navigation'
 
+import type { Metadata } from 'next'
+
 import { BrandMark } from '~/components/brand/brand-mark'
 import { PatternBackground } from '~/components/layout/pattern-background'
 import { RoutePrefetch } from '~/components/navigation/route-prefetch'
@@ -12,6 +14,22 @@ import { getPublicEvent } from '~/server/queries/events'
 
 type PublicEventPageProps = {
   params: Promise<{ publicId: string }>
+}
+
+export const generateMetadata = async ({ params }: PublicEventPageProps): Promise<Metadata> => {
+  const { publicId } = await params
+  const event = await getPublicEvent(publicId)
+
+  if (!event) {
+    return {
+      title: 'Event not found | OnSpot RSVP',
+    }
+  }
+
+  return {
+    title: `${event.title} | OnSpot RSVP`,
+    description: event.description,
+  }
 }
 
 const getAvailabilityLabel = (capacity: number | null, remainingCapacity: number | null) => {

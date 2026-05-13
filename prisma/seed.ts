@@ -160,60 +160,56 @@ const seedEvent = async (organizerId: string, seedEventInput: SeedEvent, eventIn
 
   const totalGuests = seedEventInput.confirmedCount + seedEventInput.waitlistedCount
 
-  for (let guestIndex = 0; guestIndex < totalGuests; guestIndex += 1) {
-    const guestName = guestNames[(eventIndex * 7 + guestIndex) % guestNames.length] ?? `Guest ${guestIndex + 1}`
-    const createdAt = new Date(seedEventInput.startsAt.getTime() - (totalGuests - guestIndex) * 86_400_000)
-    const status: RsvpStatus = guestIndex < seedEventInput.confirmedCount ? 'CONFIRMED' : 'WAITLISTED'
-    const shouldCheckIn = status === 'CONFIRMED' && guestIndex < seedEventInput.checkedInCount
-    const checkedInAt = shouldCheckIn ? new Date(seedEventInput.startsAt.getTime() - (guestIndex + 1) * 600_000) : null
+  await Promise.all(
+    Array.from({ length: totalGuests }, async (_, guestIndex) => {
+      const guestName = guestNames[(eventIndex * 7 + guestIndex) % guestNames.length] ?? `Guest ${guestIndex + 1}`
+      const createdAt = new Date(seedEventInput.startsAt.getTime() - (totalGuests - guestIndex) * 86_400_000)
+      const status: RsvpStatus = guestIndex < seedEventInput.confirmedCount ? 'CONFIRMED' : 'WAITLISTED'
+      const shouldCheckIn = status === 'CONFIRMED' && guestIndex < seedEventInput.checkedInCount
+      const checkedInAt = shouldCheckIn
+        ? new Date(seedEventInput.startsAt.getTime() - (guestIndex + 1) * 600_000)
+        : null
 
-    const rsvp = await db.rsvp.create({
-      data: {
-        checkedInAt,
-        createdAt,
-        email: buildEmail(eventIndex, guestIndex),
-        eventId: event.id,
-        name: guestName,
-        status,
-      },
-    })
-
-    await createActivity({
-      actorType: 'GUEST',
-      createdAt,
-      eventId: event.id,
-      message: status === 'CONFIRMED' ? `${guestName} RSVP'd and is confirmed.` : `${guestName} joined the waitlist.`,
-      rsvpId: rsvp.id,
-      type: status === 'CONFIRMED' ? 'RSVP_CREATED' : 'RSVP_WAITLISTED',
-    })
-
-    if (checkedInAt) {
-      await createActivity({
-        actorType: 'ORGANIZER',
-        actorUserId: organizerId,
-        createdAt: checkedInAt,
-        eventId: event.id,
-        message: `${guestName} was checked in.`,
-        rsvpId: rsvp.id,
-        type: 'RSVP_CHECKED_IN',
+      const rsvp = await db.rsvp.create({
+        data: {
+          checkedInAt,
+          createdAt,
+          email: buildEmail(eventIndex, guestIndex),
+          eventId: event.id,
+          name: guestName,
+          status,
+        },
       })
-    }
-  }
+
+      await createActivity({
+        actorType: 'GUEST',
+        createdAt,
+        eventId: event.id,
+        message: status === 'CONFIRMED' ? `${guestName} RSVP'd and is confirmed.` : `${guestName} joined the waitlist.`,
+        rsvpId: rsvp.id,
+        type: status === 'CONFIRMED' ? 'RSVP_CREATED' : 'RSVP_WAITLISTED',
+      })
+
+      if (checkedInAt) {
+        await createActivity({
+          actorType: 'ORGANIZER',
+          actorUserId: organizerId,
+          createdAt: checkedInAt,
+          eventId: event.id,
+          message: `${guestName} was checked in.`,
+          rsvpId: rsvp.id,
+          type: 'RSVP_CHECKED_IN',
+        })
+      }
+    })
+  )
 }
 
 const main = async () => {
   await resetDemoUser()
   const demoUser = await ensureDemoUser()
 
-  for (let eventIndex = 0; eventIndex < eventsToSeed.length; eventIndex += 1) {
-    const event = eventsToSeed[eventIndex]
-
-    if (!event) {
-      continue
-    }
-
-    await seedEvent(demoUser.id, event, eventIndex)
-  }
+  await Promise.all(eventsToSeed.map((event, eventIndex) => seedEvent(demoUser.id, event, eventIndex)))
 
   process.stdout.write(`Seeded demo organizer: ${DEMO_EMAIL}\n`)
 }

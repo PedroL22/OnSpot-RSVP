@@ -25,23 +25,27 @@ type EventListProps = {
 export const EventList = ({ baseUrl, events, getCapacityPct, getCapacitySummary }: EventListProps) => {
   return (
     <div className='space-y-3'>
-      {events.map((event) => (
-        <EventListItem
-          capacitySummary={getCapacitySummary(event.capacity, event.confirmedCount, event.waitlistedCount)}
-          capacityValue={getCapacityPct(event.capacity, event.confirmedCount)}
-          checkedInCount={event.checkedInCount}
-          confirmedCount={event.confirmedCount}
-          dayLabel={new Date(event.startsAt).getDate()}
-          href={`/dashboard/events/${event.id}`}
-          key={event.id}
-          location={event.location}
-          monthLabel={new Date(event.startsAt).toLocaleString('en', { month: 'short' }).toUpperCase()}
-          shareUrl={new URL(`/r/${event.publicId}`, baseUrl).toString()}
-          startsAtLabel={formatEventDate(event.startsAt, event.startsAtOffsetMinutes)}
-          title={event.title}
-          waitlistedCount={event.waitlistedCount}
-        />
-      ))}
+      {events.map((event) => {
+        const startsAt = event.startsAt
+
+        return (
+          <EventListItem
+            capacitySummary={getCapacitySummary(event.capacity, event.confirmedCount, event.waitlistedCount)}
+            capacityValue={getCapacityPct(event.capacity, event.confirmedCount)}
+            checkedInCount={event.checkedInCount}
+            confirmedCount={event.confirmedCount}
+            dayLabel={startsAt.getDate()}
+            href={`/dashboard/events/${event.id}`}
+            key={event.id}
+            location={event.location}
+            monthLabel={startsAt.toLocaleString('en', { month: 'short' }).toUpperCase()}
+            shareUrl={new URL(`/r/${event.publicId}`, baseUrl).toString()}
+            startsAtLabel={formatEventDate(event.startsAt, event.startsAtOffsetMinutes)}
+            title={event.title}
+            waitlistedCount={event.waitlistedCount}
+          />
+        )
+      })}
     </div>
   )
 }

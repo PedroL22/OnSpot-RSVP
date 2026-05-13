@@ -53,7 +53,7 @@ export const CheckInButton = ({ checkedIn, eventId, rsvpId }: CheckInButtonProps
         ) : isPending ? (
           <>
             <CircleNotchIcon className='animate-spin' data-icon='inline-start' />
-            Checking...
+            Checking…
           </>
         ) : (
           'Check in'

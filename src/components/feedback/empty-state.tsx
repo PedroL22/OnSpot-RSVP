@@ -22,7 +22,7 @@ export const EmptyState = ({ action, className, description, icon, title }: Empt
           </div>
         )}
 
-        <div className='flex flex-col items-center space-y-2'>
+        <div className='flex flex-col items-center gap-y-2'>
           <CardTitle className='font-display text-3xl uppercase tracking-[0.04em]'>{title}</CardTitle>
           <p className='max-w-md text-muted-foreground text-sm leading-relaxed'>{description}</p>
         </div>

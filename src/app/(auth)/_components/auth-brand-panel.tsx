@@ -27,14 +27,14 @@ export const AuthBrandPanel = ({ description, title }: AuthBrandPanelProps) => {
 
           <div className='grid max-w-xs gap-3'>
             <Card className='bg-background/70 py-0 shadow-none'>
-              <CardContent className='space-y-2 px-4 py-4'>
+              <CardContent className='space-y-2 p-4'>
                 <Eyebrow>Fast path</Eyebrow>
                 <p className='text-foreground text-sm'>Email and password work out of the box.</p>
               </CardContent>
             </Card>
 
             <Card className='bg-background/70 py-0 shadow-none'>
-              <CardContent className='space-y-2 px-4 py-4'>
+              <CardContent className='space-y-2 p-4'>
                 <Eyebrow>Flexible entry</Eyebrow>
                 <p className='text-foreground text-sm'>GitHub appears when OAuth keys exist.</p>
               </CardContent>

@@ -53,7 +53,7 @@ export const PromoteWaitlistButton = ({ eventId, rsvpId, status }: PromoteWaitli
         ) : isPending ? (
           <>
             <CircleNotchIcon className='animate-spin' data-icon='inline-start' />
-            Promoting...
+            Promoting…
           </>
         ) : (
           <>

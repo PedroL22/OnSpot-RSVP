@@ -12,9 +12,8 @@ export const runSerializableTransaction = async <T>(
   options?: { maxAttempts?: number }
 ) => {
   const maxAttempts = Math.max(1, options?.maxAttempts ?? 3)
-  let lastError: unknown
 
-  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+  const attemptTransaction = async (attempt: number): Promise<T> => {
     const { data, error } = await tryCatch(
       db.$transaction(operation, {
         isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
@@ -29,8 +28,8 @@ export const runSerializableTransaction = async <T>(
       throw error
     }
 
-    lastError = error
+    return attemptTransaction(attempt + 1)
   }
 
-  throw lastError ?? new Error('Serializable transaction failed without an error.')
+  return attemptTransaction(1)
 }

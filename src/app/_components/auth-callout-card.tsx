@@ -15,7 +15,7 @@ export const AuthCalloutCard = ({ body, intro, title }: AuthCalloutCardProps) =>
     <Card className='overflow-hidden border-border/80 bg-card/95 py-0 shadow-(--shadow-md)'>
       <div className='h-1 w-full bg-primary' />
 
-      <CardContent className='space-y-6 px-8 py-8'>
+      <CardContent className='space-y-6 p-8'>
         <div className='space-y-3'>
           <Eyebrow>{intro}</Eyebrow>
           <DisplayTitle size='md'>{title}</DisplayTitle>
